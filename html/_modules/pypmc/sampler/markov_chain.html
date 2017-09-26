@@ -1,0 +1,488 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pypmc.sampler.markov_chain &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pypmc.sampler.markov_chain</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Collect Markov Chain&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span> <span class="k">as</span> <span class="n">_div</span><span class="p">,</span> <span class="n">print_function</span> <span class="k">as</span> <span class="n">_print</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span> <span class="k">as</span> <span class="n">_cp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+<span class="kn">from</span> <span class="nn">..tools</span> <span class="k">import</span> <span class="n">History</span> <span class="k">as</span> <span class="n">_History</span>
+<span class="kn">from</span> <span class="nn">..tools.indicator</span> <span class="k">import</span> <span class="n">merge_function_with_indicator</span> <span class="k">as</span> <span class="n">_indmerge</span>
+<span class="kn">from</span> <span class="nn">..tools._doc</span> <span class="k">import</span> <span class="n">_inherit_docstring</span>
+
+<div class="viewcode-block" id="MarkovChain"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.markov_chain.MarkovChain">[docs]</a><span class="k">class</span> <span class="nc">MarkovChain</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;A Markov chain to generate samples from the target density.</span>
+
+<span class="sd">    :param target:</span>
+
+<span class="sd">        The target density. Must be a function accepting a 1d numpy</span>
+<span class="sd">        array and returning a float, namely :math:`\log(P(x))`,</span>
+<span class="sd">        the log of the target `P`.</span>
+
+<span class="sd">    :param proposal:</span>
+
+<span class="sd">        The proposal density `q`.</span>
+<span class="sd">        Should be of type :py:class:`pypmc.density.base.LocalDensity`.</span>
+
+<span class="sd">        .. hint::</span>
+<span class="sd">            If your proposal density is symmetric, define the member</span>
+<span class="sd">            variable ``proposal.symmetric = True``. This will omit calls</span>
+<span class="sd">            to proposal.evaluate in the Metropolis-Hastings steps.</span>
+
+<span class="sd">    :param start:</span>
+
+<span class="sd">        The starting point of the Markov chain. (numpy array)</span>
+
+<span class="sd">    :param indicator:</span>
+
+<span class="sd">        The indicator function receives a numpy array and returns bool.</span>
+<span class="sd">        The target is only called if indicator(proposed_point)</span>
+<span class="sd">        returns True, otherwise the proposed point is rejected</span>
+<span class="sd">        without call to target.</span>
+<span class="sd">        Use this function to specify the support of the target.</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            :py:mod:`pypmc.tools.indicator`</span>
+
+<span class="sd">    :param prealloc:</span>
+
+<span class="sd">        Integer; the number of Markov chain samples for which memory in</span>
+<span class="sd">        ``self.samples`` is allocated. If more memory is needed, it will</span>
+<span class="sd">        be allocated on demand.</span>
+
+<span class="sd">        .. hint::</span>
+<span class="sd">            Preallocating memory can speed up the calculation, in</span>
+<span class="sd">            particular if it is known in advance how long the chains</span>
+<span class="sd">            are run.</span>
+
+<span class="sd">    :param save_target_values:</span>
+
+<span class="sd">        Bool; if ``True``, store the evaluated ``target`` at every visited</span>
+<span class="sd">        point in ``self.target_values``</span>
+
+<span class="sd">    :param rng:</span>
+
+<span class="sd">        The rng passed to the proposal when calling proposal.propose</span>
+
+<span class="sd">        .. important::</span>
+<span class="sd">            ``rng`` must return a sample from the uniform distribution</span>
+<span class="sd">            in [0,1) when calling **rng.rand()**</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            ``rng`` must also fulfill the requirements of your proposal</span>
+<span class="sd">            :py:meth:`pypmc.density.base.LocalDensity.propose`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">proposal</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">indicator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">prealloc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">save_target_values</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">mtrand</span><span class="p">):</span>
+        <span class="c1"># store input into instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span>        <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="c1"># call array constructor to make sure to have a copy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">samples</span>              <span class="o">=</span> <span class="n">_History</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_point</span><span class="p">),</span> <span class="n">prealloc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span>             <span class="o">=</span> <span class="n">_cp</span><span class="p">(</span><span class="n">proposal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span>                  <span class="o">=</span> <span class="n">rng</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span>               <span class="o">=</span> <span class="n">_indmerge</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">indicator</span><span class="p">,</span> <span class="o">-</span><span class="n">_np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span> <span class="o">=</span> <span class="n">_History</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">prealloc</span><span class="p">)</span> <span class="k">if</span> <span class="n">save_target_values</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_target_eval</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_point</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_target_eval</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;``target(start)`` must evaluate to a finite value and ``indicator(start)`` must be ``True``&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MarkovChain.clear"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.markov_chain.MarkovChain.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Clear history of visited points (stored in ``self.samples``) and</span>
+<span class="sd">        other internal variables to free memory.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The current state that defines the Markov chain is untouched.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MarkovChain.run"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.markov_chain.MarkovChain.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Run the chain and store the history of visited points into</span>
+<span class="sd">        the member variable ``self.samples``. Returns the number of</span>
+<span class="sd">        accepted points during the run.</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            :py:class:`pypmc.tools.History`</span>
+
+<span class="sd">        :param N:</span>
+
+<span class="sd">            An int which defines the number of steps to run the chain.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="c1"># set the accept function</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">symmetric</span><span class="p">:</span>
+            <span class="n">get_log_rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_log_rho_metropolis</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">get_log_rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_log_rho_metropolis_hastings</span>
+
+        <span class="c1"># allocate an empty numpy array to store the run</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">this_target_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="n">this_run</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="n">accept_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i_N</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="c1"># propose new point</span>
+            <span class="n">proposed_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">propose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">)</span>
+            <span class="n">proposed_eval</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">(</span><span class="n">proposed_point</span><span class="p">)</span>
+
+            <span class="c1"># log_rho := log(probability to accept point), where log_rho &gt; 0 is meant to imply rho = 1</span>
+            <span class="n">log_rho</span> <span class="o">=</span> <span class="n">get_log_rho</span><span class="p">(</span><span class="n">proposed_point</span><span class="p">,</span> <span class="n">proposed_eval</span><span class="p">)</span>
+
+            <span class="c1"># check for NaN</span>
+            <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">log_rho</span><span class="p">):</span> <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;encountered NaN&#39;</span><span class="p">)</span>
+
+            <span class="c1"># accept if rho = 1</span>
+            <span class="k">if</span> <span class="n">log_rho</span> <span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">accept_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">this_run</span><span class="p">[</span><span class="n">i_N</span><span class="p">]</span>            <span class="o">=</span> <span class="n">proposed_point</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span>       <span class="o">=</span> <span class="n">proposed_point</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_target_eval</span> <span class="o">=</span> <span class="n">proposed_eval</span>
+
+            <span class="c1"># accept with probability rho</span>
+            <span class="k">elif</span> <span class="n">log_rho</span> <span class="o">&gt;=</span> <span class="n">_np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">()):</span>
+                <span class="n">accept_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">this_run</span><span class="p">[</span><span class="n">i_N</span><span class="p">]</span>            <span class="o">=</span> <span class="n">proposed_point</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span>       <span class="o">=</span> <span class="n">proposed_point</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_target_eval</span> <span class="o">=</span> <span class="n">proposed_eval</span>
+
+            <span class="c1"># reject if not accepted</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">this_run</span><span class="p">[</span><span class="n">i_N</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_point</span>
+                <span class="c1">#do not need to update self.current</span>
+                <span class="c1">#self.current = self.current</span>
+
+            <span class="c1"># save target value if desired</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">this_target_values</span><span class="p">[</span><span class="n">i_N</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_target_eval</span>
+
+        <span class="c1"># ---------------------- end for --------------------------------</span>
+
+        <span class="k">return</span> <span class="n">accept_count</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_log_rho_metropolis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proposed_point</span><span class="p">,</span> <span class="n">proposed_eval</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;calculate the log of the metropolis ratio&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">proposed_eval</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_target_eval</span>
+
+    <span class="k">def</span> <span class="nf">_get_log_rho_metropolis_hastings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proposed_point</span><span class="p">,</span> <span class="n">proposed_eval</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;calculate log(metropolis ratio times hastings factor)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_log_rho_metropolis</span><span class="p">(</span><span class="n">proposed_point</span><span class="p">,</span> <span class="n">proposed_eval</span><span class="p">)</span>\
+             <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">evaluate</span>      <span class="p">(</span><span class="n">proposed_point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span><span class="p">)</span> \
+             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">evaluate</span>      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current</span><span class="p">,</span> <span class="n">proposed_point</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AdaptiveMarkovChain"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.markov_chain.AdaptiveMarkovChain">[docs]</a><span class="k">class</span> <span class="nc">AdaptiveMarkovChain</span><span class="p">(</span><span class="n">MarkovChain</span><span class="p">):</span>
+    <span class="c1"># set the docstring --&gt; inherit from Base class, but replace:</span>
+    <span class="c1"># - MarkovChain(*args, **kwargs) --&gt; AdaptiveMarkovChain(*args, **kwargs)</span>
+    <span class="c1"># - A Markov chain --&gt; A Markov chain with proposal covariance adaptation</span>
+    <span class="c1"># - ProposalDensity by Multivariate in description of :param propoasal:</span>
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="n">MarkovChain</span><span class="o">.</span><span class="vm">__doc__</span>\
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;MarkovChain(&#39;</span><span class="p">,</span> <span class="s1">&#39;AdaptiveMarkovChain(&#39;</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;A Markov chain&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;&#39;A Markov chain with proposal covariance adaptation as in [HST01]_&#39;&#39;&#39;</span> <span class="p">,</span> <span class="mi">1</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;ProposalDensity&#39;</span><span class="p">,</span> <span class="s1">&#39;Multivariate&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># set adaptation params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adapt_count</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_multiplier</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;covar_scale_multiplier&#39;</span> <span class="p">,</span>   <span class="mf">1.5</span>   <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span>     <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;covar_scale_factor&#39;</span>     <span class="p">,</span> <span class="kc">None</span>    <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor_max</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;covar_scale_factor_max&#39;</span> <span class="p">,</span> <span class="mf">100.</span>    <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor_min</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;covar_scale_factor_min&#39;</span> <span class="p">,</span>    <span class="o">.</span><span class="mi">0001</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_acceptance_max</span>   <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;force_acceptance_max&#39;</span>   <span class="p">,</span>    <span class="o">.</span><span class="mi">35</span>  <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_acceptance_min</span>   <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;force_acceptance_min&#39;</span>   <span class="p">,</span>    <span class="o">.</span><span class="mi">15</span>  <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">damping</span>                <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;damping&#39;</span>                <span class="p">,</span>    <span class="o">.</span><span class="mi">5</span>   <span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">AdaptiveMarkovChain</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span> <span class="o">=</span> <span class="mf">2.38</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_point</span><span class="p">)</span>
+
+        <span class="c1"># initialize unscaled sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unscaled_sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">sigma</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span>
+
+<div class="viewcode-block" id="AdaptiveMarkovChain.run"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.markov_chain.AdaptiveMarkovChain.run">[docs]</a>    <span class="nd">@_inherit_docstring</span><span class="p">(</span><span class="n">MarkovChain</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_accept_count</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">AdaptiveMarkovChain</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_accept_count</span></div>
+
+<div class="viewcode-block" id="AdaptiveMarkovChain.set_adapt_params"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_adapt_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Sets variables for covariance adaptation.</span>
+
+<span class="sd">        When :meth:`.adapt` is called, the proposal&#39;s covariance matrix is</span>
+<span class="sd">        adapted in order to improve the chain&#39;s performance. The aim</span>
+<span class="sd">        is to improve the efficiency of the chain by making better</span>
+<span class="sd">        proposals and forcing the acceptance rate :math:`\alpha` of</span>
+<span class="sd">        the chain to lie in an interval ensuring good exploration:</span>
+
+<span class="sd">        :param force_acceptance_max:</span>
+
+<span class="sd">            Float, the upper limit (in (0,1])</span>
+
+<span class="sd">            Default: :math:`\alpha_{max}=.35`</span>
+
+
+<span class="sd">        :param force_acceptance_min:</span>
+
+<span class="sd">            Float, the lower limit (in [0,1))</span>
+
+<span class="sd">            Default: :math:`\alpha_{min}=.15`</span>
+
+
+<span class="sd">        This is achieved in two steps:</span>
+
+<span class="sd">        1. **Estimate the target covariance**: compute the sample</span>
+<span class="sd">        covariance from the last (the t-th) run as :math:`S^t`</span>
+<span class="sd">        then combine with previous estimate :math:`\Sigma^{t-1}`</span>
+<span class="sd">        with a weight damping out over time as</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \Sigma^t = (1-a^t) \Sigma^{t-1} + a^t S^t</span>
+
+<span class="sd">        where the weight is given by</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            a^t = 1/t^{\lambda}.</span>
+
+<span class="sd">        :param damping:</span>
+
+<span class="sd">            Float, see formula above</span>
+
+<span class="sd">            Default: :math:`\lambda=.5`</span>
+
+
+<span class="sd">        The ``damping`` :math:`\lambda` is neccessary to assure</span>
+<span class="sd">        convergence and should be in [0,1]. A default value of 0.5 was</span>
+<span class="sd">        found to work well in practice. For details, see [HST01]_.</span>
+
+<span class="sd">        2. **Rescale the covariance matrix**: Remember that the goal</span>
+<span class="sd">        is to force the acceptance rate into a specific interval.</span>
+<span class="sd">        Suppose that the chain already is in a region of significant</span>
+<span class="sd">        probability mass (should be the case before adapting it).</span>
+<span class="sd">        When the acceptance rate is close to zero, the chain cannot</span>
+<span class="sd">        move at all; i.e., the proposed points have a low probability</span>
+<span class="sd">        relative to the current point. In this case the proposal</span>
+<span class="sd">        covariance should decrease to increase &quot;locality&quot; of the</span>
+<span class="sd">        chain.  In the opposite case, when the acceptance rate is</span>
+<span class="sd">        close to one, the chain most probably only explores a small</span>
+<span class="sd">        volume of the target.  Then enlarging the covariance matrix</span>
+<span class="sd">        decreases &quot;locality&quot;.  In this implementation, the proposal</span>
+<span class="sd">        covariance matrix is :math:`c \Sigma^t`</span>
+
+<span class="sd">        :param covar_scale_factor:</span>
+
+<span class="sd">            Float, this number ``c`` is multiplied to :math:`\Sigma^t`</span>
+<span class="sd">            after it has been recalculated. The higher the dimension</span>
+<span class="sd">            :math:`d`, the smaller it should be. For a Gaussian</span>
+<span class="sd">            proposal and target, the optimal factor is</span>
+<span class="sd">            :math:`2.38^2/d`. Use this argument to increase</span>
+<span class="sd">            performance from the start before any adaptation.</span>
+
+<span class="sd">            Default: :math:`c=2.38^2/d`</span>
+
+
+<span class="sd">        ``covar_scale_factor`` is updated using :math:`\beta`</span>
+
+<span class="sd">        :param covar_scale_multiplier:</span>
+
+<span class="sd">            Float;</span>
+<span class="sd">            if the acceptance rate is larger than ``force_acceptance_max``,</span>
+<span class="sd">            :math:`c \to \beta c`.</span>
+<span class="sd">            If the acceptance rate is smaller than ``force_acceptance_min``,</span>
+<span class="sd">            :math:`c \to c / \beta`.</span>
+
+<span class="sd">            Default :math:`\beta=1.5`</span>
+
+
+<span class="sd">        Additionally, an upper and a lower limit on</span>
+<span class="sd">        ``covar_scale_factor`` can be provided. This is useful to hint</span>
+<span class="sd">        at bugs in the target or MC implementation that cause the</span>
+<span class="sd">        efficiency to run away.</span>
+
+<span class="sd">        :param covar_scale_factor_max:</span>
+
+<span class="sd">            Float, ``covar_scale_factor`` is kept below this value.</span>
+
+<span class="sd">            Default: :math:`c_{max}=100`</span>
+
+
+<span class="sd">        :param covar_scale_factor_min:</span>
+
+<span class="sd">            Float, ``covar_scale_factor`` is kept above this value.</span>
+
+<span class="sd">            Default: :math:`c_{max}=10^{-4}`</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">args</span> <span class="o">!=</span> <span class="p">():</span> <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;keyword args only; try set_adapt_parameters(keyword = value)&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_multiplier</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;covar_scale_multiplier&#39;</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_multiplier</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span>     <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;covar_scale_factor&#39;</span>     <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span>    <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor_max</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;covar_scale_factor_max&#39;</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor_max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor_min</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;covar_scale_factor_min&#39;</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor_min</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_acceptance_max</span>   <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;force_acceptance_max&#39;</span>   <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_acceptance_max</span>  <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_acceptance_min</span>   <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;force_acceptance_min&#39;</span>   <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_acceptance_min</span>  <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">damping</span>                <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;damping&#39;</span>                <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span>               <span class="p">)</span>
+
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span> <span class="o">==</span> <span class="p">{}:</span> <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;unexpected keyword(s): &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span></div>
+
+
+<div class="viewcode-block" id="AdaptiveMarkovChain.adapt"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.markov_chain.AdaptiveMarkovChain.adapt">[docs]</a>    <span class="k">def</span> <span class="nf">adapt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Update the proposal using the points</span>
+<span class="sd">        stored in ``self.samples[-1]`` and the parameters which can be set via</span>
+<span class="sd">        :py:meth:`.set_adapt_params`.</span>
+<span class="sd">        In the above referenced function&#39;s docstring, the algorithm is</span>
+<span class="sd">        described in detail. If the resulting matrix is not a valid covariance,</span>
+<span class="sd">        its offdiagonal elements are set to zero and a warning is printed. If</span>
+<span class="sd">        that also fails, the proposal&#39;s covariance matrix is divided by the</span>
+<span class="sd">        ``covar_scale_multiplier`` :math:`\beta`.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This function only uses the points obtained during the last run.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">last_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">accept_rate</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_accept_count</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">last_run</span><span class="p">)</span>
+
+        <span class="c1"># careful with rowvar!</span>
+        <span class="c1"># in this form it is expected that each column  of ``points``</span>
+        <span class="c1"># represents sampling values of a variable</span>
+        <span class="c1"># this is the case if points is a list of sampled points</span>
+        <span class="n">covar_estimator</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">last_run</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># update sigma</span>
+        <span class="n">time_dependent_damping_factor</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">adapt_count</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">damping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unscaled_sigma</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">time_dependent_damping_factor</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscaled_sigma</span>\
+                               <span class="o">+</span> <span class="n">time_dependent_damping_factor</span>  <span class="o">*</span> <span class="n">covar_estimator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_scale_factor</span><span class="p">(</span><span class="n">accept_rate</span><span class="p">)</span>
+        <span class="n">scaled_sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscaled_sigma</span>
+
+        <span class="c1"># increase count now before proposal update. It may fail and raise an exception.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adapt_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">scaled_sigma</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">_np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: Markov chain self adaptation failed; trying diagonalization ... &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="c1"># try to insert offdiagonal elements only</span>
+            <span class="n">diagonal_matrix</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">scaled_sigma</span><span class="p">)</span>
+            <span class="n">_np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">diagonal_matrix</span><span class="p">,</span> <span class="n">_np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">scaled_sigma</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">diagonal_matrix</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">_np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fail&#39;</span><span class="p">)</span>
+                <span class="c1"># just scale the old covariance matrix if everything else fails</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">sigma</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_multiplier</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_scale_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accept_rate</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Private function.</span>
+<span class="sd">        Updates the covariance scaling factor ``covar_scale_factor``</span>
+<span class="sd">        according to its limits</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">accept_rate</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_acceptance_max</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor_max</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_multiplier</span>
+        <span class="k">elif</span> <span class="n">accept_rate</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_acceptance_min</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor_min</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_factor</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_scale_multiplier</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

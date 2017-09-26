@@ -1,0 +1,161 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pypmc.tools.convergence &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pypmc.tools.convergence</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Provide functions to rate the quality of weighted samples.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span> <span class="k">as</span> <span class="n">_div</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+
+<div class="viewcode-block" id="perp"><a class="viewcode-back" href="../../../tools.html#pypmc.tools.convergence.perp">[docs]</a><span class="k">def</span> <span class="nf">perp</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the normalized perplexity :math:`\mathcal{P}` of samples</span>
+<span class="sd">    with ``weights`` :math:`\omega_i`. :math:`\mathcal{P}=0` is</span>
+<span class="sd">    terrible and :math:`\mathcal{P}=1` is perfect.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathcal{P} = exp(H) / N</span>
+
+<span class="sd">    where</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        H = - \sum_{i=1}^N \bar{\omega}_i log ~ \bar{\omega}_i</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \bar{\omega}_i = \frac{\omega_i}{\sum_i \omega_i}</span>
+
+<span class="sd">    :param weights:</span>
+
+<span class="sd">        Vector-like array; the samples&#39; weights</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># normalize weights</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+    <span class="c1"># mask zero weights</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="p">(</span><span class="n">w</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="c1"># avoid NaN due to log(0) by log(1)=0</span>
+    <span class="n">entr</span> <span class="o">=</span> <span class="o">-</span> <span class="n">_np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="n">w</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)))</span>
+
+    <span class="k">return</span>  <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">entr</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ess"><a class="viewcode-back" href="../../../tools.html#pypmc.tools.convergence.ess">[docs]</a><span class="k">def</span> <span class="nf">ess</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the normalized effective sample size :math:`ESS` [LC95]_</span>
+<span class="sd">    of samples with ``weights`` :math:`\omega_i`.  :math:`ESS=0` is</span>
+<span class="sd">    terrible and :math:`ESS=1` is perfect.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        ESS = \frac{1}{1+C^2}</span>
+
+<span class="sd">    where</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        C^2 = \frac{1}{N} \sum_{i=1}^N (N \bar{\omega}_i - 1)^2</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \bar{\omega}_i = \frac{\omega_i}{\sum_i \omega_i}</span>
+
+<span class="sd">    :param weights:</span>
+
+<span class="sd">        Vector-like array; the samples&#39; weights</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># normalize weights</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">/</span> <span class="n">_np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+    <span class="c1"># ess</span>
+    <span class="n">coeff_var</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+    <span class="k">return</span>  <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">coeff_var</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

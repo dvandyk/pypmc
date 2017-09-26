@@ -1,0 +1,481 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>4. Tools &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="3. Mixture adaptation" href="mix_adapt.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mix_adapt.html" title="3. Mixture adaptation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">4. Tools</a><ul>
+<li><a class="reference internal" href="#module-pypmc.tools.convergence">4.1. Convergence diagnostics</a></li>
+<li><a class="reference internal" href="#history">4.2. History</a></li>
+<li><a class="reference internal" href="#module-pypmc.tools.indicator">4.3. Indicator</a></li>
+<li><a class="reference internal" href="#module-pypmc.tools.parallel_sampler">4.4. Parallel sampler</a></li>
+<li><a class="reference internal" href="#partition">4.5. Partition</a></li>
+<li><a class="reference internal" href="#plot">4.6. Plot</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mix_adapt.html"
+                        title="previous chapter">3. Mixture adaptation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tools.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pypmc.tools">
+<span id="tools"></span><h1>4. Tools<a class="headerlink" href="#module-pypmc.tools" title="Permalink to this headline">¶</a></h1>
+<p>Helper functions for general purposes</p>
+<div class="section" id="module-pypmc.tools.convergence">
+<span id="convergence-diagnostics"></span><h2>4.1. Convergence diagnostics<a class="headerlink" href="#module-pypmc.tools.convergence" title="Permalink to this headline">¶</a></h2>
+<p>Provide functions to rate the quality of weighted samples.</p>
+<dl class="function">
+<dt id="pypmc.tools.convergence.ess">
+<code class="descclassname">pypmc.tools.convergence.</code><code class="descname">ess</code><span class="sig-paren">(</span><em>weights</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/convergence.html#ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.convergence.ess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the normalized effective sample size <span class="math">\(ESS\)</span> <a class="reference internal" href="references.html#lc95" id="id1">[LC95]</a>
+of samples with <code class="docutils literal"><span class="pre">weights</span></code> <span class="math">\(\omega_i\)</span>.  <span class="math">\(ESS=0\)</span> is
+terrible and <span class="math">\(ESS=1\)</span> is perfect.</p>
+<div class="math">
+\[ESS = \frac{1}{1+C^2}\]</div>
+<p>where</p>
+<div class="math">
+\[C^2 = \frac{1}{N} \sum_{i=1}^N (N \bar{\omega}_i - 1)^2\]</div>
+<div class="math">
+\[\bar{\omega}_i = \frac{\omega_i}{\sum_i \omega_i}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>weights</strong> – Vector-like array; the samples’ weights</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pypmc.tools.convergence.perp">
+<code class="descclassname">pypmc.tools.convergence.</code><code class="descname">perp</code><span class="sig-paren">(</span><em>weights</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/convergence.html#perp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.convergence.perp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the normalized perplexity <span class="math">\(\mathcal{P}\)</span> of samples
+with <code class="docutils literal"><span class="pre">weights</span></code> <span class="math">\(\omega_i\)</span>. <span class="math">\(\mathcal{P}=0\)</span> is
+terrible and <span class="math">\(\mathcal{P}=1\)</span> is perfect.</p>
+<div class="math">
+\[\mathcal{P} = exp(H) / N\]</div>
+<p>where</p>
+<div class="math">
+\[H = - \sum_{i=1}^N \bar{\omega}_i log ~ \bar{\omega}_i\]</div>
+<div class="math">
+\[\bar{\omega}_i = \frac{\omega_i}{\sum_i \omega_i}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>weights</strong> – Vector-like array; the samples’ weights</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="history">
+<h2>4.2. History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypmc.tools.History">
+<em class="property">class </em><code class="descclassname">pypmc.tools.</code><code class="descname">History</code><span class="sig-paren">(</span><em>dim</em>, <em>prealloc=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/_history.html#History"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.History" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Save a history of 1d-arrays.
+Each call to <a class="reference internal" href="#pypmc.tools.History.append" title="pypmc.tools.History.append"><code class="xref py py-meth docutils literal"><span class="pre">append</span></code></a> is counted as a new “run”.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dim</strong> – Integer; the length of 1d-arrays to be saved.</li>
+<li><strong>prealloc</strong> – Integer; indicates for how many points memory is allocated in advance.
+When more memory is needed, it will be allocated on demand.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Access:</p>
+<blockquote>
+<div><p><code class="docutils literal"><span class="pre">self[run_nr]</span></code> and <code class="docutils literal"><span class="pre">self[run_begin:run_end]</span></code> return <em>one</em> array
+that includes the samples for the runs specified (excluding run_end).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Index access returns a reference. Modification changes the history.</p>
+</div>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">Negative numbers are supported, for example <code class="docutils literal"><span class="pre">self[-1]</span></code> returns
+the latest run.</p>
+</div>
+</div></blockquote>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">History</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">a</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">a</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># first run</span>
+<span class="go">array([[ 1.,  1.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># second run</span>
+<span class="go">array([[ 2.,  2.],</span>
+<span class="go">       [ 2.,  2.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[:]</span> <span class="c1"># entire history</span>
+<span class="go">array([[ 1.,  1.],</span>
+<span class="go">       [ 2.,  2.],</span>
+<span class="go">       [ 2.,  2.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="c1"># number of runs</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pypmc.tools.History.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>new_points_len</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/_history.html#History.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.History.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allocate memory for a new run and return a reference to that memory
+wrapped in an array of size <code class="docutils literal"><span class="pre">(new_points_len,</span> <span class="pre">self.dim)</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_points_len</strong> – Integer; the number of points to be stored in the target memory.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypmc.tools.History.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/_history.html#History.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.History.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the history</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypmc.tools.indicator">
+<span id="indicator"></span><h2>4.3. Indicator<a class="headerlink" href="#module-pypmc.tools.indicator" title="Permalink to this headline">¶</a></h2>
+<p>Collect generators of typical indicator functions.</p>
+<dl class="function">
+<dt id="pypmc.tools.indicator.ball">
+<code class="descclassname">pypmc.tools.indicator.</code><code class="descname">ball</code><span class="sig-paren">(</span><em>center</em>, <em>radius=1.0</em>, <em>bdy=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/indicator/_indicator_factory.html#ball"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.indicator.ball" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indicator function of a ball.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>center</strong> – <p>A vector-like numpy array, defining the center of the ball.</p>
+<p>len(center) fixes the dimension.</p>
+</li>
+<li><strong>radius</strong> – Float or int, the radius of the ball</li>
+<li><strong>bdy</strong> – Bool, When <code class="docutils literal"><span class="pre">x</span></code> is at the ball’s boundary then
+<code class="docutils literal"><span class="pre">ball_indicator(x)</span></code> returns <code class="docutils literal"><span class="pre">True</span></code> if and only if
+<code class="docutils literal"><span class="pre">bdy=True</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pypmc.tools.indicator.hyperrectangle">
+<code class="descclassname">pypmc.tools.indicator.</code><code class="descname">hyperrectangle</code><span class="sig-paren">(</span><em>lower</em>, <em>upper</em>, <em>bdy=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/indicator/_indicator_factory.html#hyperrectangle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.indicator.hyperrectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the indicator function of a hyperrectangle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lower</strong> – <p>Vector-like numpy array, defining the lower boundary of the hyperrectangle.</p>
+<p>len(lower) fixes the dimension.</p>
+</li>
+<li><strong>upper</strong> – Vector-like numpy array, defining the upper boundary of the hyperrectangle.</li>
+<li><strong>bdy</strong> – Bool. When <code class="docutils literal"><span class="pre">x</span></code> is at the hyperrectangles’s boundary then
+<code class="docutils literal"><span class="pre">hr_indicator(x)</span></code> returns <code class="docutils literal"><span class="pre">True</span></code> if and only if <code class="docutils literal"><span class="pre">bdy=True</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pypmc.tools.indicator.merge_function_with_indicator">
+<code class="descclassname">pypmc.tools.indicator.</code><code class="descname">merge_function_with_indicator</code><span class="sig-paren">(</span><em>function</em>, <em>indicator</em>, <em>alternative</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/indicator/_indicator_merge.html#merge_function_with_indicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.indicator.merge_function_with_indicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a function such that a call to it is equivalent to:</p>
+<dl class="docutils">
+<dt>if indicator(x):</dt>
+<dd>return function(x)</dd>
+<dt>else:</dt>
+<dd>return alternative</dd>
+</dl>
+<p>Note that <code class="docutils literal"><span class="pre">function</span></code> is not called if indicator evaluates to False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>function</strong> – The function to be called when indicator returns True.</li>
+<li><strong>indicator</strong> – Bool-returning function; the indicator</li>
+<li><strong>alternative</strong> – The object to be returned when indicator returns False</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypmc.tools.parallel_sampler">
+<span id="parallel-sampler"></span><h2>4.4. Parallel sampler<a class="headerlink" href="#module-pypmc.tools.parallel_sampler" title="Permalink to this headline">¶</a></h2>
+<p>Run sampling algorithms in parallel using mpi4py</p>
+<dl class="class">
+<dt id="pypmc.tools.parallel_sampler.MPISampler">
+<em class="property">class </em><code class="descclassname">pypmc.tools.parallel_sampler.</code><code class="descname">MPISampler</code><span class="sig-paren">(</span><em>sampler_type</em>, <em>comm=MPI.COMM_WORLD</em>, <em>mpi_tag=0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/parallel_sampler.html#MPISampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.parallel_sampler.MPISampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An MPI4Py parallelized sampler. Parallelizes any <a class="reference internal" href="sampler.html#module-pypmc.sampler" title="pypmc.sampler"><code class="xref py py-mod docutils literal"><span class="pre">pypmc.sampler</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sampler_type</strong> – A class defined in <a class="reference internal" href="sampler.html#module-pypmc.sampler" title="pypmc.sampler"><code class="xref py py-mod docutils literal"><span class="pre">pypmc.sampler</span></code></a>; the class of the
+sampler to be run in parallel. Example: <code class="docutils literal"><span class="pre">sampler_type=ImportanceSampler</span></code>.</li>
+<li><strong>comm</strong> – <code class="docutils literal"><span class="pre">mpi4py</span></code> communicator; the communicator to be used.</li>
+<li><strong>kwargs</strong> (<em>args</em><em>,</em>) – Additional arguments which are passed to the constructor of
+<code class="docutils literal"><span class="pre">sampler_type</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypmc.tools.parallel_sampler.MPISampler.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/parallel_sampler.html#MPISampler.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.parallel_sampler.MPISampler.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the history.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypmc.tools.parallel_sampler.MPISampler.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>N=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/parallel_sampler.html#MPISampler.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.parallel_sampler.MPISampler.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the parallelized sampler’s <code class="docutils literal"><span class="pre">run</span></code> method. Each process
+will run for <code class="docutils literal"><span class="pre">N</span></code> iterations. Then, the master process (process with
+<code class="docutils literal"><span class="pre">rank</span> <span class="pre">=</span> <span class="pre">0</span></code>) collects the samples and weights from all processes and
+stores it into <code class="docutils literal"><span class="pre">self.samples_list</span></code> and <code class="docutils literal"><span class="pre">self.weights_list</span></code>.
+Master process:   Return a list of the return values from the workers.
+Other  processes: Return the same as the sequential sampler.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal"><span class="pre">pypmc.tools.History</span></code></a></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>N</strong> – Integer; the number of steps to be passed to the <code class="docutils literal"><span class="pre">run</span></code> method.</li>
+<li><strong>kwargs</strong> (<em>args</em><em>,</em>) – Additional arguments which are passed to the <code class="docutils literal"><span class="pre">sampler_type</span></code>’s
+run method.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="partition">
+<h2>4.5. Partition<a class="headerlink" href="#partition" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pypmc.tools.partition">
+<code class="descclassname">pypmc.tools.</code><code class="descname">partition</code><span class="sig-paren">(</span><em>N</em>, <em>k</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/_partition.html#partition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distribute <code class="docutils literal"><span class="pre">N</span></code> into <code class="docutils literal"><span class="pre">k</span></code> parts such that each part
+takes the value <code class="docutils literal"><span class="pre">N//k</span></code> or <code class="docutils literal"><span class="pre">N//k</span> <span class="pre">+</span> <span class="pre">1</span></code> where <code class="docutils literal"><span class="pre">//</span></code> denotes integer
+division; i.e., perform the minimal lexicographic integer partition.</p>
+<p>Example: N = 5, k = 2  –&gt;  return [3, 2]</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pypmc.tools.patch_data">
+<code class="descclassname">pypmc.tools.</code><code class="descname">patch_data</code><span class="sig-paren">(</span><em>data</em>, <em>L=100</em>, <em>try_diag=True</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/_partition.html#patch_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.patch_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Patch <code class="docutils literal"><span class="pre">data</span></code> (for example Markov chain output) into parts of
+length <code class="docutils literal"><span class="pre">L</span></code>. Return a Gaussian mixture where each component gets
+the empirical mean and covariance of one patch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> – Matrix-like array; the points to be patched. Expect <code class="docutils literal"><span class="pre">data[i]</span></code>
+as the d-dimensional i-th point.</li>
+<li><strong>L</strong> – Integer; the length of one patch. The last patch will be shorter
+if <code class="docutils literal"><span class="pre">L</span></code> is not a divisor of <code class="docutils literal"><span class="pre">len(data)</span></code>.</li>
+<li><strong>try_diag</strong> – Bool; If some patch does not define a proper covariance matrix,
+it cannot define a Gaussian component. <code class="docutils literal"><span class="pre">try_diag</span></code> defines how
+to handle that case:
+If <code class="docutils literal"><span class="pre">True</span></code> (default), the off-diagonal elements are set to zero
+and it is tried to form a Gaussian with that matrix again. If
+that fails as well, the patch is skipped.
+If <code class="docutils literal"><span class="pre">False</span></code> the patch is skipped directly.</li>
+<li><strong>verbose</strong> – Bool; If <code class="docutils literal"><span class="pre">True</span></code> print all status information.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="plot">
+<h2>4.6. Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pypmc.tools.plot_mixture">
+<code class="descclassname">pypmc.tools.</code><code class="descname">plot_mixture</code><span class="sig-paren">(</span><em>mixture</em>, <em>i=0</em>, <em>j=1</em>, <em>center_style={'s': 0.15}</em>, <em>cmap='nipy_spectral'</em>, <em>cutoff=0.0</em>, <em>ellipse_style={'alpha': 0.3}</em>, <em>solid_edge=True</em>, <em>visualize_weights=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/_plot.html#plot_mixture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.plot_mixture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the (Gaussian) components of the <code class="docutils literal"><span class="pre">mixture</span></code> density as
+one-sigma ellipses in the <code class="docutils literal"><span class="pre">(i,j)</span></code> plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>center_style</strong> – If a non-empty <code class="docutils literal"><span class="pre">dict</span></code>, plot mean value with the style passed to <code class="docutils literal"><span class="pre">scatter</span></code>.</li>
+<li><strong>cmap</strong> – The color map to which components are mapped in order to
+choose their face color. It is unaffected by the
+<code class="docutils literal"><span class="pre">cutoff</span></code>. The meaning depends on <code class="docutils literal"><span class="pre">visualize_weights</span></code>.</li>
+<li><strong>cutoff</strong> – Ignore components whose weight is below the <code class="docutils literal"><span class="pre">cut</span> <span class="pre">off</span></code>.</li>
+<li><strong>ellipse_style</strong> – Passed on to define the properties of the <code class="docutils literal"><span class="pre">Ellipse</span></code>.</li>
+<li><strong>solid_edge</strong> – Draw the edge of the ellipse as solid opaque line.</li>
+<li><strong>visualize_weights</strong> – Colorize the components according to their weights if <code class="docutils literal"><span class="pre">True</span></code>.
+One can do <cite>plt.colorbar()</cite> after this function and the bar allows to read off the weights.
+If <code class="docutils literal"><span class="pre">False</span></code>, coloring is based on the component index and the total number of components.
+This option makes it easier to track components by assigning them the same color in subsequent calls to this function.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pypmc.tools.plot_responsibility">
+<code class="descclassname">pypmc.tools.</code><code class="descname">plot_responsibility</code><span class="sig-paren">(</span><em>data</em>, <em>responsibility</em>, <em>cmap='nipy_spectral'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/tools/_plot.html#plot_responsibility"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.tools.plot_responsibility" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify the 2D <code class="docutils literal"><span class="pre">data</span></code> according to the <code class="docutils literal"><span class="pre">responsibility</span></code> and
+make a scatter plot of each data point with the color of the
+component it is most likely from. The <code class="docutils literal"><span class="pre">responsibility</span></code> is
+normalized internally such that each row sums to unity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> – matrix-like; one row = one 2D sample</li>
+<li><strong>responsibility</strong> – matrix-like; one row = probabilities that sample n is from
+1st, 2nd, … component. The number of rows has to agree with <code class="docutils literal"><span class="pre">data</span></code></li>
+<li><strong>cmap</strong> – colormap; defines how component indices are mapped to the
+color of the data points</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mix_adapt.html" title="3. Mixture adaptation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

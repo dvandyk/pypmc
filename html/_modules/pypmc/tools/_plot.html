@@ -1,0 +1,271 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pypmc.tools._plot &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pypmc.tools._plot</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="n">_max_color</span> <span class="o">=</span> <span class="mf">0.9</span>
+
+<div class="viewcode-block" id="plot_mixture"><a class="viewcode-back" href="../../../tools.html#pypmc.tools.plot_mixture">[docs]</a><span class="k">def</span> <span class="nf">plot_mixture</span><span class="p">(</span><span class="n">mixture</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">center_style</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mf">0.15</span><span class="p">),</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;nipy_spectral&#39;</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ellipse_style</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span>
+                 <span class="n">solid_edge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">visualize_weights</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Plot the (Gaussian) components of the ``mixture`` density as</span>
+<span class="sd">    one-sigma ellipses in the ``(i,j)`` plane.</span>
+
+<span class="sd">    :param center_style:</span>
+<span class="sd">        If a non-empty ``dict``, plot mean value with the style passed to ``scatter``.</span>
+
+<span class="sd">    :param cmap:</span>
+
+<span class="sd">        The color map to which components are mapped in order to</span>
+<span class="sd">        choose their face color. It is unaffected by the</span>
+<span class="sd">        ``cutoff``. The meaning depends on ``visualize_weights``.</span>
+
+<span class="sd">    :param cutoff:</span>
+<span class="sd">        Ignore components whose weight is below the ``cut off``.</span>
+
+<span class="sd">    :param ellipse_style:</span>
+<span class="sd">        Passed on to define the properties of the ``Ellipse``.</span>
+
+<span class="sd">    :param solid_edge:</span>
+<span class="sd">        Draw the edge of the ellipse as solid opaque line.</span>
+
+<span class="sd">    :param visualize_weights:</span>
+<span class="sd">        Colorize the components according to their weights if ``True``.</span>
+<span class="sd">        One can do `plt.colorbar()` after this function and the bar allows to read off the weights.</span>
+<span class="sd">        If ``False``, coloring is based on the component index and the total number of components.</span>
+<span class="sd">        This option makes it easier to track components by assigning them the same color in subsequent calls to this function.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># imports inside the function because then &quot;ImportError&quot; is raised on</span>
+    <span class="c1"># systems without &#39;matplotlib&#39; only when &#39;plot_mixture&#39; is called</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+    <span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="k">import</span> <span class="n">Ellipse</span>
+    <span class="kn">from</span> <span class="nn">matplotlib.cm</span> <span class="k">import</span> <span class="n">get_cmap</span>
+
+    <span class="k">assert</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Invalid submatrix specification (</span><span class="si">%d</span><span class="s1">, </span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">,</span> <span class="s1">&#39;Identical dimension given: i=j=</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span>
+    <span class="k">assert</span> <span class="n">mixture</span><span class="o">.</span><span class="n">dim</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;1D plot not supported&#39;</span>
+
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">get_cmap</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">visualize_weights</span><span class="p">:</span>
+        <span class="c1"># colors according to weight</span>
+        <span class="n">renormalized_component_weights</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mixture</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">renormalized_component_weights</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># colors according to index</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">_max_color</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mixture</span><span class="o">.</span><span class="n">components</span><span class="p">))]</span>
+
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">mixture</span><span class="o">.</span><span class="n">weights</span> <span class="o">&gt;=</span> <span class="n">cutoff</span>
+
+    <span class="c1"># plot component means</span>
+    <span class="n">means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">mu</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">mixture</span><span class="o">.</span><span class="n">components</span><span class="p">])</span>
+    <span class="n">x_values</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">y_values</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mixture</span><span class="o">.</span><span class="n">weights</span><span class="p">):</span>
+        <span class="c1"># skip components by hand to retain consistent coloring</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="n">cutoff</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">mixture</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span>
+        <span class="n">submatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cov</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">],</span> <span class="n">cov</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]],</span> \
+                              <span class="p">[</span><span class="n">cov</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">],</span> <span class="n">cov</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">]]])</span>
+
+        <span class="c1"># for idea, check</span>
+        <span class="c1"># &#39;Combining error ellipses&#39; by John E. Davis</span>
+        <span class="n">correlation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">cov</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cov</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">cov</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">])],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
+        <span class="n">correlation</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">correlation</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">correlation</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Invalid component </span><span class="si">%d</span><span class="s1"> with correlation </span><span class="si">%g</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">correlation</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">ew</span><span class="p">,</span> <span class="n">ev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">submatrix</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">ew</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Nonpositive eigenvalue in component </span><span class="si">%d</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">ew</span><span class="p">)</span>
+
+        <span class="c1"># rotation angle of major axis with x-axis</span>
+        <span class="k">if</span> <span class="n">submatrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">submatrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">submatrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">4.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">submatrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">submatrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">submatrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="c1"># put larger eigen value on y&#39;-axis</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ew</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ew</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+
+        <span class="c1"># but change orientation of coordinates if the other is larger</span>
+        <span class="k">if</span> <span class="n">submatrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">submatrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ew</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ew</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+        <span class="c1"># change sign to rotate in right direction</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="n">theta</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+        <span class="c1"># copy keywords but override some</span>
+        <span class="n">ellipse_style_clone</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ellipse_style</span><span class="p">)</span>
+
+        <span class="c1"># overwrite facecolor</span>
+        <span class="n">ellipse_style_clone</span><span class="p">[</span><span class="s1">&#39;facecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+        <span class="c1"># need full width/height</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_values</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y_values</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span>
+                                   <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">height</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">angle</span><span class="p">,</span>
+                                   <span class="o">**</span><span class="n">ellipse_style_clone</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">solid_edge</span><span class="p">:</span>
+            <span class="n">ellipse_style_clone</span><span class="p">[</span><span class="s1">&#39;facecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+            <span class="n">ellipse_style_clone</span><span class="p">[</span><span class="s1">&#39;edgecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">ellipse_style_clone</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Ellipse</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_values</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y_values</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span>
+                                       <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">height</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">angle</span><span class="p">,</span>
+                                       <span class="o">**</span><span class="n">ellipse_style_clone</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">center_style</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_values</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">y_values</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="o">**</span><span class="n">center_style</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">visualize_weights</span><span class="p">:</span>
+        <span class="c1"># to enable plt.colorbar()</span>
+        <span class="n">mappable</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gci</span><span class="p">()</span>
+        <span class="n">mappable</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="n">mixture</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+        <span class="n">mappable</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="plot_responsibility"><a class="viewcode-back" href="../../../tools.html#pypmc.tools.plot_responsibility">[docs]</a><span class="k">def</span> <span class="nf">plot_responsibility</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">responsibility</span><span class="p">,</span>
+                        <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;nipy_spectral&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Classify the 2D ``data`` according to the ``responsibility`` and</span>
+<span class="sd">    make a scatter plot of each data point with the color of the</span>
+<span class="sd">    component it is most likely from. The ``responsibility`` is</span>
+<span class="sd">    normalized internally such that each row sums to unity.</span>
+
+<span class="sd">    :param data:</span>
+
+<span class="sd">        matrix-like; one row = one 2D sample</span>
+
+<span class="sd">    :param responsibility:</span>
+
+<span class="sd">        matrix-like; one row = probabilities that sample n is from</span>
+<span class="sd">        1st, 2nd, ... component. The number of rows has to agree with ``data``</span>
+
+<span class="sd">    :param cmap:</span>
+
+<span class="sd">        colormap; defines how component indices are mapped to the</span>
+<span class="sd">        color of the data points</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+    <span class="kn">from</span> <span class="nn">matplotlib.cm</span> <span class="k">import</span> <span class="n">get_cmap</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">responsibility</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">responsibility</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">responsibility</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="n">D</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">responsibility</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">assert</span> <span class="n">D</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">N</span> <span class="o">==</span> <span class="n">responsibility</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># normalize responsibility so each row sums to one</span>
+    <span class="n">inv_row_sum</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;nk-&gt;n&#39;</span><span class="p">,</span> <span class="n">responsibility</span><span class="p">)</span>
+    <span class="n">responsibility</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;n,nk-&gt;nk&#39;</span><span class="p">,</span> <span class="n">inv_row_sum</span><span class="p">,</span> <span class="n">responsibility</span><span class="p">)</span>
+
+    <span class="c1"># index of the most likely component for each sample</span>
+    <span class="n">indicators</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">responsibility</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># same color range as in plot_mixture</span>
+    <span class="k">if</span> <span class="n">K</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">point_colors</span> <span class="o">=</span> <span class="n">indicators</span> <span class="o">/</span> <span class="p">(</span><span class="n">K</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">_max_color</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">point_colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">point_colors</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

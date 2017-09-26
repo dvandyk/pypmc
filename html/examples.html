@@ -1,0 +1,1130 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>4. Examples &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5. References" href="references.html" />
+    <link rel="prev" title="3. User guide" href="user_guide.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="5. References"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="user_guide.html" title="3. User guide"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">4. Examples</a><ul>
+<li><a class="reference internal" href="#mcmc">4.1. MCMC</a></li>
+<li><a class="reference internal" href="#pmc">4.2. PMC</a><ul>
+<li><a class="reference internal" href="#serial">4.2.1. Serial</a></li>
+<li><a class="reference internal" href="#parallel">4.2.2. Parallel</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#grouping-by-gelman-rubin-r-value">4.3. Grouping by Gelman-Rubin R value</a></li>
+<li><a class="reference internal" href="#variational-bayes">4.4. Variational Bayes</a></li>
+<li><a class="reference internal" href="#mixture-reduction">4.5. Mixture reduction</a></li>
+<li><a class="reference internal" href="#mcmc-variational-bayes">4.6. MCMC + variational Bayes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="user_guide.html"
+                        title="previous chapter">3. User guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="references.html"
+                        title="next chapter">5. References</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/examples.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="examples">
+<h1>4. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>The following examples are available in a checkout of the repository
+in the <code class="docutils literal"><span class="pre">examples/</span></code> directory.</p>
+<div class="section" id="mcmc">
+<h2>4.1. MCMC<a class="headerlink" href="#mcmc" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;This example illustrates how to run a Markov Chain using pypmc&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pypmc</span>
+
+<span class="c1"># define a proposal</span>
+<span class="n">prop_dof</span>   <span class="o">=</span> <span class="mf">1.</span>
+<span class="n">prop_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.1</span> <span class="p">,</span> <span class="mf">0.</span>  <span class="p">]</span>
+                      <span class="p">,[</span><span class="mf">0.</span>  <span class="p">,</span> <span class="mf">0.02</span><span class="p">]])</span>
+<span class="n">prop</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">student_t</span><span class="o">.</span><span class="n">LocalStudentT</span><span class="p">(</span><span class="n">prop_sigma</span><span class="p">,</span> <span class="n">prop_dof</span><span class="p">)</span>
+
+<span class="c1"># define the target; i.e., the function you want to sample from.</span>
+<span class="c1"># In this case, it is a Gaussian with mean &quot;target_mean&quot; and</span>
+<span class="c1"># covariance &quot;target_sigma&quot;.</span>
+<span class="c1">#</span>
+<span class="c1"># Note that the target function &quot;log_target&quot; returns the log of the</span>
+<span class="c1"># unnormalized gaussian density.</span>
+<span class="n">target_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.01</span> <span class="p">,</span> <span class="mf">0.003</span> <span class="p">]</span>
+                        <span class="p">,[</span><span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.0025</span><span class="p">]])</span>
+<span class="n">inv_target_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">target_sigma</span><span class="p">)</span>
+<span class="n">target_mean</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.3</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">unnormalized_log_pdf_gauss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">inv_sigma</span><span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">mu</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">diff</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv_sigma</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+
+<span class="n">log_target</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">unnormalized_log_pdf_gauss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">target_mean</span><span class="p">,</span> <span class="n">inv_target_sigma</span><span class="p">)</span>
+
+<span class="c1"># choose a bad initialization</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">])</span>
+
+<span class="c1"># define the markov chain object</span>
+<span class="n">mc</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">markov_chain</span><span class="o">.</span><span class="n">AdaptiveMarkovChain</span><span class="p">(</span><span class="n">log_target</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+
+<span class="c1"># run burn-in</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># delete burn-in from samples</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<span class="c1"># run 100,000 steps adapting the proposal every 500 steps</span>
+<span class="c1"># hereby save the accept count which is returned by mc.run</span>
+<span class="n">accept_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
+    <span class="n">accept_count</span> <span class="o">+=</span> <span class="n">mc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+    <span class="n">mc</span><span class="o">.</span><span class="n">adapt</span><span class="p">()</span>
+
+<span class="c1"># extract a reference to the history of all visited points</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">samples</span><span class="p">[:]</span>
+<span class="n">accept_rate</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">accept_count</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;The chain accepted </span><span class="si">%4.2f%%</span><span class="s2"> of the proposed points&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">accept_rate</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="c1"># plot the result</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;For plotting &quot;matplotlib&quot; needs to be installed&#39;</span><span class="p">)</span>
+    <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hexbin</span><span class="p">(</span><span class="n">values</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">values</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">gridsize</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./../examples/markov_chain.py">Source code</a>, <a class="reference external" href="./../examples/markov_chain.png">png</a>, <a class="reference external" href="./../examples/markov_chain.hires.png">hires.png</a>, <a class="reference external" href="./../examples/markov_chain.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/markov_chain.png" src="_images/markov_chain.png" />
+</div>
+</div>
+<div class="section" id="pmc">
+<h2>4.2. PMC<a class="headerlink" href="#pmc" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="serial">
+<h3>4.2.1. Serial<a class="headerlink" href="#serial" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;This example shows how to use importance sampling and how to</span>
+<span class="sd">adapt the proposal density using the pmc algorithm.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pypmc</span>
+
+
+<span class="c1"># define the target; i.e., the function you want to sample from.</span>
+<span class="c1"># In this case, it is a bimodal Gaussian</span>
+<span class="c1">#</span>
+<span class="c1"># Note that the target function &quot;log_target&quot; returns the log of the</span>
+<span class="c1"># target function.</span>
+<span class="n">component_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
+
+<span class="n">mean0</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span> <span class="mf">5.0</span>  <span class="p">,</span> <span class="mf">0.01</span>  <span class="p">])</span>
+<span class="n">covariance0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.01</span> <span class="p">,</span> <span class="mf">0.003</span> <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.0025</span><span class="p">]])</span>
+<span class="n">inv_covariance0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">covariance0</span><span class="p">)</span>
+
+<span class="n">mean1</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="o">-</span><span class="mf">4.0</span>  <span class="p">,</span> <span class="mf">1.0</span>   <span class="p">])</span>
+<span class="n">covariance1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.1</span>  <span class="p">,</span> <span class="mf">0.</span>    <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.</span>   <span class="p">,</span> <span class="mf">0.02</span>  <span class="p">]])</span>
+<span class="n">inv_covariance1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">covariance1</span><span class="p">)</span>
+
+<span class="n">component_means</span> <span class="o">=</span> <span class="p">[</span><span class="n">mean0</span><span class="p">,</span> <span class="n">mean1</span><span class="p">]</span>
+<span class="n">component_covariances</span> <span class="o">=</span> <span class="p">[</span><span class="n">covariance0</span><span class="p">,</span> <span class="n">covariance1</span><span class="p">]</span>
+
+<span class="n">target_mixture</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">mixture</span><span class="o">.</span><span class="n">create_gaussian_mixture</span><span class="p">(</span><span class="n">component_means</span><span class="p">,</span> <span class="n">component_covariances</span><span class="p">,</span> <span class="n">component_weights</span><span class="p">)</span>
+
+<span class="n">log_target</span> <span class="o">=</span> <span class="n">target_mixture</span><span class="o">.</span><span class="n">evaluate</span>
+
+
+<span class="c1"># define the initial proposal density</span>
+<span class="c1"># In this case a three-modal gaussian used</span>
+<span class="c1"># the initial covariances are set to the unit-matrix</span>
+<span class="c1"># the initial component weights are set equal</span>
+<span class="n">initial_prop_means</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">initial_prop_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span> <span class="p">)</span>
+<span class="n">initial_prop_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span> <span class="p">)</span>
+<span class="n">initial_prop_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span> <span class="p">)</span>
+<span class="n">initial_prop_covariance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">initial_prop_components</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">initial_prop_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">gauss</span><span class="o">.</span><span class="n">Gauss</span><span class="p">(</span><span class="n">initial_prop_means</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">initial_prop_covariance</span><span class="p">))</span>
+
+<span class="n">initial_proposal</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">mixture</span><span class="o">.</span><span class="n">MixtureDensity</span><span class="p">(</span><span class="n">initial_prop_components</span><span class="p">)</span>
+
+
+<span class="c1"># define an ImportanceSampler object</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">importance_sampling</span><span class="o">.</span><span class="n">ImportanceSampler</span><span class="p">(</span><span class="n">log_target</span><span class="p">,</span> <span class="n">initial_proposal</span><span class="p">)</span>
+
+
+<span class="c1"># draw 10,000 samples adapting the proposal every 1,000 samples</span>
+<span class="c1"># hereby save the generating proposal component for each sample which is</span>
+<span class="c1"># returned by sampler.run</span>
+<span class="c1"># Note: With too few samples components may die out, and one mode might be lost.</span>
+<span class="n">generating_components</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">step&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;...</span><span class="se">\n\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="c1"># draw 1,000 samples and save the generating component</span>
+    <span class="n">generating_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">trace_sort</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+
+    <span class="c1"># get a reference to the weights and samples that have just been generated</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">samples</span><span class="p">[:]</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">weights</span><span class="p">[:][:,</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># update the proposal using the pmc algorithm in the non Rao-Blackwellized form</span>
+    <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">pmc</span><span class="o">.</span><span class="n">gaussian_pmc</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">generating_components</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                     <span class="n">mincount</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">rb</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">sampling finished&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span>  <span class="s1">&#39;-----------------&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># print information about the adapted proposal</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;initial component weights:&#39;</span><span class="p">,</span> <span class="n">initial_proposal</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;final   component weights:&#39;</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;target  component weights:&#39;</span><span class="p">,</span> <span class="n">component_weights</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">mean0</span><span class="p">,</span> <span class="n">mean1</span><span class="p">,</span> <span class="bp">None</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;initial mean of component </span><span class="si">%i</span><span class="s1">:&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">initial_proposal</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;final   mean of component </span><span class="si">%i</span><span class="s1">:&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;target  mean of component </span><span class="si">%i</span><span class="s1">:&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">covariance0</span><span class="p">,</span> <span class="n">covariance1</span><span class="p">,</span> <span class="bp">None</span><span class="p">]):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;initial covariance of component </span><span class="si">%i</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">initial_proposal</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;final   covariance of component </span><span class="si">%i</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;target  covariance of component </span><span class="si">%i</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># plot results</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;For plotting &quot;matplotlib&quot; needs to be installed&#39;</span><span class="p">)</span>
+    <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">set_axlimits</span><span class="p">():</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">6.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">6.000</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.401</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;target mixture&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">target_mixture</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;pmc fit&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;nipy_spectral&#39;</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;target mixture and pmc fit&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">target_mixture</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;nipy_spectral&#39;</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;weighted samples&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist2d</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">sampler</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">sampler</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./../examples/pmc.py">Source code</a>, <a class="reference external" href="./../examples/pmc.png">png</a>, <a class="reference external" href="./../examples/pmc.hires.png">hires.png</a>, <a class="reference external" href="./../examples/pmc.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/pmc.png" src="_images/pmc.png" />
+</div>
+</div>
+<div class="section" id="parallel">
+<h3>4.2.2. Parallel<a class="headerlink" href="#parallel" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;This example shows how to use importance sampling and how to</span>
+<span class="sd">adapt the proposal density using the pmc algorithm in an MPI</span>
+<span class="sd">parallel environment.</span>
+<span class="sd">In order to have a multiprocessing enviroment invoke this script with</span>
+<span class="sd">&quot;mpirun -n 10 python pmc_mpi.py&quot;.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">mpi4py.MPI</span> <span class="kn">import</span> <span class="n">COMM_WORLD</span> <span class="k">as</span> <span class="n">comm</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pypmc</span>
+<span class="kn">import</span> <span class="nn">pypmc.tools.parallel_sampler</span> <span class="c1"># this submodule is NOT imported by ``import pypmc``</span>
+
+<span class="c1"># This script is a parallelized version of the PMC example ``pmc.py``.</span>
+<span class="c1"># The following lines just define a target density and an initial proposal.</span>
+<span class="c1"># These steps are exactly the same as in ``pmc.py``:</span>
+
+<span class="c1"># define the target; i.e., the function you want to sample from.</span>
+<span class="c1"># In this case, it is a bimodal Gaussian</span>
+<span class="c1">#</span>
+<span class="c1"># Note that the target function &quot;log_target&quot; returns the log of the</span>
+<span class="c1"># target function.</span>
+<span class="n">component_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
+
+<span class="n">mean0</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span> <span class="mf">5.0</span>  <span class="p">,</span> <span class="mf">0.01</span>  <span class="p">])</span>
+<span class="n">covariance0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.01</span> <span class="p">,</span> <span class="mf">0.003</span> <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.0025</span><span class="p">]])</span>
+<span class="n">inv_covariance0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">covariance0</span><span class="p">)</span>
+
+<span class="n">mean1</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="o">-</span><span class="mf">4.0</span>  <span class="p">,</span> <span class="mf">1.0</span>   <span class="p">])</span>
+<span class="n">covariance1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.1</span>  <span class="p">,</span> <span class="mf">0.</span>    <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.</span>   <span class="p">,</span> <span class="mf">0.02</span>  <span class="p">]])</span>
+<span class="n">inv_covariance1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">covariance1</span><span class="p">)</span>
+
+<span class="n">component_means</span> <span class="o">=</span> <span class="p">[</span><span class="n">mean0</span><span class="p">,</span> <span class="n">mean1</span><span class="p">]</span>
+<span class="n">component_covariances</span> <span class="o">=</span> <span class="p">[</span><span class="n">covariance0</span><span class="p">,</span> <span class="n">covariance1</span><span class="p">]</span>
+
+<span class="n">target_mixture</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">mixture</span><span class="o">.</span><span class="n">create_gaussian_mixture</span><span class="p">(</span><span class="n">component_means</span><span class="p">,</span> <span class="n">component_covariances</span><span class="p">,</span> <span class="n">component_weights</span><span class="p">)</span>
+
+<span class="n">log_target</span> <span class="o">=</span> <span class="n">target_mixture</span><span class="o">.</span><span class="n">evaluate</span>
+
+
+<span class="c1"># define the initial proposal density</span>
+<span class="c1"># In this case it has three Gaussians:</span>
+<span class="c1"># the initial covariances are set to the unit-matrix,</span>
+<span class="c1"># the initial component weights are set equal</span>
+<span class="n">initial_prop_means</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">initial_prop_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span> <span class="p">)</span>
+<span class="n">initial_prop_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span> <span class="p">)</span>
+<span class="n">initial_prop_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span> <span class="p">)</span>
+<span class="n">initial_prop_covariance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">initial_prop_components</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">initial_prop_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">gauss</span><span class="o">.</span><span class="n">Gauss</span><span class="p">(</span><span class="n">initial_prop_means</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">initial_prop_covariance</span><span class="p">))</span>
+
+<span class="n">initial_proposal</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">mixture</span><span class="o">.</span><span class="n">MixtureDensity</span><span class="p">(</span><span class="n">initial_prop_components</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c1"># In ``pmc.py`` the following line defines the sequential single process sampler:</span>
+<span class="c1"># sampler = pypmc.sampler.importance_sampling.ImportanceSampler(log_target, initial_proposal)</span>
+<span class="c1">#</span>
+<span class="c1"># We now use the parallel MPISampler instead:</span>
+<span class="n">SequentialIS</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">importance_sampling</span><span class="o">.</span><span class="n">ImportanceSampler</span>
+<span class="n">parallel_sampler</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">parallel_sampler</span><span class="o">.</span><span class="n">MPISampler</span><span class="p">(</span><span class="n">SequentialIS</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">log_target</span><span class="p">,</span> <span class="n">proposal</span><span class="o">=</span><span class="n">initial_proposal</span><span class="p">)</span>
+
+<span class="c1"># Draw 10,000 samples adapting the proposal every 1,000 samples:</span>
+
+<span class="c1"># make sure that every process has a different random number generator seed</span>
+<span class="k">if</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">bcast</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span> <span class="o">+</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">())</span>
+
+<span class="n">generating_components</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="c1"># With the invocation &quot;mpirun -n 10 python pmc_mpi.py&quot;, there are</span>
+    <span class="c1"># 10 processes which means in order to draw 1,000 samples</span>
+    <span class="c1"># ``parallel_sampler.run(1000//comm.Get_size())`` makes each process draw</span>
+    <span class="c1"># 100 samples.</span>
+    <span class="c1"># Hereby the generating proposal component for each sample in each process</span>
+    <span class="c1"># is returned by ``parallel_sampler.run``.</span>
+    <span class="c1"># In the master process, ``parallel_sampler.run`` is a list containing the</span>
+    <span class="c1"># return values of the sequential ``run`` method of every process.</span>
+    <span class="c1"># In all other processes, ``parallel_sampler.run`` returns the generating</span>
+    <span class="c1"># component for its own samples only.</span>
+    <span class="n">last_generating_components</span> <span class="o">=</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">1000</span><span class="o">//</span><span class="n">comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">(),</span> <span class="n">trace_sort</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="c1"># In addition to the generating components, the ``sampler.run``</span>
+    <span class="c1"># method automatically sends all samples to the master</span>
+    <span class="c1"># process i.e. the process which fulfills comm.Get_rank() == 0.</span>
+    <span class="k">if</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">step&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;...</span><span class="se">\n\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Now let PMC run only in the master process:</span>
+
+        <span class="c1"># ``sampler.samples_list`` and ``sampler.weights_list`` store the weighted samples</span>
+        <span class="c1"># sorted by the resposible process:</span>
+        <span class="c1"># The History objects that are held by process i can be accessed via</span>
+        <span class="c1"># ``sampler.&lt;samples/weights&gt;_list[i]``. The master process (i=0) also produces samples.</span>
+
+        <span class="c1"># Combine the weights and samples to two arrays of 1,000 samples</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">history_item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">history_item</span> <span class="ow">in</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">samples_list</span><span class="p">])</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">history_item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">history_item</span> <span class="ow">in</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">weights_list</span><span class="p">])[:,</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># The latent variables are stored in ``last_generating_components``.</span>
+        <span class="c1"># ``last_generating_components[i]`` returns an array with the generating</span>
+        <span class="c1"># components of the samples produced by process number &quot;i&quot;.</span>
+        <span class="c1"># ``np.hstack(last_generating_components)`` combines the generating components</span>
+        <span class="c1"># from all processes to one array holding all 1,000 entries.</span>
+        <span class="n">generating_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>  <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">last_generating_components</span><span class="p">)</span>  <span class="p">)</span>
+
+        <span class="c1"># adapt the proposal using the samples from all processes</span>
+        <span class="n">new_proposal</span> <span class="o">=</span>  <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">pmc</span><span class="o">.</span><span class="n">gaussian_pmc</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="p">,</span>
+                                                         <span class="n">weights</span><span class="p">,</span> <span class="n">generating_components</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                                         <span class="n">mincount</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">rb</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># In order to broadcast the ``new_proposal``, define a dummy variable in the other processes</span>
+        <span class="c1"># see &quot;MPI4Py tutorial&quot;, section &quot;Collective Communication&quot;: http://mpi4py.scipy.org/docs/usrman/tutorial.html</span>
+        <span class="n">new_proposal</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="c1"># broadcast the ``new_proposal``</span>
+    <span class="n">new_proposal</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">bcast</span><span class="p">(</span><span class="n">new_proposal</span><span class="p">)</span>
+
+    <span class="c1"># replace the old proposal</span>
+    <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span> <span class="o">=</span> <span class="n">new_proposal</span>
+
+<span class="c1"># only the master process shall print out any final information</span>
+<span class="k">if</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_rank</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">all_samples</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">history_item</span><span class="p">[</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">history_item</span> <span class="ow">in</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">samples_list</span><span class="p">])</span>
+    <span class="n">all_weights</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">history_item</span><span class="p">[</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">history_item</span> <span class="ow">in</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">weights_list</span><span class="p">])</span>
+    <span class="n">last_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">history_item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">history_item</span> <span class="ow">in</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">samples_list</span><span class="p">])</span>
+    <span class="n">last_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">history_item</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">history_item</span> <span class="ow">in</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">weights_list</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">sampling finished&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;collected &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_samples</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; samples&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span>  <span class="s1">&#39;------------------------------------------&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># print information about the adapted proposal</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;initial component weights:&#39;</span><span class="p">,</span> <span class="n">initial_proposal</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;final   component weights:&#39;</span><span class="p">,</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;target  component weights:&#39;</span><span class="p">,</span> <span class="n">component_weights</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">mean0</span><span class="p">,</span> <span class="n">mean1</span><span class="p">,</span> <span class="bp">None</span><span class="p">]):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;initial mean of component </span><span class="si">%i</span><span class="s1">:&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">initial_proposal</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;final   mean of component </span><span class="si">%i</span><span class="s1">:&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;target  mean of component </span><span class="si">%i</span><span class="s1">:&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">covariance0</span><span class="p">,</span> <span class="n">covariance1</span><span class="p">,</span> <span class="bp">None</span><span class="p">]):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;initial covariance of component </span><span class="si">%i</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">initial_proposal</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;final   covariance of component </span><span class="si">%i</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">parallel_sampler</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;target  covariance of component </span><span class="si">%i</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">k</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">comm</span><span class="o">.</span><span class="n">Get_size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;******************************************************&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;********** NOTE: There is only one process. **********&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;******** try &quot;mpirun -n 10 python pmc_mpi.py&quot; ********&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;******************************************************&#39;</span><span class="p">)</span>
+
+    <span class="c1"># plot results</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;For plotting &quot;matplotlib&quot; needs to be installed&#39;</span><span class="p">)</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_axlimits</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">6.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">6.000</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.401</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;target mixture&#39;</span><span class="p">)</span>
+    <span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">target_mixture</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+    <span class="n">set_axlimits</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;pmc fit&#39;</span><span class="p">)</span>
+    <span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">parallel_sampler</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;nipy_spectral&#39;</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+    <span class="n">set_axlimits</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;target mixture and pmc fit&#39;</span><span class="p">)</span>
+    <span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">target_mixture</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+    <span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">parallel_sampler</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;nipy_spectral&#39;</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+    <span class="n">set_axlimits</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;weighted samples&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hist2d</span><span class="p">(</span><span class="n">last_samples</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">last_samples</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">last_weights</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">set_axlimits</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./../examples/pmc_mpi.py">Source code</a>, <a class="reference external" href="./../examples/pmc_mpi.png">png</a>, <a class="reference external" href="./../examples/pmc_mpi.hires.png">hires.png</a>, <a class="reference external" href="./../examples/pmc_mpi.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/pmc_mpi.png" src="_images/pmc_mpi.png" />
+</div>
+</div>
+</div>
+<div class="section" id="grouping-by-gelman-rubin-r-value">
+<h2>4.3. Grouping by Gelman-Rubin R value<a class="headerlink" href="#grouping-by-gelman-rubin-r-value" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;This example illustrates how to group Markov Chains according to the</span>
+<span class="sd">Gelman-Rubin R value (see [GR92]_).</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pypmc</span>
+
+<span class="c1"># A Markov Chain can only explore a local mode of the target function.</span>
+<span class="c1"># The Gelman-Rubin R value can be used to determine whether N chains</span>
+<span class="c1"># explored the same mode. Pypmc offers a function which groups chains</span>
+<span class="c1"># with a common R value less than some ``critical_r``.</span>
+<span class="c1">#</span>
+<span class="c1"># In this example, we run five Markov Chains initialized in different</span>
+<span class="c1"># modes and then group those chains together that explored same mode.</span>
+
+
+<span class="c1"># define a proposal</span>
+<span class="c1"># this defines the same initial proposal for all chains</span>
+<span class="n">prop_dof</span>   <span class="o">=</span> <span class="mf">50.</span>
+<span class="n">prop_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.1</span> <span class="p">,</span> <span class="mf">0.</span>  <span class="p">]</span>
+                      <span class="p">,[</span><span class="mf">0.</span>  <span class="p">,</span> <span class="mf">0.02</span><span class="p">]])</span>
+<span class="n">prop</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">student_t</span><span class="o">.</span><span class="n">LocalStudentT</span><span class="p">(</span><span class="n">prop_sigma</span><span class="p">,</span> <span class="n">prop_dof</span><span class="p">)</span>
+
+
+<span class="c1"># define the target; i.e., the function you want to sample from.</span>
+<span class="c1"># In this case, it is a bimodal Gaussian with well separated modes.</span>
+<span class="c1">#</span>
+<span class="c1"># Note that the target function &quot;log_target&quot; returns the log of the</span>
+<span class="c1"># target function.</span>
+<span class="n">component_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
+
+<span class="n">mean0</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span> <span class="mf">5.0</span>  <span class="p">,</span> <span class="mf">0.01</span>  <span class="p">])</span>
+<span class="n">covariance0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.01</span> <span class="p">,</span> <span class="mf">0.003</span> <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.0025</span><span class="p">]])</span>
+<span class="n">inv_covariance0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">covariance0</span><span class="p">)</span>
+
+<span class="n">mean1</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="o">-</span><span class="mf">4.0</span>  <span class="p">,</span> <span class="mf">1.0</span>   <span class="p">])</span>
+<span class="n">covariance1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.1</span>  <span class="p">,</span> <span class="mf">0.</span>    <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.</span>   <span class="p">,</span> <span class="mf">0.02</span>  <span class="p">]])</span>
+<span class="n">inv_covariance1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">covariance1</span><span class="p">)</span>
+
+<span class="n">component_means</span> <span class="o">=</span> <span class="p">[</span><span class="n">mean0</span><span class="p">,</span> <span class="n">mean1</span><span class="p">]</span>
+<span class="n">component_covariances</span> <span class="o">=</span> <span class="p">[</span><span class="n">covariance0</span><span class="p">,</span> <span class="n">covariance1</span><span class="p">]</span>
+
+<span class="n">target_mixture</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">mixture</span><span class="o">.</span><span class="n">create_gaussian_mixture</span><span class="p">(</span><span class="n">component_means</span><span class="p">,</span> <span class="n">component_covariances</span><span class="p">,</span> <span class="n">component_weights</span><span class="p">)</span>
+
+<span class="n">log_target</span> <span class="o">=</span> <span class="n">target_mixture</span><span class="o">.</span><span class="n">evaluate</span>
+
+<span class="c1"># choose initializations for the chains</span>
+<span class="c1"># Here we place two chains into the mode at [5, 0.01] and three into the mode at [-4,1].</span>
+<span class="c1"># In such a setup, the chains will only explore the mode where they are initialized.</span>
+<span class="c1"># Different random numbers are used in each chain.</span>
+<span class="n">starts</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.999</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])]</span> <span class="o">*</span> <span class="mi">2</span>   <span class="o">+</span>   <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">4.0001</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">])]</span> <span class="o">*</span> <span class="mi">3</span>
+
+<span class="c1"># define the markov chain objects</span>
+<span class="n">mcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pypmc</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">markov_chain</span><span class="o">.</span><span class="n">AdaptiveMarkovChain</span><span class="p">(</span><span class="n">log_target</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span> <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="n">starts</span><span class="p">]</span>
+
+<span class="c1"># run and discard burn-in</span>
+<span class="k">for</span> <span class="n">mc</span> <span class="ow">in</span> <span class="n">mcs</span><span class="p">:</span>
+    <span class="n">mc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">mc</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<span class="c1"># run 10,000 steps adapting the proposal every 500 steps</span>
+<span class="k">for</span> <span class="n">mc</span> <span class="ow">in</span> <span class="n">mcs</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+        <span class="n">mc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+        <span class="n">mc</span><span class="o">.</span><span class="n">adapt</span><span class="p">()</span>
+
+<span class="c1"># extract a reference to the samples from all chains</span>
+<span class="n">stacked_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">mc</span><span class="o">.</span><span class="n">samples</span><span class="p">[:]</span> <span class="k">for</span> <span class="n">mc</span> <span class="ow">in</span> <span class="n">mcs</span><span class="p">]</span>
+
+<span class="c1"># find the chain groups</span>
+<span class="c1"># chains 0 and 1 are initialized in the same mode (at [5, 0.01])</span>
+<span class="c1"># chains 2, 3 and 4 are initialized in the same mode (at [-4, 0])</span>
+<span class="c1"># expect chain groups:</span>
+<span class="n">expected_groups</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]]</span>
+
+<span class="c1"># R value calculation only needs the means, variances (diagonal</span>
+<span class="c1"># elements of covariance matrix) and number of samples,</span>
+<span class="c1"># axis=0 ensures that we get variances separately for each parameter.</span>
+<span class="c1"># critical_r can be set manually, here the default value is used</span>
+<span class="n">found_groups</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">r_value</span><span class="o">.</span><span class="n">r_group</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">stacked_values</span><span class="p">],</span>
+                                               <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">var</span> <span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">stacked_values</span><span class="p">],</span>
+                                               <span class="nb">len</span><span class="p">(</span><span class="n">stacked_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="c1"># print the result</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Expect </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">expected_groups</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Have   </span><span class="si">%s</span><span class="s2">&quot;</span>    <span class="o">%</span> <span class="n">found_groups</span><span class="p">)</span>
+
+<span class="c1"># Hint: ``stacked_values`` is an example of what `pypmc.mix_adapt.r_value.make_r_gaussmix()` expects as ``data``</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">r_value</span><span class="o">.</span><span class="n">make_r_gaussmix</span><span class="p">(</span><span class="n">stacked_values</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;For plotting &quot;matplotlib&quot; needs to be installed&#39;</span><span class="p">)</span>
+    <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./../examples/r_group.py">Source code</a>, <a class="reference external" href="./../examples/r_group.png">png</a>, <a class="reference external" href="./../examples/r_group.hires.png">hires.png</a>, <a class="reference external" href="./../examples/r_group.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/r_group.png" src="_images/r_group.png" />
+</div>
+</div>
+<div class="section" id="variational-bayes">
+<h2>4.4. Variational Bayes<a class="headerlink" href="#variational-bayes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;This example shows how to generate a &quot;best fit&quot; Gaussian mixture density</span>
+<span class="sd">from data using variational Bayes.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1">## in this example, we will:</span>
+<span class="c1">## 1. Define a Gaussian mixture</span>
+<span class="c1">## 2. Generate demo data from that Gaussian mixture</span>
+<span class="c1">## 3. Generate a Gaussian mixture out of the data</span>
+<span class="c1">## 4. Plot the original and the generated mixture</span>
+
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pypmc</span>
+
+
+
+<span class="c1"># -------------------- 1. Define a Gaussian mixture --------------------</span>
+
+<span class="n">component_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
+
+<span class="n">mean0</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span> <span class="mf">5.0</span>  <span class="p">,</span> <span class="mf">0.01</span>  <span class="p">])</span>
+<span class="n">covariance0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.01</span> <span class="p">,</span> <span class="mf">0.003</span> <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.0025</span><span class="p">]])</span>
+
+<span class="n">mean1</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="o">-</span><span class="mf">4.0</span>  <span class="p">,</span> <span class="mf">1.0</span>   <span class="p">])</span>
+<span class="n">covariance1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.1</span>  <span class="p">,</span> <span class="mf">0.</span>    <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.</span>   <span class="p">,</span> <span class="mf">0.02</span>  <span class="p">]])</span>
+
+<span class="n">component_means</span> <span class="o">=</span> <span class="p">[</span><span class="n">mean0</span><span class="p">,</span> <span class="n">mean1</span><span class="p">]</span>
+<span class="n">component_covariances</span> <span class="o">=</span> <span class="p">[</span><span class="n">covariance0</span><span class="p">,</span> <span class="n">covariance1</span><span class="p">]</span>
+
+<span class="n">target_mix</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">mixture</span><span class="o">.</span><span class="n">create_gaussian_mixture</span><span class="p">(</span><span class="n">component_means</span><span class="p">,</span> <span class="n">component_covariances</span><span class="p">,</span> <span class="n">component_weights</span><span class="p">)</span>
+
+
+
+<span class="c1"># -------------------- 2. Generate demo data ---------------------------</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">target_mix</span><span class="o">.</span><span class="n">propose</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+
+
+
+<span class="c1"># -------------------- 3. Adapt a Gaussian mixture ---------------------</span>
+
+<span class="c1"># maximum number of components</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="c1"># Create a &quot;GaussianInference&quot; object.</span>
+<span class="c1"># The following command passes just the two essential arguments to &quot;GaussianInference&quot;:</span>
+<span class="c1"># The ``data`` and a maximum number of ``components``.</span>
+<span class="c1"># For reasonable results in more complicated settings, a careful choice for ``W0``</span>
+<span class="c1"># is crucial. As a rule of thumb, choose ``inv(W0)`` much smaller than the expected</span>
+<span class="c1"># covariance. In this case, however, the default (``W0`` = unit matrix) is good enough.</span>
+<span class="n">vb</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">variational</span><span class="o">.</span><span class="n">GaussianInference</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+
+<span class="c1"># adapt the variational parameters</span>
+<span class="n">converged</span> <span class="o">=</span> <span class="n">vb</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;-----------------------------&#39;</span><span class="p">)</span>
+
+<span class="c1"># generate a Gaussian mixture with the most probable parameters</span>
+<span class="n">fit_mixture</span> <span class="o">=</span> <span class="n">vb</span><span class="o">.</span><span class="n">make_mixture</span><span class="p">()</span>
+
+
+<span class="c1"># -------------------- 4. Plot/print results ---------------------------</span>
+
+<span class="k">if</span> <span class="n">converged</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">The adaptation did not converge.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Converged after </span><span class="si">%i</span><span class="s1"> iterations.</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">converged</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;final  component weights: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fit_mixture</span><span class="o">.</span><span class="n">weights</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;target component weights: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span> <span class="n">target_mix</span><span class="o">.</span><span class="n">weights</span><span class="p">))</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;For plotting &quot;matplotlib&quot; needs to be installed&#39;</span><span class="p">)</span>
+    <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">set_axlimits</span><span class="p">():</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">6.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">6.000</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.401</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;target mixture&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">target_mix</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;winter&#39;</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;&quot;best fit&quot;&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">fit_mixture</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;nipy_spectral&#39;</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;target mixture and &quot;best fit&quot;&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">target_mix</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;winter&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">fit_mixture</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;nipy_spectral&#39;</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hexbin</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./../examples/variational.py">Source code</a>, <a class="reference external" href="./../examples/variational.png">png</a>, <a class="reference external" href="./../examples/variational.hires.png">hires.png</a>, <a class="reference external" href="./../examples/variational.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/variational.png" src="_images/variational.png" />
+</div>
+</div>
+<div class="section" id="mixture-reduction">
+<span id="ex-mix-red"></span><h2>4.5. Mixture reduction<a class="headerlink" href="#mixture-reduction" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;Demonstrate the usage of hierarchical clustering and variational</span>
+<span class="sd">Bayes (VBMerge) to reduce a given Gaussian mixture to a Gaussian</span>
+<span class="sd">mixture with a reduced number of components.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">chi2</span>
+<span class="kn">import</span> <span class="nn">pypmc</span>
+
+<span class="c1"># dimension</span>
+<span class="n">D</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># number of components</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">400</span>
+
+<span class="c1"># Wishart parameters: mean W, degree of freedom nu</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<span class="n">nu</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># &quot;draw&quot; covariance matrices from Wishart distribution</span>
+<span class="k">def</span> <span class="nf">wishart</span><span class="p">(</span><span class="n">nu</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">chol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim</span><span class="p">,</span><span class="n">dim</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">chi2</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">nu</span><span class="o">-</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">chol</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">chol</span><span class="o">.</span><span class="n">T</span><span class="p">)))</span>
+
+<span class="n">covariances</span> <span class="o">=</span> <span class="p">[</span><span class="n">wishart</span><span class="p">(</span><span class="n">nu</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)]</span>
+
+<span class="c1"># put components at positions drawn from a Gaussian around mu</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<span class="n">means</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> <span class="k">for</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="n">covariances</span><span class="p">]</span>
+
+<span class="c1"># equal weights for every component</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+
+<span class="c1"># weights are automatically normalized</span>
+<span class="n">input_mixture</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">mixture</span><span class="o">.</span><span class="n">create_gaussian_mixture</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">covariances</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+<span class="c1"># create initial guess from first K_out components</span>
+<span class="n">K_out</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">mixture</span><span class="o">.</span><span class="n">create_gaussian_mixture</span><span class="p">(</span><span class="n">means</span><span class="p">[:</span><span class="n">K_out</span><span class="p">],</span> <span class="n">covariances</span><span class="p">[:</span><span class="n">K_out</span><span class="p">],</span> <span class="n">weights</span><span class="p">[:</span><span class="n">K_out</span><span class="p">])</span>
+
+<span class="c1">###</span>
+<span class="c1"># hierarchical clustering</span>
+<span class="c1">#</span>
+<span class="c1"># - the output closely resembles the initial guess</span>
+<span class="c1"># - components laid out spherically symmetric</span>
+<span class="c1"># - every component is preserved</span>
+<span class="c1">###</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">hierarchical</span><span class="o">.</span><span class="n">Hierarchical</span><span class="p">(</span><span class="n">input_mixture</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+<span class="n">h</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1">###</span>
+<span class="c1"># VBMerge</span>
+<span class="c1">#</span>
+<span class="c1"># - N is the number of samples that gave rise to the input mixture. It</span>
+<span class="c1">#   is arbitrary, so play around with it. You might have to adjust the</span>
+<span class="c1">#   ``prune`` parameter in the ``run()`` method</span>
+<span class="c1"># - only one component survives, again it is spherically symmetric</span>
+<span class="c1">###</span>
+<span class="n">vb</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">variational</span><span class="o">.</span><span class="n">VBMerge</span><span class="p">(</span><span class="n">input_mixture</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                         <span class="n">initial_guess</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Start variational Bayes:&quot;</span><span class="p">)</span>
+<span class="n">vb</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># plot results</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;For plotting &quot;matplotlib&quot; needs to be installed&#39;</span><span class="p">)</span>
+    <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">set_axlimits</span><span class="p">():</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">12.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">12.0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">12.0</span><span class="p">,</span> <span class="o">+</span><span class="mf">12.0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;input mixture&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">input_mixture</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;initial guess&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">initial_guess</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;variational Bayes&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">vb</span><span class="o">.</span><span class="n">make_mixture</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;autumn&#39;</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;hierarchical output&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">g</span><span class="p">)</span>
+<span class="n">set_axlimits</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./../examples/mixture_reduction.py">Source code</a>, <a class="reference external" href="./../examples/mixture_reduction.png">png</a>, <a class="reference external" href="./../examples/mixture_reduction.hires.png">hires.png</a>, <a class="reference external" href="./../examples/mixture_reduction.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/mixture_reduction.png" src="_images/mixture_reduction.png" />
+</div>
+</div>
+<div class="section" id="mcmc-variational-bayes">
+<span id="ex-mcmc-vb"></span><h2>4.6. MCMC + variational Bayes<a class="headerlink" href="#mcmc-variational-bayes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;This example illustrates how pypmc can be used to integrate a</span>
+<span class="sd">non-negative function. The presented algorithm needs very little</span>
+<span class="sd">analytical knowledge about the function.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pypmc</span>
+
+<span class="c1"># The idea is to find a good proposal function for importance sampling</span>
+<span class="c1"># with as little information about the target function as possible.</span>
+<span class="c1">#</span>
+<span class="c1"># In this example we will first map out regions of interest using Markov</span>
+<span class="c1"># chains, then we use the variational Bayes to approximate the target</span>
+<span class="c1"># with a Gaussian mixture.</span>
+
+<span class="c1"># *************************** Important: ***************************</span>
+<span class="c1"># * The target function must be defined such that it returns the   *</span>
+<span class="c1"># * log of the function of interest. The methods we use imply that *</span>
+<span class="c1"># * the function is interpreted as an unnormalized probability     *</span>
+<span class="c1"># * density.                                                       *</span>
+<span class="c1"># ******************************************************************</span>
+
+<span class="c1"># Define the target; i.e., the function you want to sample from.  In</span>
+<span class="c1"># this case, it is a Student&#39;s t mixture of three components with</span>
+<span class="c1"># different degrees of freedom. They are located close to each other.</span>
+<span class="c1"># If you want a multimodal target, adjust the means.</span>
+
+<span class="n">dim</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">mean0</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="o">-</span><span class="mf">6.0</span><span class="p">,</span>  <span class="mf">7.3</span>  <span class="p">])</span>
+<span class="n">covariance0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span> <span class="p">],</span>
+                        <span class="p">[</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span>  <span class="mf">1.25</span><span class="p">]])</span>
+
+<span class="n">mean1</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="o">-</span><span class="mf">7.0</span><span class="p">,</span>  <span class="mf">8.0</span>   <span class="p">])</span>
+<span class="n">covariance1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mf">0.</span>    <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.</span> <span class="p">,</span>  <span class="mf">0.2</span>  <span class="p">]])</span>
+
+<span class="n">mean2</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="p">([</span><span class="o">-</span><span class="mf">8.5</span><span class="p">,</span>  <span class="mf">7.5</span>   <span class="p">])</span>
+<span class="n">covariance2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mf">0.2</span>   <span class="p">],</span>
+                        <span class="p">[</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mf">0.2</span>  <span class="p">]])</span>
+
+<span class="n">component_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="n">component_means</span> <span class="o">=</span> <span class="p">[</span><span class="n">mean0</span><span class="p">,</span> <span class="n">mean1</span><span class="p">,</span> <span class="n">mean2</span><span class="p">]</span>
+<span class="n">component_covariances</span> <span class="o">=</span> <span class="p">[</span><span class="n">covariance0</span><span class="p">,</span> <span class="n">covariance1</span><span class="p">,</span> <span class="n">covariance2</span><span class="p">]</span>
+<span class="n">dofs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="n">target_mixture</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">mixture</span><span class="o">.</span><span class="n">create_t_mixture</span><span class="p">(</span><span class="n">component_means</span><span class="p">,</span> <span class="n">component_covariances</span><span class="p">,</span> <span class="n">dofs</span><span class="p">,</span> <span class="n">component_weights</span><span class="p">)</span>
+<span class="n">log_target</span> <span class="o">=</span> <span class="n">target_mixture</span><span class="o">.</span><span class="n">evaluate</span>
+
+<span class="c1"># Now we suppose that we only have the following knowledge about the</span>
+<span class="c1"># target function: its regions of interest are at a distance of no more</span>
+<span class="c1"># than order ten from zero.</span>
+
+<span class="c1"># Now we try to find these with Markov chains.  We have to deal with</span>
+<span class="c1"># the fact that there may be modes separated by regions of very low</span>
+<span class="c1"># probability. It is thus unlikely that a single chain explores more</span>
+<span class="c1"># than one mode in such a case. To deal with this multimodality, we</span>
+<span class="c1"># start several chains and hope that they find all modes.  We will</span>
+<span class="c1"># start ten Markov chains at random positions in the square</span>
+<span class="c1"># [(-10,-10), (+10,+10)].</span>
+<span class="n">starts</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+
+<span class="c1"># For a local-random-walk Markov chain, we also need an initial</span>
+<span class="c1"># proposal.  Here, we take a gaussian with initial covariance</span>
+<span class="c1"># diag(1e-3).  The initial covariance should be chosen such that it is</span>
+<span class="c1"># of the same order as the real covariance of the mode to be mapped</span>
+<span class="c1"># out. For a Gaussian target, the overall scale should</span>
+<span class="c1"># decrease as 2.38^2/d as the dimension d increases to achieve an</span>
+<span class="c1"># acceptance rate around 20%.</span>
+<span class="n">mc_prop</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">gauss</span><span class="o">.</span><span class="n">LocalGauss</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.38</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">dim</span><span class="p">)</span>
+<span class="n">mcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pypmc</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">markov_chain</span><span class="o">.</span><span class="n">AdaptiveMarkovChain</span><span class="p">(</span><span class="n">log_target</span><span class="p">,</span> <span class="n">mc_prop</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span> <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="n">starts</span><span class="p">]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;running Markov chains ...&#39;</span><span class="p">)</span>
+
+<span class="c1"># In general we need to let the chain move to regions of high</span>
+<span class="c1"># probability, these samples are not representative, so we discard them</span>
+<span class="c1"># as burn-in. Then we let the Markov chains map out the regions of</span>
+<span class="c1"># interest. The samples are used to adapt the proposal covariance to</span>
+<span class="c1"># yield a satisfactory acceptance rate.</span>
+<span class="k">for</span> <span class="n">mc</span> <span class="ow">in</span> <span class="n">mcs</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+        <span class="n">mc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+        <span class="n">mc</span><span class="o">.</span><span class="n">adapt</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">mc</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<span class="n">mc_samples_sorted_by_chain</span> <span class="o">=</span> <span class="p">[</span><span class="n">mc</span><span class="o">.</span><span class="n">samples</span><span class="p">[:]</span> <span class="k">for</span> <span class="n">mc</span> <span class="ow">in</span> <span class="n">mcs</span><span class="p">]</span>
+<span class="n">mc_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">mc_samples_sorted_by_chain</span><span class="p">)</span>
+
+<span class="n">means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">mcs</span><span class="p">),</span> <span class="n">dim</span><span class="p">))</span>
+<span class="n">variances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">means</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">mc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mc_samples_sorted_by_chain</span><span class="p">):</span>
+    <span class="n">means</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">variances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Now we use the Markov chain samples to generate a mixture proposal</span>
+<span class="c1"># function for importance sampling. For this purpose, we choose the</span>
+<span class="c1"># variational Bayes algorithm that takes samples and an initial guess</span>
+<span class="c1"># of the mixture as input. To create the initial guess, we group all</span>
+<span class="c1"># chains that mixed, and create 10 components per group. For a</span>
+<span class="c1"># unimodal target, all chains should mix. For more information about</span>
+<span class="c1"># the following call, check the example &quot;Grouping by Gelman-Rubin R</span>
+<span class="c1"># value&quot;(r-group.py) or the reference documentation.</span>
+<span class="n">long_patches</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">r_value</span><span class="o">.</span><span class="n">make_r_gaussmix</span><span class="p">(</span><span class="n">mc_samples_sorted_by_chain</span><span class="p">,</span> <span class="n">K_g</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Comments on arguments:</span>
+<span class="c1">#   o mc_samples[::100]   - Samples in the Markov chains are strongly correlated</span>
+<span class="c1">#                           =&gt; thin the samples to get approx. independent samples</span>
+<span class="c1">#   o W0=np.eye(dim)*1e10 - The resulting covariance matrices can be very</span>
+<span class="c1">#                           sensitive to W0. Its inverse should be chosen much</span>
+<span class="c1">#                           smaller than the actual covariance. If it is too small,</span>
+<span class="c1">#                           W0 will dominate the resulting covariances and</span>
+<span class="c1">#                           usually lead to very bad results.</span>
+<span class="n">vb</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">variational</span><span class="o">.</span><span class="n">GaussianInference</span><span class="p">(</span><span class="n">mc_samples</span><span class="p">[::</span><span class="mi">100</span><span class="p">],</span> <span class="n">initial_guess</span><span class="o">=</span><span class="n">long_patches</span><span class="p">,</span> <span class="n">W0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span><span class="o">*</span><span class="mf">1e10</span><span class="p">)</span>
+
+<span class="c1"># When we run variational Bayes, we want unneccessary components to be</span>
+<span class="c1"># automatically pruned. The prune parameter sets how many samples a</span>
+<span class="c1"># component must effectively have to be considered important. The rule</span>
+<span class="c1"># of thumb employed here proved good in our experiments.</span>
+<span class="n">vb_prune</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">vb</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">vb</span><span class="o">.</span><span class="n">K</span>
+
+<span class="c1"># Run the variational Bayes for at most 1,000 iterations.  But if the</span>
+<span class="c1"># lower bound of the model evidence changes by less than `rel_tol`,</span>
+<span class="c1"># convergence is declared before. If we increase `rel_tol` to 1e-4, it</span>
+<span class="c1"># takes less iterations but potentially more (useless) components</span>
+<span class="c1"># survive the pruning. The trade-off depends on the complexity of the</span>
+<span class="c1"># problem.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;running variational Bayes ...&#39;</span><span class="p">)</span>
+<span class="n">vb</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="n">vb_prune</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># extract the most probable Gaussian mixture given the samples</span>
+<span class="n">vbmix</span> <span class="o">=</span> <span class="n">vb</span><span class="o">.</span><span class="n">make_mixture</span><span class="p">()</span>
+
+<span class="c1"># Now we can instantiate an importance sampler. We draw 1,000</span>
+<span class="c1"># importance samples and use these for a proposal update using</span>
+<span class="c1"># variational Bayes again. In case there are multiple modes and</span>
+<span class="c1"># the chains did not mix, we need this step to infer the right</span>
+<span class="c1"># component weights because the component weight is given by</span>
+<span class="c1"># how many chains it attracted, which could be highly dependent</span>
+<span class="c1"># on the starting points and independent of the correct</span>
+<span class="c1"># probability mass.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;running importance sampling ...&#39;</span><span class="p">)</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">importance_sampling</span><span class="o">.</span><span class="n">ImportanceSampler</span><span class="p">(</span><span class="n">log_target</span><span class="p">,</span> <span class="n">vbmix</span><span class="p">)</span>
+<span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># The variational Bayes allows us, unlike PMC, to include the</span>
+<span class="c1"># information gained by the Markov chains in subsequent proposal</span>
+<span class="c1"># updates. We know that we cannot trust the component weights obtained</span>
+<span class="c1"># by the chains. Nevertheless, we can rely on the means and covariances. The</span>
+<span class="c1"># following lines show how to code that into the variational Bayes by</span>
+<span class="c1"># removing the hyperparameter `alpha0` that encodes the component</span>
+<span class="c1"># weights.</span>
+<span class="n">prior_for_proposal_update</span> <span class="o">=</span> <span class="n">vb</span><span class="o">.</span><span class="n">posterior2prior</span><span class="p">()</span>
+<span class="n">prior_for_proposal_update</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;alpha0&#39;</span><span class="p">)</span>
+<span class="n">vb2</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">mix_adapt</span><span class="o">.</span><span class="n">variational</span><span class="o">.</span><span class="n">GaussianInference</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">samples</span><span class="p">[:],</span>
+                                                    <span class="n">initial_guess</span><span class="o">=</span><span class="n">vbmix</span><span class="p">,</span>
+                                                    <span class="n">weights</span><span class="o">=</span><span class="n">sampler</span><span class="o">.</span><span class="n">weights</span><span class="p">[:][:,</span><span class="mi">0</span><span class="p">],</span>
+                                                    <span class="o">**</span><span class="n">prior_for_proposal_update</span><span class="p">)</span>
+
+<span class="c1"># Note: This time we leave &quot;prune&quot; at the default value &quot;1&quot; because we</span>
+<span class="c1">#       want to keep all components that are expected to contribute</span>
+<span class="c1">#       with at least one effective sample per importance sampling run.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;running variational Bayes ...&#39;</span><span class="p">)</span>
+<span class="n">vb2</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">rel_tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">vb2mix</span> <span class="o">=</span> <span class="n">vb2</span><span class="o">.</span><span class="n">make_mixture</span><span class="p">()</span>
+
+<span class="c1"># Now we draw another 10,000 samples with the updated proposal</span>
+<span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span> <span class="o">=</span> <span class="n">vb2mix</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;running importance sampling ...&#39;</span><span class="p">)</span>
+<span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># We can combine the samples and weights from the two runs, see reference [Cor+12].</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">importance_sampling</span><span class="o">.</span><span class="n">combine_weights</span><span class="p">([</span><span class="n">samples</span><span class="p">[:]</span>      <span class="k">for</span> <span class="n">samples</span> <span class="ow">in</span> <span class="n">sampler</span><span class="o">.</span><span class="n">samples</span><span class="p">],</span>
+                                                            <span class="p">[</span><span class="n">weights</span><span class="p">[:][:,</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">weights</span> <span class="ow">in</span> <span class="n">sampler</span><span class="o">.</span><span class="n">weights</span><span class="p">],</span>
+                                                            <span class="p">[</span><span class="n">vbmix</span><span class="p">,</span> <span class="n">vb2mix</span><span class="p">]</span>                                 <span class="p">)</span> \
+                                                            <span class="p">[:][:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">samples</span><span class="p">[:]</span>
+
+<span class="c1"># The integral can then be estimated from the weights. The error is also</span>
+<span class="c1"># estimated from the weights. By the central limit theorem, the integral</span>
+<span class="c1"># estimator has a gaussian distribution.</span>
+<span class="n">integral_estimator</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+<span class="n">integral_uncertainty_estimator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">weights</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">-</span> <span class="n">integral_estimator</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;analytical integral = 1&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;estimated  integral =&#39;</span><span class="p">,</span> <span class="n">integral_estimator</span><span class="p">,</span> <span class="s1">&#39;+-&#39;</span><span class="p">,</span> <span class="n">integral_uncertainty_estimator</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s see how good the proposal matches the target density: the closer</span>
+<span class="c1"># the values of perplexity and effective sample size (ESS) are to 1,</span>
+<span class="c1"># the better.  Outliers, or samples out in the tails of the target</span>
+<span class="c1"># with a very large weight, show up in the 2D marginal and reduce the</span>
+<span class="c1"># ESS significantly. For the above integral estimate to be right on</span>
+<span class="c1"># average, they are &#39;needed&#39;. Without outliers (most of the time), the</span>
+<span class="c1"># integral is a tad too small.</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;perplexity&#39;</span><span class="p">,</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">convergence</span><span class="o">.</span><span class="n">perp</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;effective sample size&#39;</span><span class="p">,</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">convergence</span><span class="o">.</span><span class="n">ess</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+
+<span class="c1"># As mentioned in the very beginning, the methods we applied reinterpret</span>
+<span class="c1"># the target function as an unnormalized probability density.</span>
+<span class="c1"># In addition to the integral, we also get weighted samples distributed according</span>
+<span class="c1"># to that probability density.</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;For plotting &quot;matplotlib&quot; needs to be installed&#39;</span><span class="p">)</span>
+    <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist2d</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">samples</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray_r&#39;</span><span class="p">)</span>
+<span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">plot_mixture</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="p">,</span> <span class="n">visualize_weights</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;colors visualize component weights&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href="./../examples/uniting_markov_chains_and_variational_bayes.py">Source code</a>, <a class="reference external" href="./../examples/uniting_markov_chains_and_variational_bayes.png">png</a>, <a class="reference external" href="./../examples/uniting_markov_chains_and_variational_bayes.hires.png">hires.png</a>, <a class="reference external" href="./../examples/uniting_markov_chains_and_variational_bayes.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/uniting_markov_chains_and_variational_bayes.png" src="_images/uniting_markov_chains_and_variational_bayes.png" />
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="5. References"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="user_guide.html" title="3. User guide"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

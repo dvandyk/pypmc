@@ -1,0 +1,764 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3. User guide &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. Examples" href="examples.html" />
+    <link rel="prev" title="2. Installation" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="4. Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="2. Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. User guide</a><ul>
+<li><a class="reference internal" href="#densities">3.1. Densities</a><ul>
+<li><a class="reference internal" href="#component-density">3.1.1. Component density</a></li>
+<li><a class="reference internal" href="#mixture-density">3.1.2. Mixture density</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indicator-function">3.2. Indicator function</a></li>
+<li><a class="reference internal" href="#markov-chain">3.3. Markov chain</a><ul>
+<li><a class="reference internal" href="#initialization">3.3.1. Initialization</a></li>
+<li><a class="reference internal" href="#adaptation">3.3.2. Adaptation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#importance-sampling">3.4. Importance sampling</a><ul>
+<li><a class="reference internal" href="#standard">3.4.1. Standard</a></li>
+<li><a class="reference internal" href="#deterministic-mixture">3.4.2. Deterministic mixture</a></li>
+<li><a class="reference internal" href="#comparison">3.4.3. Comparison</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pmc">3.5. PMC</a><ul>
+<li><a class="reference internal" href="#basic-approach">3.5.1. Basic approach</a></li>
+<li><a class="reference internal" href="#id6">3.5.2. Student’s t</a></li>
+<li><a class="reference internal" href="#pmc-with-multiple-em-steps">3.5.3. PMC with multiple EM steps</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#variational-bayes">3.6. Variational Bayes</a><ul>
+<li><a class="reference internal" href="#classic-version">3.6.1. Classic version</a><ul>
+<li><a class="reference internal" href="#id13">3.6.1.1. Initialization</a></li>
+<li><a class="reference internal" href="#running">3.6.1.2. Running</a></li>
+<li><a class="reference internal" href="#results">3.6.1.3. Results</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mixture-reduction">3.7. Mixture reduction</a><ul>
+<li><a class="reference internal" href="#hierarchical-clustering">3.7.1. Hierarchical clustering</a></li>
+<li><a class="reference internal" href="#vbmerge">3.7.2. VBmerge</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#putting-it-all-together">3.8. Putting it all together</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">2. Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">4. Examples</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/user_guide.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="user-guide">
+<h1>3. User guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="densities">
+<h2>3.1. Densities<a class="headerlink" href="#densities" title="Permalink to this headline">¶</a></h2>
+<p>Pypmc revolves around adapting mixture densities of the form</p>
+<div class="math">
+\[q(x) = \sum_{j=1}^K \alpha_j q_j(x), \: \sum_{j=1}^K \alpha_j = 1\]</div>
+<p>where each component <span class="math">\(q_j\)</span> is either a <a class="reference external" href="https://en.wikipedia.org/wiki/Normal_distribution">Gaussian</a></p>
+<div class="math">
+\[q_j(x) = \mathcal{N}(x | \mu_j, \Sigma_j)\]</div>
+<p>or a <a class="reference external" href="https://en.wikipedia.org/wiki/Student%27s_t-distribution">student’s t</a> distribution</p>
+<div class="math">
+\[q_j(x) = \mathcal{T}(x | \mu_j, \Sigma_j, \nu) \,.\]</div>
+<p>The free parameters of the mixture density, <span class="math">\(\theta\)</span>, are the component weights
+<span class="math">\(\alpha_j\)</span>, the means <span class="math">\(\mu_j\)</span>, the covariances
+<span class="math">\(\Sigma_j\)</span> and in case <span class="math">\(q_j = \mathcal{T}\)</span> the degree of
+freedom <span class="math">\(\nu_j\)</span> for <span class="math">\(j=1 \dots K\)</span>.</p>
+<div class="section" id="component-density">
+<h3>3.1.1. Component density<a class="headerlink" href="#component-density" title="Permalink to this headline">¶</a></h3>
+<p>The two densities — Gauss and student’s t — supported by pypmc
+come in two variants whose methods have identical names but differ in
+their arguments. The standard classes are
+<a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">Gauss</span></code></a> and
+<a class="reference internal" href="density.html#pypmc.density.student_t.StudentT" title="pypmc.density.student_t.StudentT"><code class="xref py py-class docutils literal"><span class="pre">StudentT</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="o">-</span><span class="mf">0.001</span><span class="p">],</span>
+                    <span class="p">[</span><span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">]])</span>
+<span class="n">dof</span> <span class="o">=</span> <span class="mf">5.</span>
+<span class="n">gauss</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">gauss</span><span class="o">.</span><span class="n">Gauss</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+<span class="n">student_t</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">student_t</span><span class="o">.</span><span class="n">StudentT</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">dof</span><span class="p">)</span>
+
+<span class="c1"># density at (1, 1)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">gauss</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># draw sample from density</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">gauss</span><span class="o">.</span><span class="n">propose</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For the use as proposal densities in Markov chains (see below), there
+are also <em>local</em> variants whose mean can be varied in each call to
+<code class="docutils literal"><span class="pre">evaluate</span></code> or <code class="docutils literal"><span class="pre">propose</span></code>.  <a class="reference internal" href="density.html#pypmc.density.gauss.LocalGauss" title="pypmc.density.gauss.LocalGauss"><code class="xref py py-class docutils literal"><span class="pre">LocalGauss</span></code></a>
+and <a class="reference internal" href="density.html#pypmc.density.student_t.LocalStudentT" title="pypmc.density.student_t.LocalStudentT"><code class="xref py py-class docutils literal"><span class="pre">LocalStudentT</span></code></a> don’t take the
+<code class="docutils literal"><span class="pre">mean</span></code> argument in the constructor. To reproduce the previous
+results, one would do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">local_gauss</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">gauss</span><span class="o">.</span><span class="n">LocalGauss</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">local_gauss</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">local_gauss</span><span class="o">.</span><span class="n">propose</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mixture-density">
+<h3>3.1.2. Mixture density<a class="headerlink" href="#mixture-density" title="Permalink to this headline">¶</a></h3>
+<p>Mixture densities are represented by
+<a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a>. One can create a
+mixture density from a list of arbitrary component densities and
+weights. However, usually all one needs are the convenience shortcuts
+to create mixtures of Gaussians and student’s from means and
+covariances. For example, for two components with weight 60% and 40%:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypmc.density.mixture</span> <span class="k">import</span> <span class="n">create_gaussian_mixture</span><span class="p">,</span> <span class="n">create_t_mixture</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>
+<span class="n">means</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">D</span><span class="p">)]</span>
+<span class="n">covariances</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">D</span><span class="p">)]</span>
+<span class="n">gauss_mixture</span> <span class="o">=</span> <span class="n">create_gaussian_mixture</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">covariances</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+<span class="n">dofs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">]</span>
+<span class="n">mixture</span> <span class="o">=</span> <span class="n">create_t_mixture</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">covariances</span><span class="p">,</span> <span class="n">dofs</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The most common interaction pattern with a mixture density requires
+only a few attributes and methods:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gauss_mixture</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">D</span><span class="p">))</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">gauss_mixture</span><span class="o">.</span><span class="n">propose</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">gauss_mixture</span><span class="o">.</span><span class="n">dim</span>
+<span class="n">first_component</span> <span class="o">=</span> <span class="n">gauss_mixture</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">second_weight</span> <span class="o">=</span> <span class="n">gauss_mixture</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="indicator-function">
+<span id="indicator"></span><h2>3.2. Indicator function<a class="headerlink" href="#indicator-function" title="Permalink to this headline">¶</a></h2>
+<p>The indicator function <span class="math">\(\mathbf{1}_V\)</span> can be used to limit the
+support of the target density to the volume <span class="math">\(V\)</span> in the samplers
+discussed below. It is defined as</p>
+<div class="math">
+\[\begin{split}\mathbf{1}_{V} (x) =
+\begin{cases}
+1,  x \in V \\
+0, {\rm else}
+\end{cases}\end{split}\]</div>
+<p>The <a class="reference internal" href="tools.html#module-pypmc.tools.indicator" title="pypmc.tools.indicator"><code class="xref py py-mod docutils literal"><span class="pre">indicator</span></code></a> module has provides indicator
+functions for a <a class="reference internal" href="tools.html#pypmc.tools.indicator.ball" title="pypmc.tools.indicator.ball"><code class="xref py py-func docutils literal"><span class="pre">ball</span></code></a> and a
+<a class="reference internal" href="tools.html#pypmc.tools.indicator.hyperrectangle" title="pypmc.tools.indicator.hyperrectangle"><code class="xref py py-func docutils literal"><span class="pre">hyperrectangle</span></code></a> in <span class="math">\(D\)</span> dimensions.
+The indicator function can be merged with the (unbounded) target
+density such that the the wrapper calls the target density only if the
+parameter vector is in V and returns <span class="math">\(\log(0)= -\infty\)</span> otherwise:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypmc.tools.indicator</span> <span class="k">import</span> \
+     <span class="n">merge_function_with_indicator</span>
+
+<span class="c1"># define indicator</span>
+<span class="n">ind_lower</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">range_min</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">priors</span><span class="p">]</span>
+<span class="n">ind_upper</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">range_max</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">priors</span><span class="p">]</span>
+<span class="n">ind</span> <span class="o">=</span> <span class="n">pypmc</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">indicator</span><span class="o">.</span><span class="n">hyperrectangle</span><span class="p">(</span><span class="n">ind_lower</span><span class="p">,</span> <span class="n">ind_upper</span><span class="p">)</span>
+
+<span class="c1"># merge with indicator</span>
+<span class="n">log_target</span> <span class="o">=</span> <span class="n">merge_function_with_indicator</span><span class="p">(</span><span class="n">ana</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="markov-chain">
+<h2>3.3. Markov chain<a class="headerlink" href="#markov-chain" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="initialization">
+<h3>3.3.1. Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h3>
+<p>We provide a generic implementation of adaptive local-random-walk MCMC
+<a class="reference internal" href="references.html#hst01" id="id1">[HST01]</a> featuring Gauss and student’s t local proposals. To create a
+<a class="reference internal" href="sampler.html#pypmc.sampler.markov_chain.MarkovChain" title="pypmc.sampler.markov_chain.MarkovChain"><code class="xref py py-class docutils literal"><span class="pre">MarkovChain</span></code></a>, one needs to be able to evaluate the target
+density on the log scale, and then a local proposal density, and a valid
+initial point:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypmc.density.student_t.LocalStudentT</span>
+<span class="kn">import</span> <span class="nn">pypmc.sampler.markov_chain.AdaptiveMarkovChain</span>
+
+<span class="c1"># unit gaussian, unnormalized</span>
+<span class="k">def</span> <span class="nf">log_target</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+  <span class="k">return</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">prop</span> <span class="o">=</span> <span class="n">LocalStudentT</span><span class="p">(</span><span class="n">prop_sigma</span><span class="p">,</span> <span class="n">prop_dof</span><span class="p">)</span>
+
+<span class="n">start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">])</span>
+<span class="n">mc</span> <span class="o">=</span> <span class="n">AdaptiveMarkovChain</span><span class="p">(</span><span class="n">log_target</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The initial proposal covariance should be chosen similar to the
+target’s covariance, but scaled to yield an acceptance rate in the
+range of 20%. For a Gaussian target and a Gaussian proposal in
+<span class="math">\(D\)</span> dimensions, the scaling should be <span class="math">\(2.38^2/D\)</span></p>
+<p>In order to constrain the support of the target in a simple way, one
+can pass an <a class="reference internal" href="tools.html#module-pypmc.tools.indicator" title="pypmc.tools.indicator"><code class="xref py py-class docutils literal"><span class="pre">indicator</span></code></a> function to the
+constructor using the keyword argument <code class="docutils literal"><span class="pre">ind=indicator</span></code>. Then any
+proposed point is first checked to lie in the support; i.e.,
+<code class="docutils literal"><span class="pre">indicator(x)</span> <span class="pre">==</span> <span class="pre">True</span></code>. Only then is the target density called. This
+leads to significant speed-ups if the mass of the target density is
+close to a boundary, and its evaluation is slow.</p>
+</div>
+<div class="section" id="adaptation">
+<h3>3.3.2. Adaptation<a class="headerlink" href="#adaptation" title="Permalink to this headline">¶</a></h3>
+<p>The prototypical use is to run the chain for a number of iterations
+until it finds the bulk of the distribution, and to discard these
+samples as burn-in or warm-up. Then the samples can be used to tune
+the proposal covariance:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<span class="c1"># run 100,000 steps adapting the proposal every 500 steps</span>
+<span class="c1"># hereby save the accept count which is returned by mc.run</span>
+<span class="n">accept_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
+<span class="n">accept_count</span> <span class="o">+=</span> <span class="n">mc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">adapt</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that the proposal can be tuned continously so the Markov property
+is lost but the samples are still asymptotically distributed according
+to the target; i.e., there is no need to fix the proposal to generate
+valid samples.</p>
+<p>The parameters like the desired minimum and maximum acceptance rate
+can be set via
+<a class="reference internal" href="sampler.html#pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params" title="pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params"><code class="xref py py-meth docutils literal"><span class="pre">set_adapt_params</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="importance-sampling">
+<h2>3.4. Importance sampling<a class="headerlink" href="#importance-sampling" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="standard">
+<h3>3.4.1. Standard<a class="headerlink" href="#standard" title="Permalink to this headline">¶</a></h3>
+<p>The standard
+<a class="reference internal" href="sampler.html#pypmc.sampler.importance_sampling.ImportanceSampler" title="pypmc.sampler.importance_sampling.ImportanceSampler"><code class="xref py py-class docutils literal"><span class="pre">ImportanceSampler</span></code></a>
+implements serial importance sampling to compute the expectation of
+some function <span class="math">\(f\)</span> under the target <span class="math">\(P\)</span> as</p>
+<div class="math" id="fundamental-is">
+\[E_P[f] = \int dx P(x) f(x) \approx \frac{1}{N} \sum_{i=1}^N P(x_i) / q(x_i) f(x_i)=\frac{1}{N} \sum_{i=1}^N w_i f(x_i), x \sim q,\]</div>
+<p>where <span class="math">\(w_i\)</span> is the importance weight and <span class="math">\(q\)</span> is the
+proposal density.</p>
+<p>To start, one only needs the target density <span class="math">\(P\)</span> defined by a
+function that computes <span class="math">\(log(P(x))\)</span> for an input vector
+<span class="math">\(x\)</span>, and similarly for <span class="math">\(q\)</span>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypmc.sampler.importance_sampling.ImportanceSampler</span>
+
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">ImportanceSampler</span><span class="p">(</span><span class="n">log_target</span><span class="p">,</span> <span class="n">log_proposal</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Optionally, the <code class="docutils literal"><span class="pre">sampler</span></code> accepts an <a class="reference internal" href="tools.html#module-pypmc.tools.indicator" title="pypmc.tools.indicator"><code class="xref py py-class docutils literal"><span class="pre">indicator</span></code></a>;
+see <a class="reference internal" href="#indicator"><span class="std std-ref">Indicator function</span></a>. What to do with <code class="docutils literal"><span class="pre">sampler</span></code>? Run it:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>to draw 500 samples. If the proposal is a
+<a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a> and the option
+<code class="docutils literal"><span class="pre">trace_sort=True</span></code>, then <code class="docutils literal"><span class="pre">run</span></code> returns the generating component for
+each sample.</p>
+<p>The samples and weights are stored in two
+<code class="xref py py-attr docutils literal"><span class="pre">history</span></code>
+objects:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note that a <a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal"><span class="pre">History</span></code></a> object can contain the output
+of several runs, the last one is available as <code class="docutils literal"><span class="pre">history[-1]</span></code>.</p>
+<p>The samples are ordered according to the generating component if
+<cite>trace_sort=True</cite>.</p>
+</div>
+<div class="section" id="deterministic-mixture">
+<h3>3.4.2. Deterministic mixture<a class="headerlink" href="#deterministic-mixture" title="Permalink to this headline">¶</a></h3>
+<p>If weighted samples from the same target but different proposal
+densities are available, the weights can be combined in a clever way
+as though they were drawn from the mixture of individual proposals
+<a class="reference internal" href="references.html#cor-12" id="id2">[Cor+12]</a>. This preserves the unbiasedness of the <a class="reference internal" href="#fundamental-is"><span class="std std-ref">fundamental
+estimate of importance sampling</span></a>. The motivation to
+combine multiple proposals is to improve the variance of the estimator
+by reducing the effect of <cite>outliers</cite>; i.e., samples with very large
+weights in the tails of <span class="math">\(q\)</span>. For proposals <span class="math">\(\{q_l:
+l=1 \dots T\}\)</span> and <span class="math">\(N_l\)</span> available samples per proposal, the
+combined importance weight of sample <span class="math">\(x\)</span> becomes</p>
+<div class="math">
+\[\frac{P(x)}{\frac{1}{\sum_{k=0}^T N_k} \sum_{l=0}^T N_l q_l(x)}\]</div>
+<p>The function
+<a class="reference internal" href="sampler.html#pypmc.sampler.importance_sampling.combine_weights" title="pypmc.sampler.importance_sampling.combine_weights"><code class="xref py py-class docutils literal"><span class="pre">combine_weights</span></code></a> takes the
+samples and regular importance weights as lists of arrays and the
+proposals as a list and returns the combined weights as
+<a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal"><span class="pre">History</span></code></a> object such that the weights for each
+proposal are easily accessible.</p>
+</div>
+<div class="section" id="comparison">
+<h3>3.4.3. Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
+<p>Compared to the regular
+<a class="reference internal" href="sampler.html#pypmc.sampler.importance_sampling.ImportanceSampler" title="pypmc.sampler.importance_sampling.ImportanceSampler"><code class="xref py py-class docutils literal"><span class="pre">ImportanceSampler</span></code></a>,
+<code class="xref py py-class docutils literal"><span class="pre">combined_weights</span></code> requires
+more memory and slightly more cpu, but usually increases the relative
+effective sample size, and in most cases significantly increases the
+total effective sample size compared to throwing away samples from all
+but the last run. If the samples are all drawn from the <cite>same</cite>
+proposal, then both samplers yield identical results.</p>
+</div>
+</div>
+<div class="section" id="pmc">
+<h2>3.5. PMC<a class="headerlink" href="#pmc" title="Permalink to this headline">¶</a></h2>
+<p><em>Population Monte Carlo</em> <a class="reference internal" href="references.html#cap-08" id="id3">[Cap+08]</a> is a class of algorithms designed
+to approximate the target density by a mixture density. The basic idea
+is to minimize the Kullback-Leibler divergence between the target and
+the mixture by optimizing the mixture parameters. The expectation
+values taken over the unknown target distribution are approximated by
+importance sampling using samples from the proposal mixture; the set
+of samples is the <em>population</em>. The algorithm is a form of expectation
+maximization (EM) and yields the optimal values of the parameters of a
+Gaussian or student’s t mixture density. The crucial task (more on
+this below) is to supply a good initial proposal.</p>
+<div class="section" id="basic-approach">
+<h3>3.5.1. Basic approach<a class="headerlink" href="#basic-approach" title="Permalink to this headline">¶</a></h3>
+<p>In the simplest scheme, new samples are drawn from the proposal
+<span class="math">\(q\)</span> in each iteration, importance weights computed, and only one
+EM step is performed to tune the mixture parameters of the
+proposal. Then new samples are drawn, and the updating is iterated
+until a user-defined maximum number of steps or some heuristic
+convergence criterion is reached <a class="reference internal" href="references.html#bc13" id="id4">[BC13]</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypmc.density.mixture.MixtureDensity</span>
+<span class="kn">import</span> <span class="nn">pypmc.sampler.importance_sampling.ImportanceSampler</span>
+<span class="kn">import</span> <span class="nn">pypmc.mix_adapt.pmc.gaussian_pmc</span>
+
+<span class="n">initial_proposal</span> <span class="o">=</span> <span class="n">MixtureDensity</span><span class="p">(</span><span class="n">initial_prop_components</span><span class="p">)</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">ImportanceSampler</span><span class="p">(</span><span class="n">log_target</span><span class="p">,</span> <span class="n">initial_proposal</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">generating_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span> <span class="n">trace_sort</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">gaussian_pmc</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">proposal</span><span class="p">,</span>
+                 <span class="n">weights</span><span class="p">,</span>
+                 <span class="n">latent</span><span class="o">=</span><span class="n">generating_components</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                 <span class="n">mincount</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">rb</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the example code, we keep track of which sample came from which
+component by passing the argument <code class="docutils literal"><span class="pre">trace_sort=True</span></code> to the
+<code class="docutils literal"><span class="pre">sampler</span></code> that returns the indices from the <code class="docutils literal"><span class="pre">run</span></code> method. The PMC
+update can use this information to prune irrelevant components that
+contributed less than <code class="docutils literal"><span class="pre">mincount</span></code> samples. If <code class="docutils literal"><span class="pre">mincount=0</span></code>, the
+pruning is disabled. This may lead to many components with vanishing
+weights, which can slow down the PMC update, but otherwise does no
+harm.</p>
+<p>Note that in the actual parameter update, one needs the latent
+variables but when using the recommended Rao-Blackwellization
+(<code class="docutils literal"><span class="pre">rb=True</span></code>), the generating components are ignored, and the
+corresponding latent variables are inferred from the data. This is
+more time consuming, but leads to more robust fits <a class="reference internal" href="references.html#cap-08" id="id5">[Cap+08]</a>. The
+faster but less powerful variant <code class="docutils literal"><span class="pre">rb=False</span></code> then requires that the
+generating components be passed to <code class="docutils literal"><span class="pre">latent</span></code>.</p>
+<p>The keyword <code class="docutils literal"><span class="pre">copy=False</span></code> allows <code class="docutils literal"><span class="pre">gaussian_pmc</span></code> to update the
+<code class="docutils literal"><span class="pre">density</span></code> in place.</p>
+</div>
+<div class="section" id="id6">
+<h3>3.5.2. Student’s t<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>A student’s t distribution should be preferred over a Gaussian mixture
+if one suspects long tails in the target density. In the original
+proposal by Cappé et al. <a class="reference internal" href="references.html#cap-08" id="id7">[Cap+08]</a>, the degree of freedom of each
+component, <span class="math">\(\nu_k\)</span>, had to be set manually, and it was not
+updated. To add more flexibility and put less burden on the user, we
+update <span class="math">\(\nu_k\)</span> by numerically solving equation 16 of <a class="reference internal" href="references.html#hod12" id="id8">[HOD12]</a>,
+which involves the digamma function.</p>
+<p>The function <a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.pmc.student_t_pmc" title="pypmc.mix_adapt.pmc.student_t_pmc"><code class="xref py py-func docutils literal"><span class="pre">student_t_pmc</span></code></a> is invoked
+just like its Gaussian counterpart, but has three extra arguments to
+limit the number of steps of the numerical solver
+(<code class="docutils literal"><span class="pre">dof_solver_steps</span></code>), and to pass the allowed range of values of
+<span class="math">\(\nu_k\)</span> (<code class="docutils literal"><span class="pre">mindof,</span> <span class="pre">maxdof</span></code>). The student’s t converges to the
+Gaussian distribution as <span class="math">\(\nu_k \to \infty\)</span>, but for practical
+purposes, <span class="math">\(\nu_k \approx 30\)</span> is usually close enough to
+<span class="math">\(\infty\)</span> and thus provides a sufficient upper bound.</p>
+<p>For small problems (few samples/components), the numerical
+solver may add a significant overhead to the overall time of one PMC
+update. But since it adds flexibility, our recommendation is to start
+with and only turn it off (<code class="docutils literal"><span class="pre">dof_solver_steps=0</span></code>) if the overhead is
+intolerable.</p>
+</div>
+<div class="section" id="pmc-with-multiple-em-steps">
+<h3>3.5.3. PMC with multiple EM steps<a class="headerlink" href="#pmc-with-multiple-em-steps" title="Permalink to this headline">¶</a></h3>
+<p>In order to make the most out of the available samples, it is better
+to run multiple EM update steps to infer the parameters of the mixture
+density. The convergence criterion is the likelihood value given in
+Eq. 5 of <a class="reference internal" href="references.html#cap-08" id="id9">[Cap+08]</a>. Depending on the sought precision, several
+hundreds of EM steps may be required. We advise the user to decide
+based on the cost of computing new samples whether it is worth running
+the EM for many iterations or if one gets better results by just
+computing new samples for a mixture that is not quite at the (local)
+optimum.</p>
+<p>A <a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.pmc.PMC" title="pypmc.mix_adapt.pmc.PMC"><code class="xref py py-class docutils literal"><span class="pre">PMC</span></code></a> object handles the convergence
+testing for both Gaussian and Student’s t mixtures as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pmc</span> <span class="o">=</span> <span class="n">PMC</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+<span class="n">pmc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The relevant keyword arguments to <a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.pmc.PMC" title="pypmc.mix_adapt.pmc.PMC"><code class="xref py py-class docutils literal"><span class="pre">PMC</span></code></a>
+are passed on to the actual updates done by
+<a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.pmc.gaussian_pmc" title="pypmc.mix_adapt.pmc.gaussian_pmc"><code class="xref py py-func docutils literal"><span class="pre">gaussian_pmc</span></code></a> or
+<a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.pmc.student_t_pmc" title="pypmc.mix_adapt.pmc.student_t_pmc"><code class="xref py py-func docutils literal"><span class="pre">student_t_pmc</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="variational-bayes">
+<h2>3.6. Variational Bayes<a class="headerlink" href="#variational-bayes" title="Permalink to this headline">¶</a></h2>
+<p>The general idea of variational Bayes is pedagogically explained in
+<a class="reference internal" href="references.html#bis06" id="id10">[Bis06]</a>, Ch. 10. In a nutshell, the unknown joint posterior density
+of hidden (or latent) data <span class="math">\(Z\)</span> and the parameters <span class="math">\(\vecth\)</span>
+is approximated by a distribution that factorizes as</p>
+<div class="math">
+\[q(Z, \vecth) = q(Z) q(\vecth)\]</div>
+<p>In our case, we assume the data <span class="math">\(X\)</span> to be generated from a
+mixture of Gaussians; i.e.,</p>
+<div class="math">
+\[X \sim P(X|\vecth) = \prod_{i=1}^N \sum_k \alpha_k q_k(x_i|\vecth).\]</div>
+<p>where the latent data have been marginalized out.  The priors over the
+parameters <span class="math">\(\vecth\)</span> are chosen conjugate to the likelihood such
+that the posterior <span class="math">\(q(\vecth)\)</span> has the same functional form as
+the prior. The prior and the variational posterior over <span class="math">\(\vecth\)</span>
+depend on hyperparameters <span class="math">\(\vecgamma_0\)</span> and <span class="math">\(\vecgamma\)</span>
+respectively. The only difference between <span class="math">\(P(\vecth)\)</span> and
+<span class="math">\(q(\vecth)\)</span> are the values of the hyperparameters, hence the
+knowledge update due to the data <span class="math">\(X\)</span> is captured by updating the
+values of <span class="math">\(\vecgamma\)</span>. In practice, this results in an
+expectation-maximization-like algorithm that seeks to optimize the
+lower bound of the evidence, or equivalently minimize the
+Kullback-Leibler divergence <span class="math">\(KL(q||P)\)</span>. The result of the
+optimization is a <em>local</em> optimum <span class="math">\(\vecgamma^{\ast}\)</span> that
+depends rather sensitively on the starting values. In each step,
+<span class="math">\(q(Z)\)</span> and <span class="math">\(q(\vecth)\)</span> are alternately updated.</p>
+<p>Note that variational Bayes yields an approximation of the <cite>posterior</cite>
+over the mixture parameters <span class="math">\(q(\vecth | \vecgamma^{\ast})\)</span>,
+while the output of PMC is an optimal value <span class="math">\(\vecth^{\ast}\)</span>. So
+in variational Bayes we can fully account for the uncertainty, while
+in PMC we cannot. However, when we are forced to create <cite>one</cite> mixture
+density based on <span class="math">\(q(\vecth | \vecgamma^{\ast})\)</span>, we choose
+<span class="math">\(\vecth^{\ast}\)</span> at the mode; i.e.</p>
+<div class="math">
+\[\vecth^{\ast} = \arg \max_{\vecth} q(\vecth | \vecgamma^{\ast}).\]</div>
+<p>Perhaps the biggest advantage of variational Bayes over PMC is that we
+can choose a prior that is noninformative but still prevents the usual
+pathologies of maximum likelihood such as excessive model complexity
+due to components that are responsible for only one sample and whose
+covariance matrix shrinks to zero. Variational Bayes is very effective
+at automatically determining a suitable number of components by
+assigning weight zero to irrelevant components.</p>
+<p>As opposed to PMC, variational Bayes has a natural convergence
+criterion, the lower bound to the evidence. We propose to run as many
+update steps as necessary until the change of the lower bound is less
+than some user-configurable number. Often the smaller that number, the
+more irrelevant components are removed.</p>
+<p>We implement two variants of variational Bayes, both yield a posterior
+over the parameters of a Gaussian mixture. In either case, one can
+fully specify all hyperparameter values for both the prior and the
+starting point of the posterior.</p>
+<p>The <em>classic</em> version <a class="reference internal" href="references.html#bis06" id="id11">[Bis06]</a> is the most well known and widely
+used. It takes <span class="math">\(N\)</span> samples as input. The <em>mixture reduction</em>
+version <a class="reference internal" href="references.html#bgp10" id="id12">[BGP10]</a> seeks to compress an input mixture of Gaussians to an
+output mixture with fewer components. This variant arises as a
+limiting case of the classic version.</p>
+<div class="section" id="classic-version">
+<span id="classic-vb"></span><h3>3.6.1. Classic version<a class="headerlink" href="#classic-version" title="Permalink to this headline">¶</a></h3>
+<p>A basic example: draw samples from a standard Gaussian in 2D. Then run
+variational Bayes to recover that exact Gaussian. Paste the following code into
+your python shell and you should get plots similar to those shown modulo the random data points:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pypmc.mix_adapt.variational</span> <span class="kn">import</span> <span class="n">GaussianInference</span>
+<span class="kn">from</span> <span class="nn">pypmc.tools</span> <span class="kn">import</span> <span class="n">plot_mixture</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="c1"># data points</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1"># maximum number of components in mixture</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">vb</span> <span class="o">=</span> <span class="n">GaussianInference</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="n">K</span><span class="p">,</span>
+                       <span class="n">alpha</span><span class="o">=</span><span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">K</span><span class="p">),</span>
+                       <span class="n">nu</span><span class="o">=</span><span class="mi">3</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">K</span><span class="p">))</span>
+
+<span class="c1"># plot data and initial guess</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">initial_mix</span> <span class="o">=</span> <span class="n">vb</span><span class="o">.</span><span class="n">make_mixture</span><span class="p">()</span>
+<span class="n">plot_mixture</span><span class="p">(</span><span class="n">initial_mix</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gist_rainbow&#39;</span><span class="p">)</span>
+<span class="n">x_range</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">y_range</span> <span class="o">=</span> <span class="n">x_range</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">x_range</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">y_range</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Initial&#39;</span><span class="p">)</span>
+
+<span class="c1"># compute variational Bayes posterior</span>
+<span class="n">vb</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">prune</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">K</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># obtain most probable mixture and plot it</span>
+<span class="n">mix</span> <span class="o">=</span> <span class="n">vb</span><span class="o">.</span><span class="n">make_mixture</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">x_range</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">y_range</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plot_mixture</span><span class="p">(</span><span class="n">mix</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gist_rainbow&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Final&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//user_guide-1.py">Source code</a>, <a class="reference external" href=".//user_guide-1.png">png</a>, <a class="reference external" href=".//user_guide-1.hires.png">hires.png</a>, <a class="reference external" href=".//user_guide-1.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/user_guide-1.png" src="_images/user_guide-1.png" />
+</div>
+<div class="section" id="id13">
+<h4>3.6.1.1. Initialization<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
+<p>In more complicated examples, it may be necessary to give good
+starting values to the means and covariances of the components in
+order to accelerate convergence to a sensible solution. You can pass
+this information when you create the
+<a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal"><span class="pre">GaussianInference</span></code></a>
+object. Internally, the info is forwarded to a call to
+<a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters" title="pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters"><code class="xref py py-meth docutils literal"><span class="pre">set_variational_parameters</span></code></a>,
+where all parameter names and symbols are explained in detail.</p>
+<p>If an initial guess in the form of a Gaussian
+<a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a> is available, this can
+be used to define the initial values using
+<code class="docutils literal"><span class="pre">GaussianInference(...</span> <span class="pre">initial_guess=mixture)</span></code></p>
+<p>Note that the <code class="docutils literal"><span class="pre">vb</span></code> object carries the posterior distribution of
+hyperparameters describing a Gaussian mixture. Invoking
+<code class="docutils literal"><span class="pre">make_mixture()</span></code> singles out the mixture at the mode of the
+posterior. To have a well defined mode one needs <code class="docutils literal"><span class="pre">nu[k]</span> <span class="pre">&gt;</span> <span class="pre">d</span></code> and
+<code class="docutils literal"><span class="pre">alpha[k]</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> for at least one component <code class="docutils literal"><span class="pre">k</span></code>. We set <span class="math">\(\nu=3\)</span>
+such that the covariance at the mode of the Wishart distribution</p>
+<div class="math">
+\[\boldsymbol{\Sigma} = (\nu - d) \boldsymbol{W}^{-1} = \boldsymbol{W}^{-1}\]</div>
+<p>equals <span class="math">\(\boldsymbol{W}^{-1}\)</span> for <span class="math">\(d=2\)</span>. This allows us to
+plot the initial guess. The default placement
+<code class="docutils literal"><span class="pre">GaussianInference(...initial_guess=&quot;random&quot;)</span></code> is to randomly select
+<code class="docutils literal"><span class="pre">K</span></code> data points and start with a Gaussian of unit covariance
+there. <code class="docutils literal"><span class="pre">K</span></code> is the maximum number of components and has to be chosen
+by user. A safe procedure is to choose <code class="docutils literal"><span class="pre">K</span></code> larger than desired, and
+let variational Bayes figures out the right value.</p>
+</div>
+<div class="section" id="running">
+<h4>3.6.1.2. Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h4>
+<p>Running variational Bayes with <code class="docutils literal"><span class="pre">vb.run()</span></code> can take a while if you
+have a lot of data points, lots of components, and high-dimensional
+data. Monitor the progress with <code class="docutils literal"><span class="pre">verbose=True</span></code>.</p>
+<p>The pruning (removal) of components is determined by the <code class="docutils literal"><span class="pre">prune</span></code>
+keyword. After a VB update, every component is <em>responsible</em> for an
+effective number of samples. If this is lower than the threshold set
+by <code class="docutils literal"><span class="pre">prune</span></code>, the component is pruned. In our experiments, a good rule
+of thumb to remove many components is to set the threshold to
+<span class="math">\(K/2\)</span>.</p>
+</div>
+<div class="section" id="results">
+<h4>3.6.1.3. Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h4>
+<p>Continuing the example, you can inspect how all hyperparameters were
+updated by the data:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vb</span><span class="o">.</span><span class="n">prior_posterior</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>and you can check that the mean of the most probable Gaussian
+(assuming the mixture only has one component) is close to zero and the
+covariance is close to the identity matrix:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mix</span> <span class="o">=</span> <span class="n">vb</span><span class="o">.</span><span class="n">make_mixture</span><span class="p">()</span>
+<span class="n">mix</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mu</span>
+<span class="n">mix</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sigma</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="mixture-reduction">
+<h2>3.7. Mixture reduction<a class="headerlink" href="#mixture-reduction" title="Permalink to this headline">¶</a></h2>
+<p>Let us suppose samples are fed into a clustering algorithm that yields
+a Gaussian mixture. To save memory, we discard the samples and retain
+only the mixture as a description of the data. Assume the same
+procedure is carried out on different sets of samples from the same
+parent distribution, and we end up with a collection of mixture
+densities that contain similar information. How to combine them? A
+simple merge would be overly complex, as similar information is stored
+in every mixture. How then to compress this collection into one
+Gaussian mixture with less components but similar descriptive power?
+We provide two algorithms for this task illustrated in the example
+<a class="reference internal" href="examples.html#ex-mix-red"><span class="std std-ref">Mixture reduction</span></a>.</p>
+<div class="section" id="hierarchical-clustering">
+<h3>3.7.1. Hierarchical clustering<a class="headerlink" href="#hierarchical-clustering" title="Permalink to this headline">¶</a></h3>
+<p>While the KL divergence between two Gaussians is known analytically,
+the corresponding result between Gaussian mixtures is not known.  The
+<cite>hierarchical clustering</cite> described in <a class="reference internal" href="references.html#gr04" id="id14">[GR04]</a> seeks to minimize an
+ad-hoc function used as a proxy for the metric between two Gaussian
+mixtures. The basic idea is very simple: map input components to
+output components such that every component in the output mixture is
+made up of an <cite>integer</cite> number of input components (<cite>regroup</cite>
+step). Then update the output component weights, means, and
+covariances (<cite>refit</cite> step). Continue until the metric is unchanged.</p>
+<p>Note that this is a discrete problem: each input component is
+associated to only one output component, thus if the mapping doesn’t
+change, then the metric does not change either. Output components can
+only die out if they receive no input component. Typically this is
+rare, so the number of output components is essentially chosen by the
+user, and not by the algorithm
+<a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.hierarchical.Hierarchical" title="pypmc.mix_adapt.hierarchical.Hierarchical"><code class="xref py py-class docutils literal"><span class="pre">Hierarchical</span></code></a>. A user has to
+supply the input mixture, and an initial guess of the output mixture,
+thereby defining the maximum number of components:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypmc.mix_adapt.hierarchical</span> <span class="k">import</span> <span class="n">Hierarchical</span>
+
+<span class="n">h</span> <span class="o">=</span> <span class="n">Hierarchical</span><span class="p">(</span><span class="n">input_mixture</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where both arguments are <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a>
+objects. To perform the clustering:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">h</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Optional arguments to <code class="xref py py-meth docutils literal"><span class="pre">pypmc.density.mixture.MixtureDensity.run</span></code>
+are the tolerance by which the metric may change to declare
+convergence (<code class="docutils literal"><span class="pre">eps</span></code>), whether to remove output components with zero
+weight (<code class="docutils literal"><span class="pre">kill</span></code>), and the total number of (regroup + refit) steps
+(<code class="docutils literal"><span class="pre">max_steps</span></code>).</p>
+</div>
+<div class="section" id="vbmerge">
+<h3>3.7.2. VBmerge<a class="headerlink" href="#vbmerge" title="Permalink to this headline">¶</a></h3>
+<p>In <a class="reference internal" href="references.html#bgp10" id="id15">[BGP10]</a>, a variational algorithm is derived in the limit of large
+<span class="math">\(N\)</span>, the total number of <cite>virtual</cite> input samples. That is, the
+original samples are not required, only the mixtures. Hence the
+clustering is much faster but less accurate compared to standard
+variational Bayes. To create a
+<a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.variational.VBMerge" title="pypmc.mix_adapt.variational.VBMerge"><code class="xref py py-class docutils literal"><span class="pre">VBMerge</span></code></a> object, the required
+inputs are a <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a>, the total
+number of samples encoded in the mixture <span class="math">\(N\)</span>, and the the
+maximum number of components <span class="math">\(K\)</span> desired in the compressed
+output mixture:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypmc.mix_adapt.variational</span> <span class="k">import</span> <span class="n">VBMerge</span>
+
+<span class="n">VBMerge</span><span class="p">(</span><span class="n">input_mixture</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As guidance, if <span class="math">\(N\)</span> is not known, one should choose a large
+number like <span class="math">\(N=10^4\)</span> to obtain decent results.</p>
+<p>The classes <a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.variational.VBMerge" title="pypmc.mix_adapt.variational.VBMerge"><code class="xref py py-class docutils literal"><span class="pre">VBMerge</span></code></a> and
+<a class="reference internal" href="mix_adapt.html#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal"><span class="pre">GaussianInference</span></code></a> share the
+same interface; please check <a class="reference internal" href="#classic-vb"><span class="std std-ref">Classic version</span></a>.</p>
+<p>The great advantage compared to hierarchical clustering is that the
+number of output components is chosen automatically. One starts with
+(too) many components, updates, and removes those components with
+vanishing weight using <code class="docutils literal"><span class="pre">prune()</span></code>.</p>
+</div>
+</div>
+<div class="section" id="putting-it-all-together">
+<h2>3.8. Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
+<p>The examples in the next section show how to use the different
+algorithms in practice. The most advanced example, <a class="reference internal" href="examples.html#ex-mcmc-vb"><span class="std std-ref">MCMC + variational Bayes</span></a>,
+demonstrates how to combine various algorithms to integrate and sample
+from a multimodal function:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>run multiple Markov chains to learn the local features of the
+target density;</li>
+<li>combine the samples into a mixture density with variational Bayes</li>
+<li>run importance sampling</li>
+<li>rerun variational Bayes on importance samples</li>
+<li>repeat importance with improved proposal</li>
+<li>combine samples with the deterministic-mixture approach</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="4. Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="2. Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

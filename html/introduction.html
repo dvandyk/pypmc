@@ -1,0 +1,220 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>1. Overview &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Installation" href="installation.html" />
+    <link rel="prev" title="pypmc" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="2. Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="pypmc"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. Overview</a><ul>
+<li><a class="reference internal" href="#initial-proposal-density">1.1. Initial proposal density</a></li>
+<li><a class="reference internal" href="#proposal-updates">1.2. Proposal updates</a></li>
+<li><a class="reference internal" href="#pmc">1.3. PMC</a></li>
+<li><a class="reference internal" href="#variational-bayes">1.4. Variational Bayes</a></li>
+<li><a class="reference internal" href="#performance">1.5. Performance</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">pypmc</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">2. Installation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/introduction.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="overview">
+<h1>1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>Let <span class="math">\(P\)</span> denote the target target density, and let <span class="math">\(q\)</span>
+equal the proposal density. Then the basic idea of importance sampling
+is to approximate the integral of <span class="math">\(P\)</span> as</p>
+<div class="math">
+\[\int \mbox{d} x \, P(x) = \int \mbox{d} x \, q(x) \frac{P(x)}{q(x)}
+\approx \frac{1}{N} \sum_{i=1}{N} \frac{P(x_i)}{q(x_i)}\]</div>
+<p>where each <span class="math">\(x\)</span> is a <span class="math">\(D\)</span>-dimensional vector drawn
+independently from <span class="math">\(q\)</span>. The <span class="math">\(i\)</span>-th importance weight is
+defined as</p>
+<div class="math">
+\[w_i \equiv \frac{P(x_i)}{q(x_i)}\]</div>
+<p>The most accurate estimate is obtained for <span class="math">\(q=P\)</span>, so the goal is
+make <span class="math">\(q\)</span> as close as possible to <span class="math">\(P\)</span>.</p>
+<p>In pypmc, we choose <span class="math">\(q\)</span> to be a mixture density composed of
+either Gaussian or student’s t components <span class="math">\(q_j\)</span></p>
+<div class="math">
+\[q(x) = \sum_j \alpha_j q_j(x), \: \sum_j \alpha_j = 1 \,.\]</div>
+<div class="section" id="initial-proposal-density">
+<h2>1.1. Initial proposal density<a class="headerlink" href="#initial-proposal-density" title="Permalink to this headline">¶</a></h2>
+<p>The key ingredient to make adaptive importance sampling work is a good
+initial proposal density that closely resembles the target density. A
+general method to automatically determine the bulk of the target is to
+run multiple Markov chains, and to use clustering to extract a mixture
+density from the samples <a class="reference internal" href="references.html#bc13" id="id1">[BC13]</a>. We provide a generic implementation
+of adaptive local-random-walk MCMC <a class="reference internal" href="references.html#hst01" id="id2">[HST01]</a> featuring Gauss and
+student’s t local proposals. MCMC can be used standalone and is
+usually all one needs for a unimodal distribution if the evidence is
+not of interest. For the clustering, we offer several options. At the
+level of individual samples, we have</p>
+<ul class="simple">
+<li>population Monte Carlo <a class="reference internal" href="references.html#cap-08" id="id3">[Cap+08]</a></li>
+<li>variational Bayes for Gaussian mixtures <a class="reference internal" href="references.html#bis06" id="id4">[Bis06]</a></li>
+</ul>
+<p>and at the level of Gaussian mixtures, there is</p>
+<ul class="simple">
+<li>hierarchical clustering <a class="reference internal" href="references.html#gr04" id="id5">[GR04]</a> as suggested by Beaujean &amp; Caldwell
+<a class="reference internal" href="references.html#bc13" id="id6">[BC13]</a></li>
+<li>variational Bayes (VBmix) <a class="reference internal" href="references.html#bgp10" id="id7">[BGP10]</a></li>
+</ul>
+</div>
+<div class="section" id="proposal-updates">
+<h2>1.2. Proposal updates<a class="headerlink" href="#proposal-updates" title="Permalink to this headline">¶</a></h2>
+<p>Starting with an initial proposal, samples are drawn from the proposal
+<span class="math">\(q\)</span>, the importance weights are computed, and the proposal is
+updated using the samples and weights to more closely approximate the
+target density. The two main update algorithms included are:</p>
+<ul class="simple">
+<li>Population Monte Carlo (PMC)</li>
+<li>Variational Bayes (VB)</li>
+</ul>
+</div>
+<div class="section" id="pmc">
+<h2>1.3. PMC<a class="headerlink" href="#pmc" title="Permalink to this headline">¶</a></h2>
+<p>Based on the original proposal by Cappé et al. <a class="reference internal" href="references.html#cap-08" id="id8">[Cap+08]</a>, we offer
+updates for a mixture of Gaussian or student’s t components. Important
+improvements are:</p>
+<ul class="simple">
+<li>The option to adapt the student’s t degree of freedom - individually
+for each component - as in <a class="reference internal" href="references.html#hod12" id="id9">[HOD12]</a>. That’s one less parameter that
+the user has to guess.</li>
+<li>The power to combine the proposals of subsequent steps
+<a class="reference internal" href="references.html#cor-12" id="id10">[Cor+12]</a>. This increases the effective sample size per wallclock
+time and helps in reducing undesired samples with very large weight — <em>outliers</em> —
+that adversely affect the variance of the integral estimate.</li>
+</ul>
+</div>
+<div class="section" id="variational-bayes">
+<h2>1.4. Variational Bayes<a class="headerlink" href="#variational-bayes" title="Permalink to this headline">¶</a></h2>
+<p>A powerful alternative to PMC is to use the variational Bayes
+algorithm <a class="reference internal" href="references.html#bis06" id="id11">[Bis06]</a> to fit a Gaussian mixture to samples. We include a
+variant that also works with importance-weighted samples. Our
+implementation allows the user to set all values of the
+prior/posterior hyperparameters. Variational Bayes can therefore be
+used in a sequential manner to incrementally update the knowledge
+about the Gaussian mixture as new (importance) samples arrive.</p>
+</div>
+<div class="section" id="performance">
+<h2>1.5. Performance<a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h2>
+<p>Importance sampling naturally lends itself to massive parallelization
+because once the samples are drawn from the proposal, the computation
+of N importance weights requires N independent calls to the target
+density. Even for moderately complicated problems, these calls are
+typically the most expensive part of the calculation. With pypmc, the
+importance weights can optionally be computed in multiple processes on
+a single machine or a whole cluster with mpi4py. Similarly, multiple
+Markov chains are independent and can be run in separate processes.</p>
+<p>The second major contribution to overall computing time is the update
+algorithm itself. We profiled the program and transferred the relevant
+loops from python to compiled C code via cython.</p>
+<p>The code is designed such that it does not get into the users way;
+full control over how individual components interact is a major design
+goal.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="2. Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="pypmc"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

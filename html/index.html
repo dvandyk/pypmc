@@ -1,0 +1,249 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pypmc &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Overview" href="introduction.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Overview"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pypmc</a></li>
+<li><a class="reference internal" href="#how-to-use-this-documentation">How to use this documentation</a></li>
+<li><a class="reference internal" href="#reference-guide">Reference guide</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="next chapter">1. Overview</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pypmc">
+<h1>pypmc<a class="headerlink" href="#pypmc" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal"><span class="pre">pypmc</span></code> is a python package focusing on adaptive importance
+sampling.  It can be used for integration and sampling from a
+user-defined target density. A typical application is Bayesian
+inference, where one wants to sample from the posterior to marginalize
+over parameters and to compute the evidence. The key idea is to create
+a good proposal density by adapting a mixture of Gaussian or student’s
+t components to the target density. The package is able to efficiently
+integrate multimodal functions in up to about 30-40 dimensions at the
+level of 1% accuracy or less. For many problems, this is achieved
+without requiring any manual input from the user about details of the
+function. Importance sampling supports parallelization on multiple
+machines via <code class="docutils literal"><span class="pre">mpi4py</span></code>.</p>
+<p>Useful tools that can be used stand-alone include:</p>
+<ul class="simple">
+<li>importance sampling (sampling &amp; integration)</li>
+<li>adaptive Markov chain Monte Carlo (sampling)</li>
+<li>variational Bayes (clustering)</li>
+<li>population Monte Carlo (clustering)</li>
+</ul>
+</div>
+<div class="section" id="how-to-use-this-documentation">
+<h1>How to use this documentation<a class="headerlink" href="#how-to-use-this-documentation" title="Permalink to this headline">¶</a></h1>
+<p>If you don’t know yet whether <code class="docutils literal"><span class="pre">pypmc</span></code> is the right tool for your
+needs, you should first read through the overview. There, we introduce
+the basic algorithms implemented by <code class="docutils literal"><span class="pre">pypmc</span></code>. If you want to give
+<code class="docutils literal"><span class="pre">pypmc</span></code> a try, just follow the installation instructions. The user
+guide then explains adaptive importance sampling. In the examples
+section, we show how to use the algorithms on simple problems. Take
+them as a starting point to work on your problem. Finally, look
+through the reference guide if you need help on a specific function or
+class.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#initial-proposal-density">1.1. Initial proposal density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#proposal-updates">1.2. Proposal updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#pmc">1.3. PMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#variational-bayes">1.4. Variational Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#performance">1.5. Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">2. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">3. User guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#densities">3.1. Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#component-density">3.1.1. Component density</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#mixture-density">3.1.2. Mixture density</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#indicator-function">3.2. Indicator function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#markov-chain">3.3. Markov chain</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#initialization">3.3.1. Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#adaptation">3.3.2. Adaptation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#importance-sampling">3.4. Importance sampling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#standard">3.4.1. Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#deterministic-mixture">3.4.2. Deterministic mixture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#comparison">3.4.3. Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#pmc">3.5. PMC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#basic-approach">3.5.1. Basic approach</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#id6">3.5.2. Student’s t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#pmc-with-multiple-em-steps">3.5.3. PMC with multiple EM steps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#variational-bayes">3.6. Variational Bayes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#classic-version">3.6.1. Classic version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#mixture-reduction">3.7. Mixture reduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#hierarchical-clustering">3.7.1. Hierarchical clustering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide.html#vbmerge">3.7.2. VBmerge</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide.html#putting-it-all-together">3.8. Putting it all together</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">4. Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#mcmc">4.1. MCMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#pmc">4.2. PMC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#serial">4.2.1. Serial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#parallel">4.2.2. Parallel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#grouping-by-gelman-rubin-r-value">4.3. Grouping by Gelman-Rubin R value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#variational-bayes">4.4. Variational Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#mixture-reduction">4.5. Mixture reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#mcmc-variational-bayes">4.6. MCMC + variational Bayes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5. References</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="reference-guide">
+<h1>Reference guide<a class="headerlink" href="#reference-guide" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="density.html">1. Probability density</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="density.html#module-pypmc.density.gauss">1.1. Gauss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="density.html#module-pypmc.density.student_t">1.2. StudentT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="density.html#module-pypmc.density.mixture">1.3. Mixture</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sampler.html">2. Sampler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sampler.html#module-pypmc.sampler.markov_chain">2.1. Markov Chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sampler.html#module-pypmc.sampler.importance_sampling">2.2. Importance Sampling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mix_adapt.html">3. Mixture adaptation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mix_adapt.html#module-pypmc.mix_adapt.hierarchical">3.1. Hierarchical clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mix_adapt.html#module-pypmc.mix_adapt.variational">3.2. Variational Bayes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mix_adapt.html#module-pypmc.mix_adapt.pmc">3.3. PMC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mix_adapt.html#module-pypmc.mix_adapt.r_value">3.4. Gelman-Rubin R-value</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">4. Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#module-pypmc.tools.convergence">4.1. Convergence diagnostics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#history">4.2. History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#module-pypmc.tools.indicator">4.3. Indicator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#module-pypmc.tools.parallel_sampler">4.4. Parallel sampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#partition">4.5. Partition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#plot">4.6. Plot</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="1. Overview"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pypmc 1.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

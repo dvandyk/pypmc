@@ -1,0 +1,177 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pypmc.tools._partition &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pypmc.tools._partition</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Implements the &quot;minimal lexicographic integer partition&quot;</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+<span class="kn">from</span> <span class="nn">..density.gauss</span> <span class="k">import</span> <span class="n">Gauss</span>
+<span class="kn">from</span> <span class="nn">..density.mixture</span> <span class="k">import</span> <span class="n">MixtureDensity</span>
+
+<div class="viewcode-block" id="partition"><a class="viewcode-back" href="../../../tools.html#pypmc.tools.partition">[docs]</a><span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Distribute ``N`` into ``k`` parts such that each part</span>
+<span class="sd">    takes the value ``N//k`` or ``N//k + 1`` where ``//`` denotes integer</span>
+<span class="sd">    division; i.e., perform the minimal lexicographic integer partition.</span>
+
+<span class="sd">    Example: N = 5, k = 2  --&gt;  return [3, 2]</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">N</span> <span class="o">//</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">k</span>
+    <span class="n">remainder</span> <span class="o">=</span> <span class="n">N</span> <span class="o">%</span> <span class="n">k</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">remainder</span><span class="p">):</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+<div class="viewcode-block" id="patch_data"><a class="viewcode-back" href="../../../tools.html#pypmc.tools.patch_data">[docs]</a><span class="k">def</span> <span class="nf">patch_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">try_diag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Patch ``data`` (for example Markov chain output) into parts of</span>
+<span class="sd">    length ``L``. Return a Gaussian mixture where each component gets</span>
+<span class="sd">    the empirical mean and covariance of one patch.</span>
+
+<span class="sd">    :param data:</span>
+
+<span class="sd">        Matrix-like array; the points to be patched. Expect ``data[i]``</span>
+<span class="sd">        as the d-dimensional i-th point.</span>
+
+<span class="sd">    :param L:</span>
+
+<span class="sd">        Integer; the length of one patch. The last patch will be shorter</span>
+<span class="sd">        if ``L`` is not a divisor of ``len(data)``.</span>
+
+<span class="sd">    :param try_diag:</span>
+
+<span class="sd">        Bool; If some patch does not define a proper covariance matrix,</span>
+<span class="sd">        it cannot define a Gaussian component. ``try_diag`` defines how</span>
+<span class="sd">        to handle that case:</span>
+<span class="sd">        If ``True`` (default), the off-diagonal elements are set to zero</span>
+<span class="sd">        and it is tried to form a Gaussian with that matrix again. If</span>
+<span class="sd">        that fails as well, the patch is skipped.</span>
+<span class="sd">        If ``False`` the patch is skipped directly.</span>
+
+<span class="sd">    :param verbose:</span>
+
+<span class="sd">        Bool; If ``True`` print all status information.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># patch data into length L patches</span>
+    <span class="n">patches</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">data</span><span class="p">[</span><span class="n">patch_start</span><span class="p">:</span><span class="n">patch_start</span> <span class="o">+</span> <span class="n">L</span><span class="p">]</span> <span class="k">for</span> <span class="n">patch_start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">L</span><span class="p">)])</span>
+
+    <span class="c1"># calculate means and covs</span>
+    <span class="n">means</span>   <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">patch</span><span class="p">,</span>   <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">patch</span> <span class="ow">in</span> <span class="n">patches</span><span class="p">])</span>
+    <span class="n">covs</span>    <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_np</span><span class="o">.</span><span class="n">cov</span> <span class="p">(</span><span class="n">patch</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">patch</span> <span class="ow">in</span> <span class="n">patches</span><span class="p">])</span>
+
+    <span class="c1"># form gaussian components</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skipped</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">covs</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">this_comp</span> <span class="o">=</span> <span class="n">Gauss</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span>
+            <span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_comp</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">_np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span> <span class="k">as</span> <span class="n">error1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Could not form Gauss from patch </span><span class="si">%i</span><span class="s2">. Reason: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">error1</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">try_diag</span><span class="p">:</span>
+                <span class="n">cov</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">_np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">cov</span><span class="p">))</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">this_comp</span> <span class="o">=</span> <span class="n">Gauss</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span>
+                    <span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_comp</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Diagonal covariance attempt succeeded.&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">_np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span> <span class="k">as</span> <span class="n">error2</span><span class="p">:</span>
+                    <span class="n">skipped</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Diagonal covariance attempt failed. Reason: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">error2</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># if not try_diag</span>
+                <span class="n">skipped</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="c1"># print skipped components if any</span>
+    <span class="k">if</span> <span class="n">skipped</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: Could not form Gaussians from: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">skipped</span><span class="p">)</span>
+
+    <span class="c1"># create and return mixture</span>
+    <span class="k">return</span> <span class="n">MixtureDensity</span><span class="p">(</span><span class="n">components</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

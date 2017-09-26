@@ -1,0 +1,455 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pypmc.sampler.importance_sampling &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pypmc.sampler.importance_sampling</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Some useful tools for importance sampling. The main class is</span>
+<span class="sd">:py:class:`ImportanceSampler` and there are some utility functions.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span> <span class="k">as</span> <span class="n">_exp</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span> <span class="k">as</span> <span class="n">_cp</span>
+<span class="kn">from</span> <span class="nn">..tools._doc</span> <span class="k">import</span> <span class="n">_inherit_docstring</span>
+<span class="kn">from</span> <span class="nn">..tools</span> <span class="k">import</span> <span class="n">History</span> <span class="k">as</span> <span class="n">_History</span>
+<span class="kn">from</span> <span class="nn">..tools.indicator</span> <span class="k">import</span> <span class="n">merge_function_with_indicator</span> <span class="k">as</span> <span class="n">_indmerge</span>
+
+<div class="viewcode-block" id="calculate_expectation"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.importance_sampling.calculate_expectation">[docs]</a><span class="k">def</span> <span class="nf">calculate_expectation</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;Calculate the expectation value of function ``f`` using weighted</span>
+<span class="sd">    samples (like the output of an importance-sampling run).</span>
+
+<span class="sd">    Denoting :math:`x_n` as the sample n and :math:`w_n` as its (normalized)</span>
+<span class="sd">    weight, the following is returned:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \sum_{n=1}^{N} w_n f(x_n)</span>
+<span class="sd">        \mathrm{\ \ where\ \ } \sum_{n=1}^{N}w_n \overset{!}{=} 1</span>
+
+<span class="sd">    :param samples:</span>
+
+<span class="sd">        Matrix-like numpy array; the samples to be used.</span>
+
+<span class="sd">    :param weights:</span>
+
+<span class="sd">        Vector-like numpy array; the (unnormalized) importance weights.</span>
+
+<span class="sd">    :param f:</span>
+
+<span class="sd">        Callable, the function to be evaluated.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="s2">&quot;The number of samples (got </span><span class="si">%i</span><span class="s2">) must equal the number of weights (got </span><span class="si">%i</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+    <span class="n">normalization</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="n">out</span>           <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">weight</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">samples</span><span class="p">):</span>
+        <span class="n">normalization</span> <span class="o">+=</span> <span class="n">weight</span>
+        <span class="n">out</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span><span class="o">/</span><span class="n">normalization</span></div>
+
+<div class="viewcode-block" id="calculate_mean"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.importance_sampling.calculate_mean">[docs]</a><span class="k">def</span> <span class="nf">calculate_mean</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;Calculate the mean of weighted samples (like the output of an</span>
+<span class="sd">    importance-sampling run).</span>
+
+<span class="sd">    :param samples:</span>
+
+<span class="sd">        Matrix-like numpy array; the samples to be used.</span>
+
+<span class="sd">    :param weights:</span>
+
+<span class="sd">        Vector-like numpy array; the (unnormalized) importance weights.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="s2">&quot;The number of samples (got </span><span class="si">%i</span><span class="s2">) must equal the number of weights (got </span><span class="si">%i</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="calculate_covariance"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.importance_sampling.calculate_covariance">[docs]</a><span class="k">def</span> <span class="nf">calculate_covariance</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;Calculates the covariance matrix of weighted samples (like the output of an</span>
+<span class="sd">    importance-sampling run).</span>
+
+<span class="sd">    :param samples:</span>
+
+<span class="sd">        Matrix-like numpy array; the samples to be used.</span>
+
+<span class="sd">    :param weights:</span>
+
+<span class="sd">        Vector-like numpy array; the (unnormalized) importance weights.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="s2">&quot;The number of samples (got </span><span class="si">%i</span><span class="s2">) must equal the number of weights (got </span><span class="si">%i</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+
+    <span class="n">sum_weights_sq</span> <span class="o">=</span> <span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">sum_sq_weights</span> <span class="o">=</span> <span class="p">(</span><span class="n">weights</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="n">mean</span>  <span class="o">=</span> <span class="n">calculate_mean</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sum_weights_sq</span> <span class="o">/</span> <span class="p">(</span><span class="n">sum_weights_sq</span> <span class="o">-</span> <span class="n">sum_sq_weights</span><span class="p">)</span>  <span class="o">*</span>\
+           <span class="n">calculate_expectation</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;i,j&#39;</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">mean</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">mean</span><span class="p">))</span></div>
+
+<span class="n">_docstring_params_importance_sampler</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;:param target:</span>
+
+<span class="s2">        The target density. Must be a function accepting a 1d numpy</span>
+<span class="s2">        array and returning a float, namely :math:`\log(P(x))`,</span>
+<span class="s2">        the log of the target `P`.</span>
+
+<span class="s2">    :param proposal:</span>
+
+<span class="s2">        The proposal density `q`. Should be of type</span>
+<span class="s2">        :py:class:`pypmc.density.base.ProbabilityDensity`.</span>
+
+<span class="s2">    :param indicator:</span>
+
+<span class="s2">        The indicator function receives a numpy array and returns bool.</span>
+<span class="s2">        The target is only called if indicator(proposed_point) returns</span>
+<span class="s2">        True. Otherwise, the proposed point will get zero-weight without</span>
+<span class="s2">        call to target.</span>
+<span class="s2">        Use this function to specify the support of the target.</span>
+
+<span class="s2">        .. seealso::</span>
+<span class="s2">            :py:mod:`pypmc.tools.indicator`</span>
+
+<span class="s2">    :param prealloc:</span>
+
+<span class="s2">        Integer; the number of samples for which memory is preallocated.</span>
+<span class="s2">        If more memory is needed, it will be allocated on demand.</span>
+
+<span class="s2">        .. hint::</span>
+<span class="s2">            Preallocating memory can speed up the calculation, in</span>
+<span class="s2">            particular if it is known in advance how long the chains</span>
+<span class="s2">            are run.</span>
+
+<span class="s2">    :param save_target_values:</span>
+
+<span class="s2">        Bool; if ``True``, store the evaluated ``target`` at every visited</span>
+<span class="s2">        point in ``self.target_values``</span>
+
+<span class="s2">    :param rng:</span>
+
+<span class="s2">        The rng passed to the proposal when calling proposal.propose</span>
+
+<span class="s2">        .. important::</span>
+<span class="s2">            ``rng`` must fulfill the requirements of your proposal</span>
+<span class="s2">            :py:meth:`pypmc.density.base.ProbabilityDensity.propose`</span>
+
+<span class="s2">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ImportanceSampler"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.importance_sampling.ImportanceSampler">[docs]</a><span class="k">class</span> <span class="nc">ImportanceSampler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;An importance sampler, generates weighted samples from</span>
+<span class="s2">    ``target`` using ``proposal``.</span>
+
+<span class="s2">    &quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">_docstring_params_importance_sampler</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">proposal</span><span class="p">,</span> <span class="n">indicator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prealloc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">save_target_values</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">_np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">mtrand</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span>      <span class="o">=</span> <span class="n">_cp</span><span class="p">(</span><span class="n">proposal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span>           <span class="o">=</span> <span class="n">rng</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span>        <span class="o">=</span> <span class="n">_indmerge</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">indicator</span><span class="p">,</span> <span class="o">-</span><span class="n">_np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span> <span class="o">=</span> <span class="n">_History</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">prealloc</span><span class="p">)</span> <span class="k">if</span> <span class="n">save_target_values</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>       <span class="o">=</span> <span class="n">_History</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">prealloc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">samples</span>       <span class="o">=</span> <span class="n">_History</span><span class="p">(</span><span class="n">proposal</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">prealloc</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ImportanceSampler.clear"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.importance_sampling.ImportanceSampler.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Clear history of samples and other internal variables to free memory.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The proposal is untouched.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ImportanceSampler.run"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.importance_sampling.ImportanceSampler.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">trace_sort</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Run the sampler, store the history of visited points into</span>
+<span class="sd">        the member variable ``self.samples`` and the importance weights</span>
+<span class="sd">        into ``self.weights``.</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            :py:class:`pypmc.tools.History`</span>
+
+<span class="sd">        :param N:</span>
+
+<span class="sd">            Integer; the number of samples to be drawn.</span>
+
+<span class="sd">        :param trace_sort:</span>
+
+<span class="sd">            Bool; if True, return an array containing the responsible</span>
+<span class="sd">            component of ``self.proposal`` for each sample generated</span>
+<span class="sd">            during this run.</span>
+
+<span class="sd">            .. note::</span>
+
+<span class="sd">                This option only works for proposals of type</span>
+<span class="sd">                :py:class:`pypmc.density.mixture.MixtureDensity`</span>
+
+<span class="sd">            .. note::</span>
+
+<span class="sd">                If True, the samples will be ordered by the components.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">trace_sort</span><span class="p">:</span>
+            <span class="n">this_samples</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_samples</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">trace_sort</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_weights</span><span class="p">(</span><span class="n">this_samples</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">origin</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">this_samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_samples</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">trace_sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_weights</span><span class="p">(</span><span class="n">this_samples</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_calculate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">this_samples</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate and save the weights of a run.&quot;&quot;&quot;</span>
+
+        <span class="n">this_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">(</span><span class="n">this_samples</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">this_samples</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">this_weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_exp</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">this_target_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+                <span class="n">this_target_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">(</span><span class="n">this_samples</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">this_target_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">this_samples</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">this_weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_exp</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">trace_sort</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save N samples from ``self.proposal`` to ``self.samples``</span>
+<span class="sd">        This function does NOT calculate the weights.</span>
+
+<span class="sd">        Return a reference to this run&#39;s samples in ``self.samples``.</span>
+<span class="sd">        If ``trace_sort`` is True, additionally return an array</span>
+<span class="sd">        indicating the responsible component. (MixtureDensity only)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># allocate an empty numpy array to store the run and append accept count</span>
+        <span class="c1"># (importance sampling accepts all points)</span>
+        <span class="n">this_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+        <span class="c1"># store the proposed points (weights are still to be calculated)</span>
+        <span class="k">if</span> <span class="n">trace_sort</span><span class="p">:</span>
+            <span class="n">this_run</span><span class="p">[:],</span> <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">propose</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">this_run</span><span class="p">,</span> <span class="n">origin</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">this_run</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal</span><span class="o">.</span><span class="n">propose</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">this_run</span></div>
+
+<div class="viewcode-block" id="combine_weights"><a class="viewcode-back" href="../../../sampler.html#pypmc.sampler.importance_sampling.combine_weights">[docs]</a><span class="k">def</span> <span class="nf">combine_weights</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">proposals</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the `deterministic mixture weights` according to</span>
+<span class="sd">    [Cor+12]_ given ``samples``, standard ``weights`` and their ``proposals`` for a</span>
+<span class="sd">    number of steps in which importance samples are computed for the same target</span>
+<span class="sd">    density but different proposals.</span>
+
+<span class="sd">    Return the weights as a :class:`pypmc.tools.History` such that the</span>
+<span class="sd">    weights for each proposal are easily accessible.</span>
+
+<span class="sd">    :param samples:</span>
+
+<span class="sd">        Iterable of matrix-like arrays; the weighted samples whose importance</span>
+<span class="sd">        weights shall be combined. One sample per row in each array, one array</span>
+<span class="sd">        for each step, or different proposal.</span>
+
+<span class="sd">    :param weights:</span>
+
+<span class="sd">        Iterable of 1D arrays; the standard importance weights</span>
+<span class="sd">        :math:`P(x_i^t)/q_t(x_i^t)`. Each array in the iterable contains all</span>
+<span class="sd">        weights of the samples of step ``t``, they array&#39;s size has to match the</span>
+<span class="sd">        ``t``-th entry in samples.</span>
+
+<span class="sd">    :param proposals:</span>
+
+<span class="sd">        Iterable of :py:class:`pypmc.density.base.ProbabilityDensity` instances;</span>
+<span class="sd">        the proposal densities from which the ``samples`` have been</span>
+<span class="sd">        drawn.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># shallow copy --&gt; can safely modify (need numpy arrays --&gt; can overwrite with np.asarray)</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> \
+    <span class="s2">&quot;Got </span><span class="si">%i</span><span class="s2"> importance-sampling runs but </span><span class="si">%i</span><span class="s2"> weights&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">),</span> \
+    <span class="s2">&quot;Got </span><span class="si">%i</span><span class="s2"> importance-sampling runs but </span><span class="si">%i</span><span class="s2"> proposal densities&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">))</span>
+
+    <span class="c1"># number of samples from each proposal</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">))</span>
+    <span class="n">N_total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># basic consistency checks, conversion to numpy array and counting of the total number of samples</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">N</span><span class="p">)):</span>
+        <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;``samples[</span><span class="si">%i</span><span class="s1">]`` is not matrix like.&#39;</span> <span class="o">%</span> <span class="n">i</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">dim</span><span class="p">,</span> \
+            <span class="s2">&quot;Dimension of samples[0] (</span><span class="si">%i</span><span class="s2">) does not match the dimension of samples[</span><span class="si">%i</span><span class="s2">] (</span><span class="si">%i</span><span class="s2">)&quot;</span> \
+            <span class="o">%</span> <span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">N</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">N_total</span> <span class="o">+=</span> <span class="n">N</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">N</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> \
+            <span class="s1">&#39;Length of weights[</span><span class="si">%i</span><span class="s1">] (</span><span class="si">%i</span><span class="s1">) does not match length of samples[</span><span class="si">%i</span><span class="s1">] (</span><span class="si">%i</span><span class="s1">)&#39;</span> \
+            <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+    <span class="n">combined_weights_history</span> <span class="o">=</span> <span class="n">_History</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_total</span><span class="p">)</span>
+
+    <span class="c1"># if all weights positive =&gt; prefer log scale</span>
+    <span class="n">all_positive</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>
+        <span class="n">all_positive</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="n">w</span><span class="p">[:]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">all_positive</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">if</span> <span class="n">all_positive</span><span class="p">:</span>
+        <span class="n">combined_weights_history</span> <span class="o">=</span> <span class="n">_combine_weights_log</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">proposals</span><span class="p">,</span> <span class="n">combined_weights_history</span><span class="p">,</span> <span class="n">N_total</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">combined_weights_history</span> <span class="o">=</span> <span class="n">_combine_weights_linear</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">proposals</span><span class="p">,</span> <span class="n">combined_weights_history</span><span class="p">,</span> <span class="n">N_total</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">_np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">combined_weights_history</span><span class="p">[:][:,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="s1">&#39;Encountered inf or nan mixture weights&#39;</span>
+    <span class="k">return</span> <span class="n">combined_weights_history</span></div>
+
+<span class="k">def</span> <span class="nf">_combine_weights_linear</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">proposals</span><span class="p">,</span> <span class="n">combined_weights_history</span><span class="p">,</span> <span class="n">N_total</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="c1"># now the actual combination: [Cor+12], Eq. (3)</span>
+
+    <span class="c1"># on linear scale</span>
+    <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">this_proposal</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">proposals</span><span class="p">):</span>
+        <span class="n">this_combined_weights</span> <span class="o">=</span> <span class="n">combined_weights_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+
+        <span class="n">this_combined_weight_denominator</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">proposals</span><span class="p">):</span>
+            <span class="n">this_combined_weight_denominator</span> <span class="o">+=</span> <span class="n">N</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">multi_evaluate</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="n">t</span><span class="p">]))</span>
+        <span class="n">this_combined_weight_denominator</span> <span class="o">/=</span> <span class="n">N_total</span>
+
+        <span class="n">this_target_values</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">this_proposal</span><span class="o">.</span><span class="n">multi_evaluate</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="n">t</span><span class="p">]))</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+
+        <span class="n">this_combined_weights</span><span class="p">[:][:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_target_values</span> <span class="o">/</span> <span class="n">this_combined_weight_denominator</span>
+
+    <span class="k">return</span> <span class="n">combined_weights_history</span>
+
+<span class="k">def</span> <span class="nf">_combine_weights_log</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">proposals</span><span class="p">,</span> <span class="n">combined_weights_history</span><span class="p">,</span> <span class="n">N_total</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="c1"># on log scale in their notation</span>
+    <span class="c1"># log w_i^t = log(omega_i^t) + log(q_i^t) + log(\sum_j N_j) - log(\sum_l N_l exp(log(q_l(y_i^t))))</span>
+    <span class="c1"># where omega is the ordinary importance weight</span>
+    <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">this_proposal</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">proposals</span><span class="p">):</span>
+        <span class="c1"># &quot;subarray&quot; for this step t, part of big array of all mixture weights</span>
+        <span class="n">combined_weights</span> <span class="o">=</span> <span class="n">combined_weights_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+
+        <span class="c1"># actually collection of vectors y^t_i for all i</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+
+        <span class="c1"># evaluate proposal at step t for all the samples</span>
+        <span class="n">log_q_t</span> <span class="o">=</span> <span class="n">this_proposal</span><span class="o">.</span><span class="n">multi_evaluate</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># mixture weights on log scale: assume w&gt;0!</span>
+        <span class="n">log_w_t</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">t</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">log_w_t</span> <span class="o">+=</span> <span class="n">log_q_t</span>
+        <span class="n">log_w_t</span> <span class="o">+=</span> <span class="n">_np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">N_total</span><span class="p">)</span>
+
+        <span class="c1"># matrix of all proposal evaluated at every sample in step t</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="p">[</span><span class="n">t</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">)))</span>
+        <span class="n">q</span><span class="p">[:,</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_q_t</span>
+
+        <span class="c1"># loop over all indices l != t</span>
+        <span class="n">other_steps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">proposals</span><span class="p">)))</span>
+        <span class="n">other_steps</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">other_steps</span><span class="p">:</span>
+            <span class="n">q</span><span class="p">[:,</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">proposals</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">multi_evaluate</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># use logsumexp in case q are so small that exp(q)=0 in double precision</span>
+        <span class="kn">from</span> <span class="nn">..tools._regularize</span> <span class="k">import</span> <span class="n">logsumexp2D</span>
+        <span class="n">log_w_t</span> <span class="o">-=</span> <span class="n">logsumexp2D</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+        <span class="c1"># return to linear scale</span>
+        <span class="n">combined_weights</span><span class="p">[:][:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_w_t</span><span class="p">)</span>
+
+    <span class="c1"># return mixture weights for ALL steps</span>
+    <span class="n">sum_w</span> <span class="o">=</span> <span class="n">combined_weights_history</span><span class="p">[:][:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">sum_w</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Sum of weights &lt;=0 (</span><span class="si">%g</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">sum_w</span>
+
+    <span class="k">return</span> <span class="n">combined_weights_history</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

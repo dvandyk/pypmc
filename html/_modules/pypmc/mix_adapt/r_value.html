@@ -1,0 +1,394 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pypmc.mix_adapt.r_value &#8212; pypmc 1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pypmc.mix_adapt.r_value</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Functions associated with the Gelman-Rubin R value [GR92]_.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span> <span class="k">as</span> <span class="n">_div</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">_np</span>
+<span class="kn">from</span> <span class="nn">..tools._doc</span> <span class="k">import</span> <span class="n">_add_to_docstring</span>
+<span class="kn">from</span> <span class="nn">..tools</span> <span class="k">import</span> <span class="n">partition</span> <span class="k">as</span> <span class="n">_part</span>
+<span class="kn">from</span> <span class="nn">..density.mixture</span> <span class="k">import</span> <span class="n">create_gaussian_mixture</span> <span class="k">as</span> <span class="n">_mkgauss</span><span class="p">,</span> <span class="n">create_t_mixture</span> <span class="k">as</span> <span class="n">_mkt</span>
+
+<span class="n">_manual_param_n</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;:param n:</span>
+
+<span class="s1">        Integer; the number of samples used to determine the estimates</span>
+<span class="s1">        passed via ``means`` and ``</span><span class="si">%(var)s</span><span class="s1">``.</span>
+
+<span class="s1">    &#39;&#39;&#39;</span>
+<span class="n">_manual_param_approx</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;:param approx:</span>
+
+<span class="s1">        Bool; If False (default), calculate the R value as in [GR92]_.</span>
+<span class="s1">        If True, neglect the uncertainty induced by the sampling process.</span>
+
+<span class="s1">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="r_value"><a class="viewcode-back" href="../../../mix_adapt.html#pypmc.mix_adapt.r_value.r_value">[docs]</a><span class="nd">@_add_to_docstring</span><span class="p">(</span><span class="n">_manual_param_approx</span><span class="p">)</span>
+<span class="nd">@_add_to_docstring</span><span class="p">(</span><span class="n">_manual_param_n</span> <span class="o">%</span><span class="nb">dict</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s1">&#39;variances&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">r_value</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">variances</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">approx</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Calculate the Gelman-Rubin R value (Chapter 2.2 in [GR92]_).</span>
+
+<span class="sd">    The R value can be used to quantify mixing of &quot;multiple iterative</span>
+<span class="sd">    simulations&quot; (e.g. Markov Chains) in parameter space.  An R value</span>
+<span class="sd">    &quot;close to one&quot; indicates that all chains explored the same region</span>
+<span class="sd">    of the parameter.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        The R value is defined only in *one* dimension.</span>
+
+<span class="sd">    :param means:</span>
+
+<span class="sd">        Vector-like array; the sample mean of each chain.</span>
+
+<span class="sd">    :param variances:</span>
+
+<span class="sd">        Vector-like array; the sample variance of each chain.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># use same variable names as in [GR92]</span>
+    <span class="c1"># means is \bar{x}_i</span>
+    <span class="c1"># variances is s_i^2</span>
+
+    <span class="n">means</span>     <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">means</span><span class="p">)</span>
+    <span class="n">variances</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">variances</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">means</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;``means`` must be vector-like&#39;</span>
+    <span class="k">assert</span> <span class="n">variances</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;``variances`` must be vector-like&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">means</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">variances</span><span class="p">),</span> \
+    <span class="s1">&#39;Number of ``means`` (</span><span class="si">%i</span><span class="s1">) does not match number of ``variances`` (</span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">means</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">variances</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">means</span><span class="p">)</span>
+
+    <span class="n">x_bar</span>    <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">means</span><span class="p">)</span>
+    <span class="n">B_over_n</span> <span class="o">=</span> <span class="p">((</span><span class="n">means</span> <span class="o">-</span> <span class="n">x_bar</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">W</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">variances</span><span class="p">)</span>
+
+    <span class="c1"># var_estimate is \hat{\sigma}^2</span>
+    <span class="n">var_estimate</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>  <span class="o">*</span>  <span class="n">W</span> <span class="o">+</span> <span class="n">B_over_n</span>
+
+    <span class="k">if</span> <span class="n">approx</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">var_estimate</span> <span class="o">/</span> <span class="n">W</span>
+
+    <span class="n">V</span> <span class="o">=</span> <span class="n">var_estimate</span> <span class="o">+</span> <span class="n">B_over_n</span> <span class="o">/</span> <span class="n">m</span>
+
+    <span class="c1"># calculate the three terms of \hat{var}(\hat{V}) (equation (4) in [GR92]</span>
+    <span class="c1"># var_V is \hat{var}(\hat{V})</span>
+    <span class="n">tmp_cov_matrix</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">variances</span><span class="p">,</span> <span class="n">means</span><span class="p">)</span>
+    <span class="c1"># third term</span>
+    <span class="n">var_V</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">variances</span><span class="p">,</span> <span class="n">means</span><span class="o">**</span><span class="mi">2</span><span class="p">)[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">x_bar</span> <span class="o">*</span> <span class="n">tmp_cov_matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">var_V</span> <span class="o">*=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+    <span class="c1"># second term (merged n in denominator into ``B_over_n``)</span>
+    <span class="n">var_V</span> <span class="o">+=</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">2.</span> <span class="o">/</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">B_over_n</span> <span class="o">*</span> <span class="n">B_over_n</span>
+    <span class="c1"># first term</span>
+    <span class="n">var_V</span> <span class="o">+=</span> <span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">m</span> <span class="o">*</span> <span class="n">tmp_cov_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">V</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">var_V</span>
+
+    <span class="k">if</span> <span class="n">df</span> <span class="o">&lt;=</span> <span class="mf">2.</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="k">return</span> <span class="n">V</span> <span class="o">/</span> <span class="n">W</span> <span class="o">*</span> <span class="n">df</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="r_group"><a class="viewcode-back" href="../../../mix_adapt.html#pypmc.mix_adapt.r_value.r_group">[docs]</a><span class="nd">@_add_to_docstring</span><span class="p">(</span><span class="n">_manual_param_approx</span><span class="p">)</span>
+<span class="nd">@_add_to_docstring</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;:param critical_r:</span>
+
+<span class="s1">        Float; group the chains such that their common R value is below</span>
+<span class="s1">        ``critical_r``.</span>
+
+<span class="s1">    &#39;&#39;&#39;</span><span class="p">)</span>
+<span class="nd">@_add_to_docstring</span><span class="p">(</span><span class="n">_manual_param_n</span> <span class="o">%</span><span class="nb">dict</span><span class="p">(</span><span class="n">var</span><span class="o">=</span><span class="s1">&#39;variances&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">r_group</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">variances</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">critical_r</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">approx</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Group ``m`` (Markov) chains whose common :py:func:`.r_value` is</span>
+<span class="sd">    less than ``critical_r`` in each of the D dimensions.</span>
+
+<span class="sd">    :param means:</span>
+
+<span class="sd">        (m x D) Matrix-like array; the mean value estimates.</span>
+
+<span class="sd">    :param variances:</span>
+
+<span class="sd">        (m x D) Matrix-like array; the variance estimates.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">means</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">variances</span><span class="p">),</span> \
+    <span class="s1">&#39;Number of ``means`` (</span><span class="si">%i</span><span class="s1">) does not match number of ``variances`` (</span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">means</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">variances</span><span class="p">))</span>
+    <span class="n">means</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">means</span><span class="p">)</span>
+    <span class="n">variances</span>  <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">variances</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">means</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;``means`` must be matrix-like&#39;</span>
+    <span class="k">assert</span> <span class="n">variances</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;``variances`` must be 2-dimensional&#39;</span>
+    <span class="k">assert</span> <span class="n">means</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">variances</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> \
+    <span class="s1">&#39;Dimensionality of ``means`` (</span><span class="si">%i</span><span class="s1">) and ``variances`` (</span><span class="si">%i</span><span class="s1">) does not match&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">means</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">variances</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">means</span><span class="p">)):</span>
+        <span class="n">assigned</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># try to assign component i to an existing group</span>
+        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">group</span> <span class="o">+</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="c1"># R values for each parameter</span>
+            <span class="n">r_values</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">r_value</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">variances</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">n</span><span class="p">,</span> <span class="n">approx</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">means</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
+            <span class="k">if</span> <span class="n">_np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">r_values</span> <span class="o">&lt;</span> <span class="n">critical_r</span><span class="p">):</span>
+                <span class="c1"># add to group if R value small enough</span>
+                <span class="n">group</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">assigned</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="c1"># if component i has not been added to an existing group case create a new group</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">assigned</span><span class="p">:</span>
+            <span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">groups</span></div>
+
+<span class="k">def</span> <span class="nf">_make_r_patches</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">K_g</span><span class="p">,</span> <span class="n">critical_r</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">approx</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Helper function for :py:func:`.make_r_gaussmix` and</span>
+<span class="sd">    :py:func:`.make_r_tmix`. Group the ``data`` according to the R value</span>
+<span class="sd">    and split each group into ``K_g`` patches. Return the patch means</span>
+<span class="sd">    and covariances. For details see the docstrings of the above mentioned</span>
+<span class="sd">    functions.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">append_components</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">covs</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">partition</span><span class="p">):</span>
+        <span class="n">subdata_start</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">subdata_stop</span>  <span class="o">=</span> <span class="n">partition</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">len_subdata</span> <span class="ow">in</span> <span class="n">partition</span><span class="p">:</span>
+            <span class="n">subdata</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">subdata_start</span><span class="p">:</span><span class="n">subdata_stop</span><span class="p">]</span>
+            <span class="n">means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">_np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">subdata</span><span class="p">,</span>   <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">covs</span><span class="o">.</span><span class="n">append</span> <span class="p">(</span> <span class="n">_np</span><span class="o">.</span><span class="n">cov</span> <span class="p">(</span><span class="n">subdata</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">subdata_start</span> <span class="o">+=</span> <span class="n">len_subdata</span>
+            <span class="n">subdata_stop</span>  <span class="o">+=</span> <span class="n">len_subdata</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span><span class="p">,</span> <span class="s1">&#39;Every chain must bring the same number of points.&#39;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">indices</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># choose all parameters</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Invalid specification of parameter indices. Need a non-empty iterable, got &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+
+    <span class="c1"># select columns of parameters through indices</span>
+    <span class="n">chain_groups</span> <span class="o">=</span> <span class="n">r_group</span><span class="p">([</span><span class="n">_np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">chain_values</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">chain_values</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span>
+                           <span class="p">[</span><span class="n">_np</span><span class="o">.</span><span class="n">var</span> <span class="p">(</span><span class="n">chain_values</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">chain_values</span> <span class="ow">in</span> <span class="n">data</span><span class="p">],</span>
+                           <span class="n">n</span><span class="p">,</span> <span class="n">critical_r</span><span class="p">,</span> <span class="n">approx</span><span class="p">)</span>
+
+    <span class="n">long_patches_means</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">long_patches_covs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">chain_groups</span><span class="p">:</span>
+        <span class="c1"># we want K_g components from k_g = len(group) chains</span>
+        <span class="n">k_g</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">K_g</span> <span class="o">&gt;=</span> <span class="n">k_g</span><span class="p">:</span>
+            <span class="c1"># find minimal lexicographic integer partition</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">_part</span><span class="p">(</span><span class="n">K_g</span><span class="p">,</span> <span class="n">k_g</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">chain_index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+                <span class="c1"># need to partition in n[i] parts</span>
+                <span class="n">data_full_chain</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">chain_index</span><span class="p">]</span>
+                <span class="c1"># find minimal lexicographic integer partition of chain_length into n[i]</span>
+                <span class="n">this_patch_lengths</span> <span class="o">=</span> <span class="n">_part</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_full_chain</span><span class="p">),</span> <span class="n">n</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">append_components</span><span class="p">(</span><span class="n">long_patches_means</span><span class="p">,</span> <span class="n">long_patches_covs</span><span class="p">,</span> <span class="n">data_full_chain</span><span class="p">,</span> <span class="n">this_patch_lengths</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># form one long chain and set k_g = 1</span>
+            <span class="n">k_g</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="c1"># make one large chain</span>
+            <span class="n">data_full_chain</span> <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">group</span><span class="p">])</span>
+            <span class="c1"># need to partition into K_g parts -- &gt; minimal lexicographic integer partition</span>
+            <span class="n">this_patch_lengths</span> <span class="o">=</span> <span class="n">_part</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_full_chain</span><span class="p">),</span> <span class="n">K_g</span><span class="p">)</span>
+            <span class="n">append_components</span><span class="p">(</span><span class="n">long_patches_means</span><span class="p">,</span> <span class="n">long_patches_covs</span><span class="p">,</span> <span class="n">data_full_chain</span><span class="p">,</span> <span class="n">this_patch_lengths</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">long_patches_means</span><span class="p">,</span> <span class="n">long_patches_covs</span>
+
+<div class="viewcode-block" id="make_r_gaussmix"><a class="viewcode-back" href="../../../mix_adapt.html#pypmc.mix_adapt.r_value.make_r_gaussmix">[docs]</a><span class="nd">@_add_to_docstring</span><span class="p">(</span><span class="n">_manual_param_approx</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_r_gaussmix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">K_g</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">critical_r</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">approx</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Use ``data`` from multiple &quot;Iterative Simulations&quot; (e.g. Markov</span>
+<span class="sd">    Chains) to form a Gaussian Mixture. This approach refers to the</span>
+<span class="sd">    &quot;long patches&quot; in [BC13]_.</span>
+
+<span class="sd">    The idea is to group chains according to their R-value as in</span>
+<span class="sd">    :py:func:`.r_group` and form ``K_g`` Gaussian Components per chain</span>
+<span class="sd">    group. Once the groups are found by :py:func:`.r_group`, the ``data``</span>
+<span class="sd">    from each chain group is partitioned into ``K_g`` parts (using</span>
+<span class="sd">    :py:func:`pypmc.tools.partition`). For each of these parts a Gaussian</span>
+<span class="sd">    with its empirical mean and covariance is created.</span>
+
+<span class="sd">    Return a :py:class:`pypmc.density.mixture.MixtureDensity` with</span>
+<span class="sd">    :py:class:`pypmc.density.gauss.Gauss` components.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :py:func:`.make_r_tmix`</span>
+
+<span class="sd">    :param data:</span>
+
+<span class="sd">        Iterable of matrix-like arrays; the individual items are interpreted</span>
+<span class="sd">        as points from an individual chain.</span>
+
+<span class="sd">        .. important::</span>
+<span class="sd">            Every chain must bring the same number of points.</span>
+
+<span class="sd">    :param K_g:</span>
+
+<span class="sd">        Integer; the number of components per chain group.</span>
+
+<span class="sd">    :param critical_r:</span>
+
+<span class="sd">        Float; the maximum R value a chain group may have.</span>
+
+<span class="sd">    :param indices:</span>
+
+<span class="sd">        Integer; Iterable of Integers; use R value in these dimensions</span>
+<span class="sd">        only. Default is all.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        If ``K_g`` is too large, some covariance matrices may not be positive definite.</span>
+<span class="sd">        Reduce ``K_g`` or increase ``len(data)``!</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">_mkgauss</span><span class="p">(</span><span class="o">*</span><span class="n">_make_r_patches</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">K_g</span><span class="p">,</span> <span class="n">critical_r</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">approx</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="make_r_tmix"><a class="viewcode-back" href="../../../mix_adapt.html#pypmc.mix_adapt.r_value.make_r_tmix">[docs]</a><span class="nd">@_add_to_docstring</span><span class="p">(</span><span class="n">_manual_param_approx</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_r_tmix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">K_g</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">critical_r</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">dof</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">approx</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Use ``data`` from multiple &quot;Iterative Simulations&quot; (e.g. Markov</span>
+<span class="sd">    Chains) to form a Student t Mixture. This approach refers to the</span>
+<span class="sd">    &quot;long patches&quot; in [BC13]_.</span>
+
+<span class="sd">    The idea is to group chains according to their R-value as in</span>
+<span class="sd">    :py:func:`.r_group` and form ``K_g`` Student t Components per chain</span>
+<span class="sd">    group. Once the groups are found by :py:func:`.r_group`, the ``data``</span>
+<span class="sd">    from each chain group is partitioned into ``K_g`` parts (using</span>
+<span class="sd">    :py:func:`pypmc.tools.partition`). For each of these parts a Student t</span>
+<span class="sd">    component with its empirical mean, covariance and degree of freedom</span>
+<span class="sd">    is created.</span>
+
+<span class="sd">    Return a :py:class:`pypmc.density.mixture.MixtureDensity` with</span>
+<span class="sd">    :py:class:`pypmc.density.student_t.StudentT` components.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :py:func:`.make_r_gaussmix`</span>
+
+<span class="sd">    :param data:</span>
+
+<span class="sd">        Iterable of matrix-like arrays; the individual items are interpreted</span>
+<span class="sd">        as points from an individual chain.</span>
+
+<span class="sd">        .. important::</span>
+<span class="sd">            Every chain must bring the same number of points.</span>
+
+<span class="sd">    :param K_g:</span>
+
+<span class="sd">        Integer; the number of components per chain group.</span>
+
+<span class="sd">    :param critical_r:</span>
+
+<span class="sd">        Float; the maximum R value a chain group may have.</span>
+
+<span class="sd">    :param dof:</span>
+
+<span class="sd">        Float; the degree of freedom the components will have.</span>
+
+<span class="sd">    :param indices:</span>
+
+<span class="sd">        Integer; Iterable of Integers; use R value in these dimensions</span>
+<span class="sd">        only. Default is all.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">assert</span> <span class="n">dof</span> <span class="o">&gt;</span> <span class="mf">2.</span><span class="p">,</span> <span class="s2">&quot;``dof`` must be larger than 2. (got </span><span class="si">%g</span><span class="s2">)&quot;</span> <span class="o">%</span><span class="n">dof</span>
+
+    <span class="n">means</span><span class="p">,</span> <span class="n">covs</span> <span class="o">=</span> <span class="n">_make_r_patches</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">K_g</span><span class="p">,</span> <span class="n">critical_r</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">approx</span><span class="p">)</span>
+
+    <span class="n">sigmas</span>  <span class="o">=</span> <span class="n">_np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">covs</span><span class="p">)</span>
+    <span class="c1"># cov = nu / (nu-2) * sigma</span>
+    <span class="n">sigmas</span> <span class="o">*=</span> <span class="p">(</span><span class="n">dof</span> <span class="o">-</span> <span class="mf">2.</span><span class="p">)</span> <span class="o">/</span> <span class="n">dof</span>
+
+    <span class="k">return</span> <span class="n">_mkt</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">,</span> <span class="p">[</span><span class="n">dof</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">means</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">pypmc 1.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>
