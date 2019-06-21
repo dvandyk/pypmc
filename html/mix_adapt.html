@@ -1,33 +1,23 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3. Mixture adaptation &#8212; pypmc 1.1.1 documentation</title>
+    <meta charset="utf-8" />
+    <title>3. Mixture adaptation &#8212; pypmc 1.1.3 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.1.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="4. Tools" href="tools.html" />
     <link rel="prev" title="2. Sampler" href="sampler.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -43,12 +33,12 @@
         <li class="right" >
           <a href="sampler.html" title="2. Sampler"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.3 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">3. Mixture adaptation</a><ul>
 <li><a class="reference internal" href="#module-pypmc.mix_adapt.hierarchical">3.1. Hierarchical clustering</a></li>
@@ -73,13 +63,13 @@
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -92,201 +82,186 @@
             
   <div class="section" id="module-pypmc.mix_adapt">
 <span id="mixture-adaptation"></span><h1>3. Mixture adaptation<a class="headerlink" href="#module-pypmc.mix_adapt" title="Permalink to this headline">¶</a></h1>
-<p>Collect algorithms to adapt a <a class="reference internal" href="density.html#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a>
+<p>Collect algorithms to adapt a <a class="reference internal" href="density.html#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a>
 to data.</p>
 <div class="section" id="module-pypmc.mix_adapt.hierarchical">
 <span id="hierarchical-clustering"></span><h2>3.1. Hierarchical clustering<a class="headerlink" href="#module-pypmc.mix_adapt.hierarchical" title="Permalink to this headline">¶</a></h2>
-<p>Hierarchical clustering as described in <a class="reference internal" href="references.html#gr04" id="id1">[GR04]</a></p>
+<p>Hierarchical clustering as described in <a class="reference internal" href="references.html#gr04" id="id1"><span>[GR04]</span></a></p>
 <dl class="class">
 <dt id="pypmc.mix_adapt.hierarchical.Hierarchical">
-<em class="property">class </em><code class="descclassname">pypmc.mix_adapt.hierarchical.</code><code class="descname">Hierarchical</code><span class="sig-paren">(</span><em>input_components</em>, <em>initial_guess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/hierarchical.html#Hierarchical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.hierarchical.Hierarchical" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Hierarchical clustering as described in <a class="reference internal" href="references.html#gr04" id="id2">[GR04]</a>.</p>
-<p>Find a Gaussian mixture density <span class="math">\(g\)</span> with components
-<span class="math">\(g_j\)</span> that most closely matches the Gaussian mixture density
-specified by <span class="math">\(f\)</span> and its components <span class="math">\(f_i\)</span>, but with
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.mix_adapt.hierarchical.</code><code class="sig-name descname">Hierarchical</code><span class="sig-paren">(</span><em class="sig-param">input_components</em>, <em class="sig-param">initial_guess</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/hierarchical.html#Hierarchical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.hierarchical.Hierarchical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Hierarchical clustering as described in <a class="reference internal" href="references.html#gr04" id="id2"><span>[GR04]</span></a>.</p>
+<p>Find a Gaussian mixture density <span class="math notranslate nohighlight">\(g\)</span> with components
+<span class="math notranslate nohighlight">\(g_j\)</span> that most closely matches the Gaussian mixture density
+specified by <span class="math notranslate nohighlight">\(f\)</span> and its components <span class="math notranslate nohighlight">\(f_i\)</span>, but with
 less components. The algorithm is an iterative EM procedure
 alternating between a <em>regroup</em> and a <em>refit</em> step, and requires
-an <code class="docutils literal"><span class="pre">initial_guess</span></code> of the output density that defines the
+an <code class="docutils literal notranslate"><span class="pre">initial_guess</span></code> of the output density that defines the
 maximum number of components to use.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>input_components</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with Gaussian
-(<a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.gauss.Gauss</span></code></a>) components; the Gaussian
-mixture to be reduced.</li>
-<li><strong>initial_guess</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with Gaussian
-(<a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.gauss.Gauss</span></code></a>) components; initial guess
-for the EM algorithm.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_components</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with Gaussian
+(<a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.gauss.Gauss</span></code></a>) components; the Gaussian
+mixture to be reduced.</p></li>
+<li><p><strong>initial_guess</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with Gaussian
+(<a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.gauss.Gauss</span></code></a>) components; initial guess
+for the EM algorithm.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="density.html#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal"><span class="pre">pypmc.density.mixture.create_gaussian_mixture</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="density.html#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">pypmc.density.mixture.create_gaussian_mixture</span></code></a></p>
 </div>
 <dl class="method">
 <dt id="pypmc.mix_adapt.hierarchical.Hierarchical.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>eps=0.0001</em>, <em>kill=True</em>, <em>max_steps=50</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/hierarchical.html#Hierarchical.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.hierarchical.Hierarchical.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">eps=0.0001</em>, <em class="sig-param">kill=True</em>, <em class="sig-param">max_steps=50</em>, <em class="sig-param">verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/hierarchical.html#Hierarchical.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.hierarchical.Hierarchical.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform the clustering on the input components updating the initial
-guess. The result is available in the member <code class="docutils literal"><span class="pre">self.g</span></code>.</p>
+guess. The result is available in the member <code class="docutils literal notranslate"><span class="pre">self.g</span></code>.</p>
 <p>Return the number of iterations at convergence, or None.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>eps</strong> – <p>If relative change of distance between current and last step falls below <code class="docutils literal"><span class="pre">eps</span></code>,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps</strong> – <p>If relative change of distance between current and last step falls below <code class="docutils literal notranslate"><span class="pre">eps</span></code>,
 declare convergence:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[0 &lt; \frac{d^t - d^{t-1}}{d^t} &lt; \varepsilon\]</div>
-</li>
-<li><strong>kill</strong> – If a component is assigned zero weight (no input components), it is removed.</li>
-<li><strong>max_steps</strong> – Perform a maximum number of update steps.</li>
-<li><strong>verbose</strong> – Output information on progress of algorithm.</li>
+</p></li>
+<li><p><strong>kill</strong> – If a component is assigned zero weight (no input components), it is removed.</p></li>
+<li><p><strong>max_steps</strong> – Perform a maximum number of update steps.</p></li>
+<li><p><strong>verbose</strong> – Output information on progress of algorithm.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.mix_adapt.hierarchical.kullback_leibler">
-<code class="descclassname">pypmc.mix_adapt.hierarchical.</code><code class="descname">kullback_leibler</code><span class="sig-paren">(</span><em>c1</em>, <em>c2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/hierarchical.html#kullback_leibler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.hierarchical.kullback_leibler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Kullback Leibler divergence of two Gaussians, <span class="math">\(KL(1||2)\)</span></p>
+<code class="sig-prename descclassname">pypmc.mix_adapt.hierarchical.</code><code class="sig-name descname">kullback_leibler</code><span class="sig-paren">(</span><em class="sig-param">c1</em>, <em class="sig-param">c2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/hierarchical.html#kullback_leibler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.hierarchical.kullback_leibler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Kullback Leibler divergence of two Gaussians, <span class="math notranslate nohighlight">\(KL(1||2)\)</span></p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-pypmc.mix_adapt.variational">
 <span id="variational-bayes"></span><h2>3.2. Variational Bayes<a class="headerlink" href="#module-pypmc.mix_adapt.variational" title="Permalink to this headline">¶</a></h2>
-<p>Variational clustering as described in <a class="reference internal" href="references.html#bis06" id="id3">[Bis06]</a></p>
+<p>Variational clustering as described in <a class="reference internal" href="references.html#bis06" id="id3"><span>[Bis06]</span></a></p>
 <dl class="function">
 <dt id="pypmc.mix_adapt.variational.Dirichlet_log_C">
-<code class="descclassname">pypmc.mix_adapt.variational.</code><code class="descname">Dirichlet_log_C</code><span class="sig-paren">(</span><em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.Dirichlet_log_C" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pypmc.mix_adapt.variational.</code><code class="sig-name descname">Dirichlet_log_C</code><span class="sig-paren">(</span><em class="sig-param">alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.Dirichlet_log_C" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute normalization constant of Dirichlet distribution on
-log scale, (B.23) of <a class="reference internal" href="references.html#bis06" id="id4">[Bis06]</a> .</p>
+log scale, (B.23) of <a class="reference internal" href="references.html#bis06" id="id4"><span>[Bis06]</span></a> .</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="pypmc.mix_adapt.variational.GaussianInference">
-<em class="property">class </em><code class="descclassname">pypmc.mix_adapt.variational.</code><code class="descname">GaussianInference</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.mix_adapt.variational.</code><code class="sig-name descname">GaussianInference</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Approximate a probability density by a Gaussian mixture with a variational
 Bayes approach. The motivation, notation, and derivation is explained in
-detail in chapter 10.2 in <a class="reference internal" href="references.html#bis06" id="id5">[Bis06]</a>.</p>
-<p>Typical usage: call <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.run" title="pypmc.mix_adapt.variational.GaussianInference.run"><code class="xref py py-meth docutils literal"><span class="pre">run</span></code></a> until convergence. If interested
+detail in chapter 10.2 in <a class="reference internal" href="references.html#bis06" id="id5"><span>[Bis06]</span></a>.</p>
+<p>Typical usage: call <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.run" title="pypmc.mix_adapt.variational.GaussianInference.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run</span></code></a> until convergence. If interested
 in clustering/classification, extract the responsibility matrix as
-the attribute <code class="docutils literal"><span class="pre">r</span></code>. Else get the Gaussian mixture density at the
-mode of the variational posterior using <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.make_mixture" title="pypmc.mix_adapt.variational.GaussianInference.make_mixture"><code class="xref py py-meth docutils literal"><span class="pre">make_mixture</span></code></a>.</p>
+the attribute <code class="docutils literal notranslate"><span class="pre">r</span></code>. Else get the Gaussian mixture density at the
+mode of the variational posterior using <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.make_mixture" title="pypmc.mix_adapt.variational.GaussianInference.make_mixture"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_mixture</span></code></a>.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last">Another implementation can be found at <a class="reference external" href="https://github.com/jamesmcinerney/vbmm">https://github.com/jamesmcinerney/vbmm</a>.</p>
+<p class="admonition-title">See also</p>
+<p>Another implementation can be found at <a class="reference external" href="https://github.com/jamesmcinerney/vbmm">https://github.com/jamesmcinerney/vbmm</a>.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> – Matrix like array; Each of the <span class="math">\(N\)</span> rows contains one
-<span class="math">\(D\)</span>-dimensional sample from the probability density to be
-approximated.</li>
-<li><strong>components</strong> – Integer; <span class="math">\(K\)</span> is the number of Gaussian components in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Matrix like array; Each of the <span class="math notranslate nohighlight">\(N\)</span> rows contains one
+<span class="math notranslate nohighlight">\(D\)</span>-dimensional sample from the probability density to be
+approximated.</p></li>
+<li><p><strong>components</strong> – Integer; <span class="math notranslate nohighlight">\(K\)</span> is the number of Gaussian components in the
 approximating Gaussian mixture. Will be detected from
-<code class="docutils literal"><span class="pre">initial_guess</span></code> if provided.</li>
-<li><strong>weights</strong> – Vector-like array; The i-th of the <span class="math">\(N\)</span> entries contains the
-weight of the i-th sample in <code class="docutils literal"><span class="pre">data</span></code>. Weights must be nonnegative and finite.</li>
-<li><strong>initial_guess</strong> – <p>string or <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with Gaussian
-(<a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.gauss.Gauss</span></code></a>) components;</p>
+<code class="docutils literal notranslate"><span class="pre">initial_guess</span></code> if provided.</p></li>
+<li><p><strong>weights</strong> – Vector-like array; The i-th of the <span class="math notranslate nohighlight">\(N\)</span> entries contains the
+weight of the i-th sample in <code class="docutils literal notranslate"><span class="pre">data</span></code>. Weights must be nonnegative and finite.</p></li>
+<li><p><strong>initial_guess</strong> – <p>string or <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with Gaussian
+(<a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.gauss.Gauss</span></code></a>) components;</p>
 <p>Allowed string values:</p>
 <blockquote>
 <div><ul>
-<li>”first”: initially place the components (defined by the mean
-parameter <code class="docutils literal"><span class="pre">m</span></code>) at the first <code class="docutils literal"><span class="pre">K</span></code> data points.</li>
-<li>”random”: like “first”, but randomly select <code class="docutils literal"><span class="pre">K</span></code> data points. For
-reproducibility, set the seed with <code class="docutils literal"><span class="pre">numpy.random.seed(123)</span></code></li>
+<li><p>”first”: initially place the components (defined by the mean
+parameter <code class="docutils literal notranslate"><span class="pre">m</span></code>) at the first <code class="docutils literal notranslate"><span class="pre">K</span></code> data points.</p></li>
+<li><p>”random”: like “first”, but randomly select <code class="docutils literal notranslate"><span class="pre">K</span></code> data points. For
+reproducibility, set the seed with <code class="docutils literal notranslate"><span class="pre">numpy.random.seed(123)</span></code></p></li>
 </ul>
 </div></blockquote>
 <p>If a <cite>MixtureDensity</cite>, override other (default) values of the parameters
-<code class="docutils literal"><span class="pre">m</span></code>, <code class="docutils literal"><span class="pre">W</span></code> and <code class="docutils literal"><span class="pre">alpha</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">W</span></code> and <code class="docutils literal notranslate"><span class="pre">alpha</span></code>.</p>
 <p>Default: “first”</p>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>All keyword arguments are processed by <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters" title="pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters"><code class="xref py py-meth docutils literal"><span class="pre">set_variational_parameters</span></code></a>.</p>
-<dl class="method">
+</dd>
+</dl>
+<p>All keyword arguments are processed by <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters" title="pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_variational_parameters</span></code></a>.</p>
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.E_step">
-<code class="descname">E_step</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.E_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">E_step</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.E_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute expectation values and summary statistics.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.M_step">
-<code class="descname">M_step</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.M_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">M_step</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.M_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update parameters of the Gaussian-Wishart distribution.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.likelihood_bound">
-<code class="descname">likelihood_bound</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.likelihood_bound" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">likelihood_bound</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.likelihood_bound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the lower bound on the true log marginal likelihood
-<span class="math">\(L(Q)\)</span> given the current parameter estimates.</p>
+<span class="math notranslate nohighlight">\(L(Q)\)</span> given the current parameter estimates.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.make_mixture">
-<code class="descname">make_mixture</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.make_mixture" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">make_mixture</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.make_mixture" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mixture-density defined by the
 mode of the variational-Bayes estimate.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.posterior2prior">
-<code class="descname">posterior2prior</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.posterior2prior" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">posterior2prior</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.posterior2prior" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return references to posterior values of all variational parameters
 as dict.</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
-<p class="last"><a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal"><span class="pre">GaussianInference</span></code></a>(<cite>…, **output</cite>) creates a new
+<p class="admonition-title">Hint</p>
+<p><a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal notranslate"><span class="pre">GaussianInference</span></code></a>(<cite>…, **output</cite>) creates a new
 instance using the inferred posterior as prior.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.prior_posterior">
-<code class="descname">prior_posterior</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.prior_posterior" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">prior_posterior</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.prior_posterior" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return references to prior and posterior values of all variational
 parameters as dict.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.prune">
-<code class="descname">prune</code><span class="sig-paren">(</span><em>self</em>, <em>threshold=1.</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.prune" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">prune</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.prune" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete components with an effective number of samples
-<span class="math">\(N_k\)</span> below the threshold.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>threshold</strong> – Float; the minimum effective number of samples a component must have
-to survive.</td>
-</tr>
-</tbody>
-</table>
+<span class="math notranslate nohighlight">\(N_k\)</span> below the threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>threshold</strong> – Float; the minimum effective number of samples a component must have
+to survive.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>self</em>, <em>iterations=1000</em>, <em>prune=1.</em>, <em>rel_tol=1e-10</em>, <em>abs_tol=1e-5</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run variational-Bayes parameter updates and check for convergence
 using the change of the log likelihood bound of the current and the last
 step. Convergence is not declared if the number of components changed,
@@ -294,138 +269,130 @@ or if the bound decreased. For the standard algorithm, the bound must
 increase, but for modifications, this useful property may not hold for
 all parameter values.</p>
 <p>Return the number of iterations at convergence, or None.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>iterations</strong> – Maximum number of updates.</li>
-<li><strong>prune</strong> – Call <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.prune" title="pypmc.mix_adapt.variational.GaussianInference.prune"><code class="xref py py-meth docutils literal"><span class="pre">prune</span></code></a> after each update; i.e., remove components
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterations</strong> – Maximum number of updates.</p></li>
+<li><p><strong>prune</strong> – Call <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.prune" title="pypmc.mix_adapt.variational.GaussianInference.prune"><code class="xref py py-meth docutils literal notranslate"><span class="pre">prune</span></code></a> after each update; i.e., remove components
 whose associated effective number of samples is below the
-threshold. Set <code class="docutils literal"><span class="pre">prune=0</span></code> to deactivate.
-Default: 1 (effective samples).</li>
-<li><strong>rel_tol</strong> – <p>Relative tolerance <span class="math">\(\epsilon\)</span>. If two consecutive values of
-the log likelihood bound, <span class="math">\(L_t, L_{t-1}\)</span>, are close, declare
+threshold. Set <code class="docutils literal notranslate"><span class="pre">prune=0</span></code> to deactivate.
+Default: 1 (effective samples).</p></li>
+<li><p><strong>rel_tol</strong> – <p>Relative tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span>. If two consecutive values of
+the log likelihood bound, <span class="math notranslate nohighlight">\(L_t, L_{t-1}\)</span>, are close, declare
 convergence. More precisely, check that</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\left\| \frac{L_t - L_{t-1}}{L_t} \right\| &lt; \epsilon .\]</div>
-</li>
-<li><strong>abs_tol</strong> – <p>Absolute tolerance <span class="math">\(\epsilon_{a}\)</span>. If the current bound
-<span class="math">\(L_t\)</span> is close to zero, (<span class="math">\(L_t &lt; \epsilon_{a}\)</span>), declare
+</p></li>
+<li><p><strong>abs_tol</strong> – <p>Absolute tolerance <span class="math notranslate nohighlight">\(\epsilon_{a}\)</span>. If the current bound
+<span class="math notranslate nohighlight">\(L_t\)</span> is close to zero, (<span class="math notranslate nohighlight">\(L_t &lt; \epsilon_{a}\)</span>), declare
 convergence if</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\| L_t - L_{t-1} \| &lt; \epsilon_a .\]</div>
-</li>
-<li><strong>verbose</strong> – Output status information after each update.</li>
+</p></li>
+<li><p><strong>verbose</strong> – Output status information after each update.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters">
-<code class="descname">set_variational_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_variational_parameters</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the parameters to the submitted values or default.</p>
 <p>Use this function to set the prior value (indicated by the
-subscript <span class="math">\(0\)</span> as in <span class="math">\(\alpha_0\)</span>) or the initial
-value (e.g., <span class="math">\(\alpha\)</span>) used in the iterative procedure
+subscript <span class="math notranslate nohighlight">\(0\)</span> as in <span class="math notranslate nohighlight">\(\alpha_0\)</span>) or the initial
+value (e.g., <span class="math notranslate nohighlight">\(\alpha\)</span>) used in the iterative procedure
 to find the values of the hyperparameters of variational
 posterior distribution.</p>
 <p>Every parameter can be set in two ways:</p>
 <p>1. It is specified for only one component, then it is copied
 to all other components.</p>
 <p>2. It is specified separately for each component as a
-<span class="math">\(K\)</span> vector.</p>
+<span class="math notranslate nohighlight">\(K\)</span> vector.</p>
 <p>The prior and posterior variational distributions of
-<span class="math">\(\boldsymbol{\mu}\)</span> and <span class="math">\(\boldsymbol{\Lambda}\)</span> for
+<span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> for
 each component are given by</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[q(\boldsymbol{\mu}, \boldsymbol{\Lambda}) =
 q(\boldsymbol{\mu}|\boldsymbol{\Lambda}) q(\boldsymbol{\Lambda}) =
 \prod_{k=1}^K
   \mathcal{N}(\boldsymbol{\mu}_k|\boldsymbol{m_k},(\beta_k\boldsymbol{\Lambda}_k)^{-1})
   \mathcal{W}(\boldsymbol{\Lambda}_k|\boldsymbol{W_k}, \nu_k),\]</div>
-<p>where <span class="math">\(\mathcal{N}\)</span> denotes a Gaussian and
-<span class="math">\(\mathcal{W}\)</span> a Wishart distribution. The weights
-<span class="math">\(\boldsymbol{\pi}\)</span> follow a Dirichlet distribution</p>
-<div class="math">
+<p>where <span class="math notranslate nohighlight">\(\mathcal{N}\)</span> denotes a Gaussian and
+<span class="math notranslate nohighlight">\(\mathcal{W}\)</span> a Wishart distribution. The weights
+<span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> follow a Dirichlet distribution</p>
+<div class="math notranslate nohighlight">
 \[q(\boldsymbol{\pi}) = Dir(\boldsymbol{\pi}|\boldsymbol{\alpha}).\]</div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This function may delete results obtained by <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.update" title="pypmc.mix_adapt.variational.GaussianInference.update"><code class="xref py py-meth docutils literal"><span class="pre">update</span></code></a>.</p>
+<p class="admonition-title">Warning</p>
+<p>This function may delete results obtained by <code class="xref py py-meth docutils literal notranslate"><span class="pre">update</span></code>.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>alpha</strong> (<em>alpha0</em><em>,</em>) – <p>Float or <span class="math">\(K\)</span> vector; parameter of the mixing
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>alpha0</em><em>,</em>) – <p>Float or <span class="math notranslate nohighlight">\(K\)</span> vector; parameter of the mixing
 coefficients’ probability distribution (prior:
-<span class="math">\(\alpha_0\)</span>, posterior initial value: <span class="math">\(\alpha\)</span>).</p>
-<div class="math">
+<span class="math notranslate nohighlight">\(\alpha_0\)</span>, posterior initial value: <span class="math notranslate nohighlight">\(\alpha\)</span>).</p>
+<div class="math notranslate nohighlight">
 \[\alpha_i &gt; 0, i=1 \dots K.\]</div>
-<p>A scalar is promoted to a <span class="math">\(K\)</span> vector as</p>
-<div class="math">
+<p>A scalar is promoted to a <span class="math notranslate nohighlight">\(K\)</span> vector as</p>
+<div class="math notranslate nohighlight">
 \[\boldsymbol{\alpha} = (\alpha,\dots,\alpha),\]</div>
 <p>but a <cite>K</cite> vector is accepted, too.</p>
 <p>Default:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\alpha = 10^{-5}.\]</div>
-</li>
-<li><strong>beta</strong> (<em>beta0</em><em>,</em>) – <p>Float or <span class="math">\(K\)</span> vector; <span class="math">\(\beta\)</span> parameter of
-the probability distribution of <span class="math">\(\boldsymbol{\mu}\)</span>
-and <span class="math">\(\boldsymbol{\Lambda}\)</span>. The same restrictions
-as for <code class="docutils literal"><span class="pre">alpha</span></code> apply. Default:</p>
-<div class="math">
+</p></li>
+<li><p><strong>beta</strong> (<em>beta0</em><em>,</em>) – <p>Float or <span class="math notranslate nohighlight">\(K\)</span> vector; <span class="math notranslate nohighlight">\(\beta\)</span> parameter of
+the probability distribution of <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>
+and <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span>. The same restrictions
+as for <code class="docutils literal notranslate"><span class="pre">alpha</span></code> apply. Default:</p>
+<div class="math notranslate nohighlight">
 \[\beta_0 = 10^{-5}.\]</div>
-</li>
-<li><strong>nu</strong> (<em>nu0</em><em>,</em>) – <p>Float or <span class="math">\(K\)</span> vector; degrees of freedom of the
-Wishart distribution of <span class="math">\(\boldsymbol{\Lambda}\)</span>.
+</p></li>
+<li><p><strong>nu</strong> (<em>nu0</em><em>,</em>) – <p>Float or <span class="math notranslate nohighlight">\(K\)</span> vector; degrees of freedom of the
+Wishart distribution of <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span>.
 A well defined Wishard distribution requires:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\nu_0 \geq D - 1.\]</div>
-<p>The same restrictions as for <code class="docutils literal"><span class="pre">alpha</span></code> apply.</p>
+<p>The same restrictions as for <code class="docutils literal notranslate"><span class="pre">alpha</span></code> apply.</p>
 <p>Default:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\nu_0 = D - 1 + 10^{-5}.\]</div>
-</li>
-<li><strong>m</strong> (<em>m0</em><em>,</em>) – <p><span class="math">\(D\)</span> vector or <span class="math">\(K \times D\)</span> matrix; mean
+</p></li>
+<li><p><strong>m</strong> (<em>m0</em><em>,</em>) – <p><span class="math notranslate nohighlight">\(D\)</span> vector or <span class="math notranslate nohighlight">\(K \times D\)</span> matrix; mean
 parameter for the Gaussian
-<span class="math">\(q(\boldsymbol{\mu_k}|\boldsymbol{m_k}, \beta_k
+<span class="math notranslate nohighlight">\(q(\boldsymbol{\mu_k}|\boldsymbol{m_k}, \beta_k
 \Lambda_k)\)</span>.</p>
 <p>Default:</p>
 <p>For the prior of each component:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\boldsymbol{m}_0 = (0,\dots,0)\]</div>
 <p>For initial value of the posterior,
-<span class="math">\(\boldsymbol{m}\)</span>: the sequence of <span class="math">\(K \times D\)</span>
-equally spaced values in [-1,1] reshaped to <span class="math">\(K
+<span class="math notranslate nohighlight">\(\boldsymbol{m}\)</span>: the sequence of <span class="math notranslate nohighlight">\(K \times D\)</span>
+equally spaced values in [-1,1] reshaped to <span class="math notranslate nohighlight">\(K
 \times D\)</span> dimensions.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">If all <span class="math">\(\boldsymbol{m}_k\)</span> are identical
+<p class="admonition-title">Warning</p>
+<p>If all <span class="math notranslate nohighlight">\(\boldsymbol{m}_k\)</span> are identical
 initially, they may remain identical. It is advisable
 to randomly scatter them in order to avoid singular
 behavior.</p>
 </div>
-</li>
-<li><strong>W</strong> (<em>W0</em><em>,</em>) – <span class="math">\(D \times D\)</span> or <span class="math">\(K \times D \times D\)</span>
-matrix-like array; <span class="math">\(\boldsymbol{W}\)</span> is a symmetric
+</p></li>
+<li><p><strong>W</strong> (<em>W0</em><em>,</em>) – <span class="math notranslate nohighlight">\(D \times D\)</span> or <span class="math notranslate nohighlight">\(K \times D \times D\)</span>
+matrix-like array; <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> is a symmetric
 positive-definite matrix used in the Wishart distribution.
-Default: identity matrix in <span class="math">\(D\)</span> dimensions for every
-component.</li>
+Default: identity matrix in <span class="math notranslate nohighlight">\(D\)</span> dimensions for every
+component.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.GaussianInference.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><a class="headerlink" href="#pypmc.mix_adapt.variational.GaussianInference.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recalculate the parameters (M step) and expectation values (E step)
 using the update equations.</p>
 </dd></dl>
@@ -434,108 +401,101 @@ using the update equations.</p>
 
 <dl class="class">
 <dt id="pypmc.mix_adapt.variational.VBMerge">
-<em class="property">class </em><code class="descclassname">pypmc.mix_adapt.variational.</code><code class="descname">VBMerge</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal"><span class="pre">pypmc.mix_adapt.variational.GaussianInference</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.mix_adapt.variational.</code><code class="sig-name descname">VBMerge</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.mix_adapt.variational.GaussianInference</span></code></a></p>
 <p>Parsimonious reduction of Gaussian mixture models with a
-variational-Bayes approach <a class="reference internal" href="references.html#bgp10" id="id6">[BGP10]</a>.</p>
+variational-Bayes approach <a class="reference internal" href="references.html#bgp10" id="id6"><span>[BGP10]</span></a>.</p>
 <p>The idea is to reduce the number of components of an overly complex Gaussian
 mixture while retaining an accurate description. The original samples are
 not required, hence it much faster compared to standard variational Bayes.
 The great advantage compared to hierarchical clustering is that the number
 of output components is chosen automatically. One starts with (too) many
 components, updates, and removes those components with vanishing weight
-using  <code class="docutils literal"><span class="pre">prune()</span></code>. All the methods the typical user wants to call are taken
-over from and documented in <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal"><span class="pre">GaussianInference</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>input_mixture</strong> – MixtureDensity with Gauss components, the input to be compressed.</li>
-<li><strong>N</strong> – The number of (virtual) input samples that the <code class="docutils literal"><span class="pre">input_mixture</span></code> is
-based on. For example, if <code class="docutils literal"><span class="pre">input_mixture</span></code> was fitted to 1000 samples,
-set <code class="docutils literal"><span class="pre">N</span></code> to 1000.</li>
-<li><strong>components</strong> – Integer; the maximum number of output components.</li>
-<li><strong>initial_guess</strong> – MixtureDensity with Gauss components, optional; the starting point
+using  <code class="docutils literal notranslate"><span class="pre">prune()</span></code>. All the methods the typical user wants to call are taken
+over from and documented in <a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal notranslate"><span class="pre">GaussianInference</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_mixture</strong> – MixtureDensity with Gauss components, the input to be compressed.</p></li>
+<li><p><strong>N</strong> – The number of (virtual) input samples that the <code class="docutils literal notranslate"><span class="pre">input_mixture</span></code> is
+based on. For example, if <code class="docutils literal notranslate"><span class="pre">input_mixture</span></code> was fitted to 1000 samples,
+set <code class="docutils literal notranslate"><span class="pre">N</span></code> to 1000.</p></li>
+<li><p><strong>components</strong> – Integer; the maximum number of output components.</p></li>
+<li><p><strong>initial_guess</strong> – MixtureDensity with Gauss components, optional; the starting point
 for the optimization. If provided, its number of components defines
-the maximum possible and the parameter <code class="docutils literal"><span class="pre">components</span></code> is ignored.</li>
+the maximum possible and the parameter <code class="docutils literal notranslate"><span class="pre">components</span></code> is ignored.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>All other keyword arguments are documented in
-<a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters" title="pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters"><code class="xref py py-meth docutils literal"><span class="pre">GaussianInference.set_variational_parameters</span></code></a>.</p>
+<a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters" title="pypmc.mix_adapt.variational.GaussianInference.set_variational_parameters"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GaussianInference.set_variational_parameters</span></code></a>.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p><a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.gauss.Gauss</span></code></a></p>
-<p><a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a></p>
-<p class="last"><a class="reference internal" href="density.html#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal"><span class="pre">pypmc.density.mixture.create_gaussian_mixture</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.gauss.Gauss</span></code></a></p>
+<p><a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a></p>
+<p><a class="reference internal" href="density.html#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">pypmc.density.mixture.create_gaussian_mixture</span></code></a></p>
 </div>
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.E_step">
-<code class="descname">E_step</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.E_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">E_step</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.E_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute expectation values and summary statistics.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.M_step">
-<code class="descname">M_step</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.M_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">M_step</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.M_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update parameters of the Gaussian-Wishart distribution.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.likelihood_bound">
-<code class="descname">likelihood_bound</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.likelihood_bound" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">likelihood_bound</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.likelihood_bound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the lower bound on the true log marginal likelihood
-<span class="math">\(L(Q)\)</span> given the current parameter estimates.</p>
+<span class="math notranslate nohighlight">\(L(Q)\)</span> given the current parameter estimates.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.make_mixture">
-<code class="descname">make_mixture</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.make_mixture" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">make_mixture</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.make_mixture" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mixture-density defined by the
 mode of the variational-Bayes estimate.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.posterior2prior">
-<code class="descname">posterior2prior</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.posterior2prior" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">posterior2prior</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.posterior2prior" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return references to posterior values of all variational parameters
 as dict.</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
-<p class="last"><a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal"><span class="pre">GaussianInference</span></code></a>(<cite>…, **output</cite>) creates a new
+<p class="admonition-title">Hint</p>
+<p><a class="reference internal" href="#pypmc.mix_adapt.variational.GaussianInference" title="pypmc.mix_adapt.variational.GaussianInference"><code class="xref py py-class docutils literal notranslate"><span class="pre">GaussianInference</span></code></a>(<cite>…, **output</cite>) creates a new
 instance using the inferred posterior as prior.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.prior_posterior">
-<code class="descname">prior_posterior</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.prior_posterior" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">prior_posterior</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.prior_posterior" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return references to prior and posterior values of all variational
 parameters as dict.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.prune">
-<code class="descname">prune</code><span class="sig-paren">(</span><em>self</em>, <em>threshold=1.</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.prune" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">prune</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.prune" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete components with an effective number of samples
-<span class="math">\(N_k\)</span> below the threshold.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>threshold</strong> – Float; the minimum effective number of samples a component must have
-to survive.</td>
-</tr>
-</tbody>
-</table>
+<span class="math notranslate nohighlight">\(N_k\)</span> below the threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>threshold</strong> – Float; the minimum effective number of samples a component must have
+to survive.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>self</em>, <em>iterations=1000</em>, <em>prune=1.</em>, <em>rel_tol=1e-10</em>, <em>abs_tol=1e-5</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run variational-Bayes parameter updates and check for convergence
 using the change of the log likelihood bound of the current and the last
 step. Convergence is not declared if the number of components changed,
@@ -543,138 +503,130 @@ or if the bound decreased. For the standard algorithm, the bound must
 increase, but for modifications, this useful property may not hold for
 all parameter values.</p>
 <p>Return the number of iterations at convergence, or None.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>iterations</strong> – Maximum number of updates.</li>
-<li><strong>prune</strong> – Call <a class="reference internal" href="#pypmc.mix_adapt.variational.VBMerge.prune" title="pypmc.mix_adapt.variational.VBMerge.prune"><code class="xref py py-meth docutils literal"><span class="pre">prune</span></code></a> after each update; i.e., remove components
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterations</strong> – Maximum number of updates.</p></li>
+<li><p><strong>prune</strong> – Call <a class="reference internal" href="#pypmc.mix_adapt.variational.VBMerge.prune" title="pypmc.mix_adapt.variational.VBMerge.prune"><code class="xref py py-meth docutils literal notranslate"><span class="pre">prune</span></code></a> after each update; i.e., remove components
 whose associated effective number of samples is below the
-threshold. Set <code class="docutils literal"><span class="pre">prune=0</span></code> to deactivate.
-Default: 1 (effective samples).</li>
-<li><strong>rel_tol</strong> – <p>Relative tolerance <span class="math">\(\epsilon\)</span>. If two consecutive values of
-the log likelihood bound, <span class="math">\(L_t, L_{t-1}\)</span>, are close, declare
+threshold. Set <code class="docutils literal notranslate"><span class="pre">prune=0</span></code> to deactivate.
+Default: 1 (effective samples).</p></li>
+<li><p><strong>rel_tol</strong> – <p>Relative tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span>. If two consecutive values of
+the log likelihood bound, <span class="math notranslate nohighlight">\(L_t, L_{t-1}\)</span>, are close, declare
 convergence. More precisely, check that</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\left\| \frac{L_t - L_{t-1}}{L_t} \right\| &lt; \epsilon .\]</div>
-</li>
-<li><strong>abs_tol</strong> – <p>Absolute tolerance <span class="math">\(\epsilon_{a}\)</span>. If the current bound
-<span class="math">\(L_t\)</span> is close to zero, (<span class="math">\(L_t &lt; \epsilon_{a}\)</span>), declare
+</p></li>
+<li><p><strong>abs_tol</strong> – <p>Absolute tolerance <span class="math notranslate nohighlight">\(\epsilon_{a}\)</span>. If the current bound
+<span class="math notranslate nohighlight">\(L_t\)</span> is close to zero, (<span class="math notranslate nohighlight">\(L_t &lt; \epsilon_{a}\)</span>), declare
 convergence if</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\| L_t - L_{t-1} \| &lt; \epsilon_a .\]</div>
-</li>
-<li><strong>verbose</strong> – Output status information after each update.</li>
+</p></li>
+<li><p><strong>verbose</strong> – Output status information after each update.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.set_variational_parameters">
-<code class="descname">set_variational_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.set_variational_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_variational_parameters</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.set_variational_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the parameters to the submitted values or default.</p>
 <p>Use this function to set the prior value (indicated by the
-subscript <span class="math">\(0\)</span> as in <span class="math">\(\alpha_0\)</span>) or the initial
-value (e.g., <span class="math">\(\alpha\)</span>) used in the iterative procedure
+subscript <span class="math notranslate nohighlight">\(0\)</span> as in <span class="math notranslate nohighlight">\(\alpha_0\)</span>) or the initial
+value (e.g., <span class="math notranslate nohighlight">\(\alpha\)</span>) used in the iterative procedure
 to find the values of the hyperparameters of variational
 posterior distribution.</p>
 <p>Every parameter can be set in two ways:</p>
 <p>1. It is specified for only one component, then it is copied
 to all other components.</p>
 <p>2. It is specified separately for each component as a
-<span class="math">\(K\)</span> vector.</p>
+<span class="math notranslate nohighlight">\(K\)</span> vector.</p>
 <p>The prior and posterior variational distributions of
-<span class="math">\(\boldsymbol{\mu}\)</span> and <span class="math">\(\boldsymbol{\Lambda}\)</span> for
+<span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span> for
 each component are given by</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[q(\boldsymbol{\mu}, \boldsymbol{\Lambda}) =
 q(\boldsymbol{\mu}|\boldsymbol{\Lambda}) q(\boldsymbol{\Lambda}) =
 \prod_{k=1}^K
   \mathcal{N}(\boldsymbol{\mu}_k|\boldsymbol{m_k},(\beta_k\boldsymbol{\Lambda}_k)^{-1})
   \mathcal{W}(\boldsymbol{\Lambda}_k|\boldsymbol{W_k}, \nu_k),\]</div>
-<p>where <span class="math">\(\mathcal{N}\)</span> denotes a Gaussian and
-<span class="math">\(\mathcal{W}\)</span> a Wishart distribution. The weights
-<span class="math">\(\boldsymbol{\pi}\)</span> follow a Dirichlet distribution</p>
-<div class="math">
+<p>where <span class="math notranslate nohighlight">\(\mathcal{N}\)</span> denotes a Gaussian and
+<span class="math notranslate nohighlight">\(\mathcal{W}\)</span> a Wishart distribution. The weights
+<span class="math notranslate nohighlight">\(\boldsymbol{\pi}\)</span> follow a Dirichlet distribution</p>
+<div class="math notranslate nohighlight">
 \[q(\boldsymbol{\pi}) = Dir(\boldsymbol{\pi}|\boldsymbol{\alpha}).\]</div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This function may delete results obtained by <a class="reference internal" href="#pypmc.mix_adapt.variational.VBMerge.update" title="pypmc.mix_adapt.variational.VBMerge.update"><code class="xref py py-meth docutils literal"><span class="pre">update</span></code></a>.</p>
+<p class="admonition-title">Warning</p>
+<p>This function may delete results obtained by <code class="xref py py-meth docutils literal notranslate"><span class="pre">update</span></code>.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>alpha</strong> (<em>alpha0</em><em>,</em>) – <p>Float or <span class="math">\(K\)</span> vector; parameter of the mixing
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>alpha0</em><em>,</em>) – <p>Float or <span class="math notranslate nohighlight">\(K\)</span> vector; parameter of the mixing
 coefficients’ probability distribution (prior:
-<span class="math">\(\alpha_0\)</span>, posterior initial value: <span class="math">\(\alpha\)</span>).</p>
-<div class="math">
+<span class="math notranslate nohighlight">\(\alpha_0\)</span>, posterior initial value: <span class="math notranslate nohighlight">\(\alpha\)</span>).</p>
+<div class="math notranslate nohighlight">
 \[\alpha_i &gt; 0, i=1 \dots K.\]</div>
-<p>A scalar is promoted to a <span class="math">\(K\)</span> vector as</p>
-<div class="math">
+<p>A scalar is promoted to a <span class="math notranslate nohighlight">\(K\)</span> vector as</p>
+<div class="math notranslate nohighlight">
 \[\boldsymbol{\alpha} = (\alpha,\dots,\alpha),\]</div>
 <p>but a <cite>K</cite> vector is accepted, too.</p>
 <p>Default:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\alpha = 10^{-5}.\]</div>
-</li>
-<li><strong>beta</strong> (<em>beta0</em><em>,</em>) – <p>Float or <span class="math">\(K\)</span> vector; <span class="math">\(\beta\)</span> parameter of
-the probability distribution of <span class="math">\(\boldsymbol{\mu}\)</span>
-and <span class="math">\(\boldsymbol{\Lambda}\)</span>. The same restrictions
-as for <code class="docutils literal"><span class="pre">alpha</span></code> apply. Default:</p>
-<div class="math">
+</p></li>
+<li><p><strong>beta</strong> (<em>beta0</em><em>,</em>) – <p>Float or <span class="math notranslate nohighlight">\(K\)</span> vector; <span class="math notranslate nohighlight">\(\beta\)</span> parameter of
+the probability distribution of <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span>
+and <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span>. The same restrictions
+as for <code class="docutils literal notranslate"><span class="pre">alpha</span></code> apply. Default:</p>
+<div class="math notranslate nohighlight">
 \[\beta_0 = 10^{-5}.\]</div>
-</li>
-<li><strong>nu</strong> (<em>nu0</em><em>,</em>) – <p>Float or <span class="math">\(K\)</span> vector; degrees of freedom of the
-Wishart distribution of <span class="math">\(\boldsymbol{\Lambda}\)</span>.
+</p></li>
+<li><p><strong>nu</strong> (<em>nu0</em><em>,</em>) – <p>Float or <span class="math notranslate nohighlight">\(K\)</span> vector; degrees of freedom of the
+Wishart distribution of <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda}\)</span>.
 A well defined Wishard distribution requires:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\nu_0 \geq D - 1.\]</div>
-<p>The same restrictions as for <code class="docutils literal"><span class="pre">alpha</span></code> apply.</p>
+<p>The same restrictions as for <code class="docutils literal notranslate"><span class="pre">alpha</span></code> apply.</p>
 <p>Default:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\nu_0 = D - 1 + 10^{-5}.\]</div>
-</li>
-<li><strong>m</strong> (<em>m0</em><em>,</em>) – <p><span class="math">\(D\)</span> vector or <span class="math">\(K \times D\)</span> matrix; mean
+</p></li>
+<li><p><strong>m</strong> (<em>m0</em><em>,</em>) – <p><span class="math notranslate nohighlight">\(D\)</span> vector or <span class="math notranslate nohighlight">\(K \times D\)</span> matrix; mean
 parameter for the Gaussian
-<span class="math">\(q(\boldsymbol{\mu_k}|\boldsymbol{m_k}, \beta_k
+<span class="math notranslate nohighlight">\(q(\boldsymbol{\mu_k}|\boldsymbol{m_k}, \beta_k
 \Lambda_k)\)</span>.</p>
 <p>Default:</p>
 <p>For the prior of each component:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\boldsymbol{m}_0 = (0,\dots,0)\]</div>
 <p>For initial value of the posterior,
-<span class="math">\(\boldsymbol{m}\)</span>: the sequence of <span class="math">\(K \times D\)</span>
-equally spaced values in [-1,1] reshaped to <span class="math">\(K
+<span class="math notranslate nohighlight">\(\boldsymbol{m}\)</span>: the sequence of <span class="math notranslate nohighlight">\(K \times D\)</span>
+equally spaced values in [-1,1] reshaped to <span class="math notranslate nohighlight">\(K
 \times D\)</span> dimensions.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">If all <span class="math">\(\boldsymbol{m}_k\)</span> are identical
+<p class="admonition-title">Warning</p>
+<p>If all <span class="math notranslate nohighlight">\(\boldsymbol{m}_k\)</span> are identical
 initially, they may remain identical. It is advisable
 to randomly scatter them in order to avoid singular
 behavior.</p>
 </div>
-</li>
-<li><strong>W</strong> (<em>W0</em><em>,</em>) – <span class="math">\(D \times D\)</span> or <span class="math">\(K \times D \times D\)</span>
-matrix-like array; <span class="math">\(\boldsymbol{W}\)</span> is a symmetric
+</p></li>
+<li><p><strong>W</strong> (<em>W0</em><em>,</em>) – <span class="math notranslate nohighlight">\(D \times D\)</span> or <span class="math notranslate nohighlight">\(K \times D \times D\)</span>
+matrix-like array; <span class="math notranslate nohighlight">\(\boldsymbol{W}\)</span> is a symmetric
 positive-definite matrix used in the Wishart distribution.
-Default: identity matrix in <span class="math">\(D\)</span> dimensions for every
-component.</li>
+Default: identity matrix in <span class="math notranslate nohighlight">\(D\)</span> dimensions for every
+component.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.variational.VBMerge.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><a class="headerlink" href="#pypmc.mix_adapt.variational.VBMerge.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recalculate the parameters (M step) and expectation values (E step)
 using the update equations.</p>
 </dd></dl>
@@ -683,34 +635,30 @@ using the update equations.</p>
 
 <dl class="function">
 <dt id="pypmc.mix_adapt.variational.Wishart_H">
-<code class="descclassname">pypmc.mix_adapt.variational.</code><code class="descname">Wishart_H</code><span class="sig-paren">(</span><em>D</em>, <em>nu</em>, <em>log_det</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.Wishart_H" title="Permalink to this definition">¶</a></dt>
-<dd><p>Entropy of the Wishart distribution, (B.82) of <a class="reference internal" href="references.html#bis06" id="id7">[Bis06]</a> .</p>
+<code class="sig-prename descclassname">pypmc.mix_adapt.variational.</code><code class="sig-name descname">Wishart_H</code><span class="sig-paren">(</span><em class="sig-param">D</em>, <em class="sig-param">nu</em>, <em class="sig-param">log_det</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.Wishart_H" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entropy of the Wishart distribution, (B.82) of <a class="reference internal" href="references.html#bis06" id="id7"><span>[Bis06]</span></a> .</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.mix_adapt.variational.Wishart_expect_log_lambda">
-<code class="descclassname">pypmc.mix_adapt.variational.</code><code class="descname">Wishart_expect_log_lambda</code><span class="sig-paren">(</span><em>D</em>, <em>nu</em>, <em>log_det</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.Wishart_expect_log_lambda" title="Permalink to this definition">¶</a></dt>
-<dd><p><span class="math">\(E[\log |\Lambda|]\)</span>, (B.81) of <a class="reference internal" href="references.html#bis06" id="id8">[Bis06]</a> .</p>
+<code class="sig-prename descclassname">pypmc.mix_adapt.variational.</code><code class="sig-name descname">Wishart_expect_log_lambda</code><span class="sig-paren">(</span><em class="sig-param">D</em>, <em class="sig-param">nu</em>, <em class="sig-param">log_det</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.Wishart_expect_log_lambda" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(E[\log |\Lambda|]\)</span>, (B.81) of <a class="reference internal" href="references.html#bis06" id="id8"><span>[Bis06]</span></a> .</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.mix_adapt.variational.Wishart_log_B">
-<code class="descclassname">pypmc.mix_adapt.variational.</code><code class="descname">Wishart_log_B</code><span class="sig-paren">(</span><em>D</em>, <em>nu</em>, <em>log_det</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.Wishart_log_B" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pypmc.mix_adapt.variational.</code><code class="sig-name descname">Wishart_log_B</code><span class="sig-paren">(</span><em class="sig-param">D</em>, <em class="sig-param">nu</em>, <em class="sig-param">log_det</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.variational.Wishart_log_B" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute first part of a Wishart distribution’s normalization,
-(B.79) of <a class="reference internal" href="references.html#bis06" id="id9">[Bis06]</a>, on the log scale.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>D</strong> – Dimension of parameter vector; i.e. <code class="docutils literal"><span class="pre">W</span></code> is a DxD matrix.</li>
-<li><strong>nu</strong> – Degrees of freedom of a Wishart distribution.</li>
-<li><strong>log_det</strong> – The determinant of <code class="docutils literal"><span class="pre">W</span></code>, <span class="math">\(|W|\)</span>.</li>
+(B.79) of <a class="reference internal" href="references.html#bis06" id="id9"><span>[Bis06]</span></a>, on the log scale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>D</strong> – Dimension of parameter vector; i.e. <code class="docutils literal notranslate"><span class="pre">W</span></code> is a DxD matrix.</p></li>
+<li><p><strong>nu</strong> – Degrees of freedom of a Wishart distribution.</p></li>
+<li><p><strong>log_det</strong> – The determinant of <code class="docutils literal notranslate"><span class="pre">W</span></code>, <span class="math notranslate nohighlight">\(|W|\)</span>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -719,379 +667,344 @@ using the update equations.</p>
 <p>Collect Population Monte Carlo</p>
 <dl class="class">
 <dt id="pypmc.mix_adapt.pmc.PMC">
-<em class="property">class </em><code class="descclassname">pypmc.mix_adapt.pmc.</code><code class="descname">PMC</code><a class="headerlink" href="#pypmc.mix_adapt.pmc.PMC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Adapt a Gaussian or Student t mixture <code class="docutils literal"><span class="pre">density</span></code> using the (M-)PMC
-algorithm according to Cap+08]_, <a class="reference internal" href="references.html#kil-09" id="id10">[Kil+09]</a>, and <a class="reference internal" href="references.html#hod12" id="id11">[HOD12]</a>. It turns
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.mix_adapt.pmc.</code><code class="sig-name descname">PMC</code><a class="headerlink" href="#pypmc.mix_adapt.pmc.PMC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Adapt a Gaussian or Student t mixture <code class="docutils literal notranslate"><span class="pre">density</span></code> using the (M-)PMC
+algorithm according to Cap+08]_, <a class="reference internal" href="references.html#kil-09" id="id10"><span>[Kil+09]</span></a>, and <a class="reference internal" href="references.html#hod12" id="id11"><span>[HOD12]</span></a>. It turns
 out that running multiple PMC updates using the same samples is often
 useful.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>samples</strong> – <p>Matrix-like array; the samples to be used for the PMC run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> – <p>Matrix-like array; the samples to be used for the PMC run.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">The <code class="docutils literal"><span class="pre">samples</span></code> are <strong>NOT</strong> copied!</p>
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">samples</span></code> are <strong>NOT</strong> copied!</p>
 </div>
-</li>
-<li><strong>density</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a> with <a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">Gauss</span></code></a> or
-<a class="reference internal" href="density.html#pypmc.density.student_t.StudentT" title="pypmc.density.student_t.StudentT"><code class="xref py py-class docutils literal"><span class="pre">StudentT</span></code></a> components; the density that proposed the
-<code class="docutils literal"><span class="pre">samples</span></code> and shall be updated.</li>
-<li><strong>weights</strong> – <p>Vector-like array of floats; The (unnormalized) importance
+</p></li>
+<li><p><strong>density</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixtureDensity</span></code></a> with <a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gauss</span></code></a> or
+<a class="reference internal" href="density.html#pypmc.density.student_t.StudentT" title="pypmc.density.student_t.StudentT"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentT</span></code></a> components; the density that proposed the
+<code class="docutils literal notranslate"><span class="pre">samples</span></code> and shall be updated.</p></li>
+<li><p><strong>weights</strong> – <p>Vector-like array of floats; The (unnormalized) importance
 weights. If not given, assume all samples have equal weight.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">The <code class="docutils literal"><span class="pre">weights</span></code> are <strong>NOT</strong> copied!</p>
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">weights</span></code> are <strong>NOT</strong> copied!</p>
 </div>
-</li>
-<li><strong>latent</strong> – <p>Vector-like array of integers, optional; the latent variables
+</p></li>
+<li><p><strong>latent</strong> – <p>Vector-like array of integers, optional; the latent variables
 (indices) of the generating components for each sample.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">The <code class="docutils literal"><span class="pre">latent</span></code> variables are <strong>NOT</strong> copied!</p>
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">latent</span></code> variables are <strong>NOT</strong> copied!</p>
 </div>
-</li>
-<li><strong>rb</strong> – Bool;
+</p></li>
+<li><p><strong>rb</strong> – Bool;
 If True, the component which proposed a sample is considered
 as a latent variable (unknown). This implements the Rao-Blackwellized
 algorithm.
 If False, each sample only updates its responsible component. This
-non-Rao-Blackwellized scheme is faster but only an approximation.</li>
-<li><strong>mincount</strong> – <p>Integer; The minimum number of samples a component has to
+non-Rao-Blackwellized scheme is faster but only an approximation.</p></li>
+<li><p><strong>mincount</strong> – <p>Integer; The minimum number of samples a component has to
 generate in order not to be ignored during updates. A value of
 zero (default) disables this feature. The motivation is that
 components with very small weight generate few samples, so the
 updates become unstable and it is more efficient to simply assign
 weight zero.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Only possible if <code class="docutils literal"><span class="pre">latent</span></code> is provided.</p>
+<p class="admonition-title">Important</p>
+<p>Only possible if <code class="docutils literal notranslate"><span class="pre">latent</span></code> is provided.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity.prune" title="pypmc.density.mixture.MixtureDensity.prune"><code class="xref py py-meth docutils literal"><span class="pre">MixtureDensity.prune</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">MixtureDensity.prune</span></code></p>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>Additional keyword arguments are passed to the standalone PMC function.</p>
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.pmc.PMC.log_likelihood">
-<code class="descname">log_likelihood</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.pmc.PMC.log_likelihood" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">log_likelihood</code><a class="headerlink" href="#pypmc.mix_adapt.pmc.PMC.log_likelihood" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the log likelihood of the current density according to
-equation (5) in <a class="reference internal" href="references.html#cap-08" id="id12">[Cap+08]</a>.</p>
+equation (5) in <a class="reference internal" href="references.html#cap-08" id="id12"><span>[Cap+08]</span></a>.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.mix_adapt.pmc.PMC.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>self</em>, <em>iterations=1000</em>, <em>prune=0.</em>, <em>rel_tol=1e-10</em>, <em>abs_tol=1e-5</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.pmc.PMC.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><a class="headerlink" href="#pypmc.mix_adapt.pmc.PMC.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run PMC updates and check for convergence using the change of the
 log likelihood of the current and the last step. Convergence is not
 declared if the likelihood decreased or if components are removed.</p>
 <p>Return the number of iterations at convergence, or None.</p>
-<p>The output density can be accessed via <code class="docutils literal"><span class="pre">self.density</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>iterations</strong> – Maximum number of updates.</li>
-<li><strong>prune</strong> – Call <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity.prune" title="pypmc.density.mixture.MixtureDensity.prune"><code class="xref py py-meth docutils literal"><span class="pre">MixtureDensity.prune</span></code></a> after each update; i.e.,
+<p>The output density can be accessed via <code class="docutils literal notranslate"><span class="pre">self.density</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterations</strong> – Maximum number of updates.</p></li>
+<li><p><strong>prune</strong> – Call <code class="xref py py-meth docutils literal notranslate"><span class="pre">MixtureDensity.prune</span></code> after each update; i.e.,
 remove components whose component weight is below the threshold.
-Set <code class="docutils literal"><span class="pre">prune=0</span></code> (default) to deactivate.</li>
-<li><strong>rel_tol</strong> – <p>Relative tolerance <span class="math">\(\epsilon\)</span>. If two consecutive values of
-the log likelihood, <span class="math">\(L_t, L_{t-1}\)</span>, are close, declare
+Set <code class="docutils literal notranslate"><span class="pre">prune=0</span></code> (default) to deactivate.</p></li>
+<li><p><strong>rel_tol</strong> – <p>Relative tolerance <span class="math notranslate nohighlight">\(\epsilon\)</span>. If two consecutive values of
+the log likelihood, <span class="math notranslate nohighlight">\(L_t, L_{t-1}\)</span>, are close, declare
 convergence. More precisely, check that</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\left\| \frac{L_t - L_{t-1}}{L_t} \right\| &lt; \epsilon .\]</div>
-</li>
-<li><strong>abs_tol</strong> – <p>Absolute tolerance <span class="math">\(\epsilon_{a}\)</span>. If the current log likelihood
-<span class="math">\(L_t\)</span> is close to zero, (<span class="math">\(L_t &lt; \epsilon_{a}\)</span>), declare
+</p></li>
+<li><p><strong>abs_tol</strong> – <p>Absolute tolerance <span class="math notranslate nohighlight">\(\epsilon_{a}\)</span>. If the current log likelihood
+<span class="math notranslate nohighlight">\(L_t\)</span> is close to zero, (<span class="math notranslate nohighlight">\(L_t &lt; \epsilon_{a}\)</span>), declare
 convergence if</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\| L_t - L_{t-1} \| &lt; \epsilon_a .\]</div>
-</li>
-<li><strong>verbose</strong> – Output status information after each update.</li>
+</p></li>
+<li><p><strong>verbose</strong> – Output status information after each update.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.mix_adapt.pmc.gaussian_pmc">
-<code class="descclassname">pypmc.mix_adapt.pmc.</code><code class="descname">gaussian_pmc</code><span class="sig-paren">(</span><em>ndarray samples</em>, <em>density</em>, <em>weights=None</em>, <em>latent=None</em>, <em>rb=True</em>, <em>mincount=0</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.pmc.gaussian_pmc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adapt a Gaussian mixture <code class="docutils literal"><span class="pre">density</span></code> using the (M-)PMC algorithm
-according to <a class="reference internal" href="references.html#cap-08" id="id13">[Cap+08]</a> and <a class="reference internal" href="references.html#kil-09" id="id14">[Kil+09]</a> and return the updated density.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>samples</strong> – Matrix-like array; the samples to be used for the PMC run.</li>
-<li><strong>density</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a> with <a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">Gauss</span></code></a> components;
-the density which proposed the <code class="docutils literal"><span class="pre">samples</span></code> and shall be
-updated.</li>
-<li><strong>weights</strong> – Vector-like array of floats; The (unnormalized) importance
-weights. If not given, assume all samples have equal weight.</li>
-<li><strong>latent</strong> – Vector-like array of integers, optional; the latent variables
-(indices) of the generating components for each sample.</li>
-<li><strong>rb</strong> – Bool;
+<code class="sig-prename descclassname">pypmc.mix_adapt.pmc.</code><code class="sig-name descname">gaussian_pmc</code><span class="sig-paren">(</span><em class="sig-param">ndarray samples</em>, <em class="sig-param">density</em>, <em class="sig-param">weights=None</em>, <em class="sig-param">latent=None</em>, <em class="sig-param">rb=True</em>, <em class="sig-param">mincount=0</em>, <em class="sig-param">copy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.pmc.gaussian_pmc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adapt a Gaussian mixture <code class="docutils literal notranslate"><span class="pre">density</span></code> using the (M-)PMC algorithm
+according to <a class="reference internal" href="references.html#cap-08" id="id13"><span>[Cap+08]</span></a> and <a class="reference internal" href="references.html#kil-09" id="id14"><span>[Kil+09]</span></a> and return the updated density.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> – Matrix-like array; the samples to be used for the PMC run.</p></li>
+<li><p><strong>density</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixtureDensity</span></code></a> with <a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gauss</span></code></a> components;
+the density which proposed the <code class="docutils literal notranslate"><span class="pre">samples</span></code> and shall be
+updated.</p></li>
+<li><p><strong>weights</strong> – Vector-like array of floats; The (unnormalized) importance
+weights. If not given, assume all samples have equal weight.</p></li>
+<li><p><strong>latent</strong> – Vector-like array of integers, optional; the latent variables
+(indices) of the generating components for each sample.</p></li>
+<li><p><strong>rb</strong> – Bool;
 If True, the component which proposed a sample is considered
 as a latent variable (unknown). This implements the Rao-Blackwellized
 algorithm.
 If False, each sample only updates its responsible component. This
-non-Rao-Blackwellized scheme is faster but only an approximation.</li>
-<li><strong>mincount</strong> – <p>Integer; The minimum number of samples a component has to
+non-Rao-Blackwellized scheme is faster but only an approximation.</p></li>
+<li><p><strong>mincount</strong> – <p>Integer; The minimum number of samples a component has to
 generate in order not to be ignored during updates. A value of
 zero (default) disables this feature. The motivation is that
 components with very small weight generate few samples, so the
 updates become unstable and it is more efficient to simply assign
 weight zero.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Only possible if <code class="docutils literal"><span class="pre">latent</span></code> is provided.</p>
+<p class="admonition-title">Important</p>
+<p>Only possible if <code class="docutils literal notranslate"><span class="pre">latent</span></code> is provided.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity.prune" title="pypmc.density.mixture.MixtureDensity.prune"><code class="xref py py-meth docutils literal"><span class="pre">MixtureDensity.prune</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">MixtureDensity.prune</span></code></p>
 </div>
-</li>
-<li><strong>copy</strong> – Bool; If True (default), the parameter <code class="docutils literal"><span class="pre">density</span></code> remains untouched.
-Otherwise, <code class="docutils literal"><span class="pre">density</span></code> is overwritten by the adapted density.</li>
+</p></li>
+<li><p><strong>copy</strong> – Bool; If True (default), the parameter <code class="docutils literal notranslate"><span class="pre">density</span></code> remains untouched.
+Otherwise, <code class="docutils literal notranslate"><span class="pre">density</span></code> is overwritten by the adapted density.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.mix_adapt.pmc.student_t_pmc">
-<code class="descclassname">pypmc.mix_adapt.pmc.</code><code class="descname">student_t_pmc</code><span class="sig-paren">(</span><em>ndarray samples</em>, <em>density</em>, <em>weights=None</em>, <em>latent=None</em>, <em>rb=True</em>, <em>dof_solver_steps=100</em>, <em>mindof=1e-5</em>, <em>maxdof=1e3</em>, <em>mincount=0</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.pmc.student_t_pmc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adapt a Student t mixture <code class="docutils literal"><span class="pre">density</span></code> using the (M-)PMC algorithm
-according to <a class="reference internal" href="references.html#cap-08" id="id15">[Cap+08]</a>, <a class="reference internal" href="references.html#kil-09" id="id16">[Kil+09]</a>, and <a class="reference internal" href="references.html#hod12" id="id17">[HOD12]</a> and return the updated density.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>samples</strong> – Matrix-like array; the samples to be used for the PMC run.</li>
-<li><strong>density</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a> with <code class="xref py py-class docutils literal"><span class="pre">StundentT</span></code> components;
-the density which proposed the <code class="docutils literal"><span class="pre">samples</span></code> and shall be
-updated.</li>
-<li><strong>weights</strong> – Vector-like array of floats; The (unnormalized) importance
-weights. If not given, assume all samples have equal weight.</li>
-<li><strong>latent</strong> – Vector-like array of integers, optional; the latent variables
-(indices) of the generating components for each sample.</li>
-<li><strong>rb</strong> – Bool;
+<code class="sig-prename descclassname">pypmc.mix_adapt.pmc.</code><code class="sig-name descname">student_t_pmc</code><span class="sig-paren">(</span><em class="sig-param">ndarray samples</em>, <em class="sig-param">density</em>, <em class="sig-param">weights=None</em>, <em class="sig-param">latent=None</em>, <em class="sig-param">rb=True</em>, <em class="sig-param">dof_solver_steps=100</em>, <em class="sig-param">mindof=1e-5</em>, <em class="sig-param">maxdof=1e3</em>, <em class="sig-param">mincount=0</em>, <em class="sig-param">copy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.mix_adapt.pmc.student_t_pmc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adapt a Student t mixture <code class="docutils literal notranslate"><span class="pre">density</span></code> using the (M-)PMC algorithm
+according to <a class="reference internal" href="references.html#cap-08" id="id15"><span>[Cap+08]</span></a>, <a class="reference internal" href="references.html#kil-09" id="id16"><span>[Kil+09]</span></a>, and <a class="reference internal" href="references.html#hod12" id="id17"><span>[HOD12]</span></a> and return the updated density.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> – Matrix-like array; the samples to be used for the PMC run.</p></li>
+<li><p><strong>density</strong> – <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixtureDensity</span></code></a> with <code class="xref py py-class docutils literal notranslate"><span class="pre">StundentT</span></code> components;
+the density which proposed the <code class="docutils literal notranslate"><span class="pre">samples</span></code> and shall be
+updated.</p></li>
+<li><p><strong>weights</strong> – Vector-like array of floats; The (unnormalized) importance
+weights. If not given, assume all samples have equal weight.</p></li>
+<li><p><strong>latent</strong> – Vector-like array of integers, optional; the latent variables
+(indices) of the generating components for each sample.</p></li>
+<li><p><strong>rb</strong> – Bool;
 If True, the component which proposed a sample is considered
 as a latent variable (unknown). This implements the Rao-Blackwellized
 algorithm.
 If False, each sample only updates its responsible component. This
-non-Rao-Blackwellized scheme is faster but only an approximation.</li>
-<li><strong>dof_solver_steps</strong> – <p>Integer; If <code class="docutils literal"><span class="pre">0</span></code>, the Student t’s degrees of freedom are not updated,
-otherwise an iterative algorithm is run for at most <code class="docutils literal"><span class="pre">dof_solver_steps</span></code> steps.</p>
+non-Rao-Blackwellized scheme is faster but only an approximation.</p></li>
+<li><p><strong>dof_solver_steps</strong> – <p>Integer; If <code class="docutils literal notranslate"><span class="pre">0</span></code>, the Student t’s degrees of freedom are not updated,
+otherwise an iterative algorithm is run for at most <code class="docutils literal notranslate"><span class="pre">dof_solver_steps</span></code> steps.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">There is no closed form solution for the optimal degree of
-freedom. If <code class="docutils literal"><span class="pre">dof_solver_steps</span></code> is not <code class="docutils literal"><span class="pre">0</span></code>, <code class="docutils literal"><span class="pre">len(density)</span></code> first order
+<p class="admonition-title">Note</p>
+<p>There is no closed form solution for the optimal degree of
+freedom. If <code class="docutils literal notranslate"><span class="pre">dof_solver_steps</span></code> is not <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">len(density)</span></code> first order
 equations must be solved numerically which can take a while.</p>
 </div>
-</li>
-<li><strong>maxdof</strong> (<em>mindof</em><em>,</em>) – Float; Degree of freedom adaptation is a one dimentional root
+</p></li>
+<li><p><strong>maxdof</strong> (<em>mindof</em><em>,</em>) – Float; Degree of freedom adaptation is a one dimentional root
 finding problem. The numerical root finder used in this function
-(<code class="xref py py-func docutils literal"><span class="pre">scipy.optimize.brentq</span></code>) needs an interval where to
-search.</li>
-<li><strong>mincount</strong> – <p>Integer; The minimum number of samples a component has to
+(<code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.optimize.brentq</span></code>) needs an interval where to
+search.</p></li>
+<li><p><strong>mincount</strong> – <p>Integer; The minimum number of samples a component has to
 generate in order not to be ignored during updates. A value of
 zero (default) disables this feature. The motivation is that
 components with very small weight generate few samples, so the
 updates become unstable and it is more efficient to simply assign
 weight zero.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Only possible if <code class="docutils literal"><span class="pre">latent</span></code> is provided.</p>
+<p class="admonition-title">Important</p>
+<p>Only possible if <code class="docutils literal notranslate"><span class="pre">latent</span></code> is provided.</p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity.prune" title="pypmc.density.mixture.MixtureDensity.prune"><code class="xref py py-meth docutils literal"><span class="pre">MixtureDensity.prune</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">MixtureDensity.prune</span></code></p>
 </div>
-</li>
-<li><strong>copy</strong> – Bool; If True (default), the parameter <code class="docutils literal"><span class="pre">density</span></code> remains untouched.
-Otherwise, <code class="docutils literal"><span class="pre">density</span></code> is overwritten by the adapted density.</li>
+</p></li>
+<li><p><strong>copy</strong> – Bool; If True (default), the parameter <code class="docutils literal notranslate"><span class="pre">density</span></code> remains untouched.
+Otherwise, <code class="docutils literal notranslate"><span class="pre">density</span></code> is overwritten by the adapted density.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
 <div class="section" id="module-pypmc.mix_adapt.r_value">
 <span id="gelman-rubin-r-value"></span><h2>3.4. Gelman-Rubin R-value<a class="headerlink" href="#module-pypmc.mix_adapt.r_value" title="Permalink to this headline">¶</a></h2>
-<p>Functions associated with the Gelman-Rubin R value <a class="reference internal" href="references.html#gr92" id="id18">[GR92]</a>.</p>
+<p>Functions associated with the Gelman-Rubin R value <a class="reference internal" href="references.html#gr92" id="id18"><span>[GR92]</span></a>.</p>
 <dl class="function">
 <dt id="pypmc.mix_adapt.r_value.make_r_gaussmix">
-<code class="descclassname">pypmc.mix_adapt.r_value.</code><code class="descname">make_r_gaussmix</code><span class="sig-paren">(</span><em>data</em>, <em>K_g=15</em>, <em>critical_r=2.0</em>, <em>indices=None</em>, <em>approx=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/r_value.html#make_r_gaussmix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.r_value.make_r_gaussmix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use <code class="docutils literal"><span class="pre">data</span></code> from multiple “Iterative Simulations” (e.g. Markov
+<code class="sig-prename descclassname">pypmc.mix_adapt.r_value.</code><code class="sig-name descname">make_r_gaussmix</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">K_g=15</em>, <em class="sig-param">critical_r=2.0</em>, <em class="sig-param">indices=None</em>, <em class="sig-param">approx=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/r_value.html#make_r_gaussmix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.r_value.make_r_gaussmix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use <code class="docutils literal notranslate"><span class="pre">data</span></code> from multiple “Iterative Simulations” (e.g. Markov
 Chains) to form a Gaussian Mixture. This approach refers to the
-“long patches” in <a class="reference internal" href="references.html#bc13" id="id19">[BC13]</a>.</p>
+“long patches” in <a class="reference internal" href="references.html#bc13" id="id19"><span>[BC13]</span></a>.</p>
 <p>The idea is to group chains according to their R-value as in
-<a class="reference internal" href="#pypmc.mix_adapt.r_value.r_group" title="pypmc.mix_adapt.r_value.r_group"><code class="xref py py-func docutils literal"><span class="pre">r_group</span></code></a> and form <code class="docutils literal"><span class="pre">K_g</span></code> Gaussian Components per chain
-group. Once the groups are found by <a class="reference internal" href="#pypmc.mix_adapt.r_value.r_group" title="pypmc.mix_adapt.r_value.r_group"><code class="xref py py-func docutils literal"><span class="pre">r_group</span></code></a>, the <code class="docutils literal"><span class="pre">data</span></code>
-from each chain group is partitioned into <code class="docutils literal"><span class="pre">K_g</span></code> parts (using
-<a class="reference internal" href="tools.html#pypmc.tools.partition" title="pypmc.tools.partition"><code class="xref py py-func docutils literal"><span class="pre">pypmc.tools.partition</span></code></a>). For each of these parts a Gaussian
+<a class="reference internal" href="#pypmc.mix_adapt.r_value.r_group" title="pypmc.mix_adapt.r_value.r_group"><code class="xref py py-func docutils literal notranslate"><span class="pre">r_group</span></code></a> and form <code class="docutils literal notranslate"><span class="pre">K_g</span></code> Gaussian Components per chain
+group. Once the groups are found by <a class="reference internal" href="#pypmc.mix_adapt.r_value.r_group" title="pypmc.mix_adapt.r_value.r_group"><code class="xref py py-func docutils literal notranslate"><span class="pre">r_group</span></code></a>, the <code class="docutils literal notranslate"><span class="pre">data</span></code>
+from each chain group is partitioned into <code class="docutils literal notranslate"><span class="pre">K_g</span></code> parts (using
+<a class="reference internal" href="tools.html#pypmc.tools.partition" title="pypmc.tools.partition"><code class="xref py py-func docutils literal notranslate"><span class="pre">pypmc.tools.partition</span></code></a>). For each of these parts a Gaussian
 with its empirical mean and covariance is created.</p>
-<p>Return a <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with
-<a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.gauss.Gauss</span></code></a> components.</p>
+<p>Return a <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with
+<a class="reference internal" href="density.html#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.gauss.Gauss</span></code></a> components.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#pypmc.mix_adapt.r_value.make_r_tmix" title="pypmc.mix_adapt.r_value.make_r_tmix"><code class="xref py py-func docutils literal"><span class="pre">make_r_tmix</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#pypmc.mix_adapt.r_value.make_r_tmix" title="pypmc.mix_adapt.r_value.make_r_tmix"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_r_tmix</span></code></a></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> – <p>Iterable of matrix-like arrays; the individual items are interpreted
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – <p>Iterable of matrix-like arrays; the individual items are interpreted
 as points from an individual chain.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Every chain must bring the same number of points.</p>
+<p class="admonition-title">Important</p>
+<p>Every chain must bring the same number of points.</p>
 </div>
-</li>
-<li><strong>K_g</strong> – Integer; the number of components per chain group.</li>
-<li><strong>critical_r</strong> – Float; the maximum R value a chain group may have.</li>
-<li><strong>indices</strong> – Integer; Iterable of Integers; use R value in these dimensions
-only. Default is all.</li>
+</p></li>
+<li><p><strong>K_g</strong> – Integer; the number of components per chain group.</p></li>
+<li><p><strong>critical_r</strong> – Float; the maximum R value a chain group may have.</p></li>
+<li><p><strong>indices</strong> – Integer; Iterable of Integers; use R value in these dimensions
+only. Default is all.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If <code class="docutils literal"><span class="pre">K_g</span></code> is too large, some covariance matrices may not be positive definite.
-Reduce <code class="docutils literal"><span class="pre">K_g</span></code> or increase <code class="docutils literal"><span class="pre">len(data)</span></code>!</p>
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">K_g</span></code> is too large, some covariance matrices may not be positive definite.
+Reduce <code class="docutils literal notranslate"><span class="pre">K_g</span></code> or increase <code class="docutils literal notranslate"><span class="pre">len(data)</span></code>!</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>approx</strong> – Bool; If False (default), calculate the R value as in <a class="reference internal" href="references.html#gr92" id="id20">[GR92]</a>.
-If True, neglect the uncertainty induced by the sampling process.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>approx</strong> – Bool; If False (default), calculate the R value as in <a class="reference internal" href="references.html#gr92" id="id20"><span>[GR92]</span></a>.
+If True, neglect the uncertainty induced by the sampling process.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.mix_adapt.r_value.make_r_tmix">
-<code class="descclassname">pypmc.mix_adapt.r_value.</code><code class="descname">make_r_tmix</code><span class="sig-paren">(</span><em>data</em>, <em>K_g=15</em>, <em>critical_r=2.0</em>, <em>dof=5.0</em>, <em>indices=None</em>, <em>approx=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/r_value.html#make_r_tmix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.r_value.make_r_tmix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use <code class="docutils literal"><span class="pre">data</span></code> from multiple “Iterative Simulations” (e.g. Markov
+<code class="sig-prename descclassname">pypmc.mix_adapt.r_value.</code><code class="sig-name descname">make_r_tmix</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">K_g=15</em>, <em class="sig-param">critical_r=2.0</em>, <em class="sig-param">dof=5.0</em>, <em class="sig-param">indices=None</em>, <em class="sig-param">approx=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/r_value.html#make_r_tmix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.r_value.make_r_tmix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use <code class="docutils literal notranslate"><span class="pre">data</span></code> from multiple “Iterative Simulations” (e.g. Markov
 Chains) to form a Student t Mixture. This approach refers to the
-“long patches” in <a class="reference internal" href="references.html#bc13" id="id21">[BC13]</a>.</p>
+“long patches” in <a class="reference internal" href="references.html#bc13" id="id21"><span>[BC13]</span></a>.</p>
 <p>The idea is to group chains according to their R-value as in
-<a class="reference internal" href="#pypmc.mix_adapt.r_value.r_group" title="pypmc.mix_adapt.r_value.r_group"><code class="xref py py-func docutils literal"><span class="pre">r_group</span></code></a> and form <code class="docutils literal"><span class="pre">K_g</span></code> Student t Components per chain
-group. Once the groups are found by <a class="reference internal" href="#pypmc.mix_adapt.r_value.r_group" title="pypmc.mix_adapt.r_value.r_group"><code class="xref py py-func docutils literal"><span class="pre">r_group</span></code></a>, the <code class="docutils literal"><span class="pre">data</span></code>
-from each chain group is partitioned into <code class="docutils literal"><span class="pre">K_g</span></code> parts (using
-<a class="reference internal" href="tools.html#pypmc.tools.partition" title="pypmc.tools.partition"><code class="xref py py-func docutils literal"><span class="pre">pypmc.tools.partition</span></code></a>). For each of these parts a Student t
+<a class="reference internal" href="#pypmc.mix_adapt.r_value.r_group" title="pypmc.mix_adapt.r_value.r_group"><code class="xref py py-func docutils literal notranslate"><span class="pre">r_group</span></code></a> and form <code class="docutils literal notranslate"><span class="pre">K_g</span></code> Student t Components per chain
+group. Once the groups are found by <a class="reference internal" href="#pypmc.mix_adapt.r_value.r_group" title="pypmc.mix_adapt.r_value.r_group"><code class="xref py py-func docutils literal notranslate"><span class="pre">r_group</span></code></a>, the <code class="docutils literal notranslate"><span class="pre">data</span></code>
+from each chain group is partitioned into <code class="docutils literal notranslate"><span class="pre">K_g</span></code> parts (using
+<a class="reference internal" href="tools.html#pypmc.tools.partition" title="pypmc.tools.partition"><code class="xref py py-func docutils literal notranslate"><span class="pre">pypmc.tools.partition</span></code></a>). For each of these parts a Student t
 component with its empirical mean, covariance and degree of freedom
 is created.</p>
-<p>Return a <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with
-<a class="reference internal" href="density.html#pypmc.density.student_t.StudentT" title="pypmc.density.student_t.StudentT"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.student_t.StudentT</span></code></a> components.</p>
+<p>Return a <a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a> with
+<a class="reference internal" href="density.html#pypmc.density.student_t.StudentT" title="pypmc.density.student_t.StudentT"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.student_t.StudentT</span></code></a> components.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#pypmc.mix_adapt.r_value.make_r_gaussmix" title="pypmc.mix_adapt.r_value.make_r_gaussmix"><code class="xref py py-func docutils literal"><span class="pre">make_r_gaussmix</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#pypmc.mix_adapt.r_value.make_r_gaussmix" title="pypmc.mix_adapt.r_value.make_r_gaussmix"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_r_gaussmix</span></code></a></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> – <p>Iterable of matrix-like arrays; the individual items are interpreted
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – <p>Iterable of matrix-like arrays; the individual items are interpreted
 as points from an individual chain.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Every chain must bring the same number of points.</p>
+<p class="admonition-title">Important</p>
+<p>Every chain must bring the same number of points.</p>
 </div>
-</li>
-<li><strong>K_g</strong> – Integer; the number of components per chain group.</li>
-<li><strong>critical_r</strong> – Float; the maximum R value a chain group may have.</li>
-<li><strong>dof</strong> – Float; the degree of freedom the components will have.</li>
-<li><strong>indices</strong> – Integer; Iterable of Integers; use R value in these dimensions
-only. Default is all.</li>
-<li><strong>approx</strong> – Bool; If False (default), calculate the R value as in <a class="reference internal" href="references.html#gr92" id="id22">[GR92]</a>.
-If True, neglect the uncertainty induced by the sampling process.</li>
+</p></li>
+<li><p><strong>K_g</strong> – Integer; the number of components per chain group.</p></li>
+<li><p><strong>critical_r</strong> – Float; the maximum R value a chain group may have.</p></li>
+<li><p><strong>dof</strong> – Float; the degree of freedom the components will have.</p></li>
+<li><p><strong>indices</strong> – Integer; Iterable of Integers; use R value in these dimensions
+only. Default is all.</p></li>
+<li><p><strong>approx</strong> – Bool; If False (default), calculate the R value as in <a class="reference internal" href="references.html#gr92" id="id22"><span>[GR92]</span></a>.
+If True, neglect the uncertainty induced by the sampling process.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.mix_adapt.r_value.r_group">
-<code class="descclassname">pypmc.mix_adapt.r_value.</code><code class="descname">r_group</code><span class="sig-paren">(</span><em>means</em>, <em>variances</em>, <em>n</em>, <em>critical_r=2.0</em>, <em>approx=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/r_value.html#r_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.r_value.r_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Group <code class="docutils literal"><span class="pre">m</span></code> (Markov) chains whose common <a class="reference internal" href="#pypmc.mix_adapt.r_value.r_value" title="pypmc.mix_adapt.r_value.r_value"><code class="xref py py-func docutils literal"><span class="pre">r_value</span></code></a> is
-less than <code class="docutils literal"><span class="pre">critical_r</span></code> in each of the D dimensions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>means</strong> – (m x D) Matrix-like array; the mean value estimates.</li>
-<li><strong>variances</strong> – (m x D) Matrix-like array; the variance estimates.</li>
-<li><strong>n</strong> – Integer; the number of samples used to determine the estimates
-passed via <code class="docutils literal"><span class="pre">means</span></code> and <code class="docutils literal"><span class="pre">variances</span></code>.</li>
-<li><strong>critical_r</strong> – Float; group the chains such that their common R value is below
-<code class="docutils literal"><span class="pre">critical_r</span></code>.</li>
-<li><strong>approx</strong> – Bool; If False (default), calculate the R value as in <a class="reference internal" href="references.html#gr92" id="id23">[GR92]</a>.
-If True, neglect the uncertainty induced by the sampling process.</li>
+<code class="sig-prename descclassname">pypmc.mix_adapt.r_value.</code><code class="sig-name descname">r_group</code><span class="sig-paren">(</span><em class="sig-param">means</em>, <em class="sig-param">variances</em>, <em class="sig-param">n</em>, <em class="sig-param">critical_r=2.0</em>, <em class="sig-param">approx=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/r_value.html#r_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.r_value.r_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group <code class="docutils literal notranslate"><span class="pre">m</span></code> (Markov) chains whose common <a class="reference internal" href="#pypmc.mix_adapt.r_value.r_value" title="pypmc.mix_adapt.r_value.r_value"><code class="xref py py-func docutils literal notranslate"><span class="pre">r_value</span></code></a> is
+less than <code class="docutils literal notranslate"><span class="pre">critical_r</span></code> in each of the D dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>means</strong> – (m x D) Matrix-like array; the mean value estimates.</p></li>
+<li><p><strong>variances</strong> – (m x D) Matrix-like array; the variance estimates.</p></li>
+<li><p><strong>n</strong> – Integer; the number of samples used to determine the estimates
+passed via <code class="docutils literal notranslate"><span class="pre">means</span></code> and <code class="docutils literal notranslate"><span class="pre">variances</span></code>.</p></li>
+<li><p><strong>critical_r</strong> – Float; group the chains such that their common R value is below
+<code class="docutils literal notranslate"><span class="pre">critical_r</span></code>.</p></li>
+<li><p><strong>approx</strong> – Bool; If False (default), calculate the R value as in <a class="reference internal" href="references.html#gr92" id="id23"><span>[GR92]</span></a>.
+If True, neglect the uncertainty induced by the sampling process.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.mix_adapt.r_value.r_value">
-<code class="descclassname">pypmc.mix_adapt.r_value.</code><code class="descname">r_value</code><span class="sig-paren">(</span><em>means</em>, <em>variances</em>, <em>n</em>, <em>approx=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/r_value.html#r_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.r_value.r_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the Gelman-Rubin R value (Chapter 2.2 in <a class="reference internal" href="references.html#gr92" id="id24">[GR92]</a>).</p>
+<code class="sig-prename descclassname">pypmc.mix_adapt.r_value.</code><code class="sig-name descname">r_value</code><span class="sig-paren">(</span><em class="sig-param">means</em>, <em class="sig-param">variances</em>, <em class="sig-param">n</em>, <em class="sig-param">approx=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/mix_adapt/r_value.html#r_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.mix_adapt.r_value.r_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Gelman-Rubin R value (Chapter 2.2 in <a class="reference internal" href="references.html#gr92" id="id24"><span>[GR92]</span></a>).</p>
 <p>The R value can be used to quantify mixing of “multiple iterative
 simulations” (e.g. Markov Chains) in parameter space.  An R value
 “close to one” indicates that all chains explored the same region
 of the parameter.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The R value is defined only in <em>one</em> dimension.</p>
+<p class="admonition-title">Note</p>
+<p>The R value is defined only in <em>one</em> dimension.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>means</strong> – Vector-like array; the sample mean of each chain.</li>
-<li><strong>variances</strong> – Vector-like array; the sample variance of each chain.</li>
-<li><strong>n</strong> – Integer; the number of samples used to determine the estimates
-passed via <code class="docutils literal"><span class="pre">means</span></code> and <code class="docutils literal"><span class="pre">variances</span></code>.</li>
-<li><strong>approx</strong> – Bool; If False (default), calculate the R value as in <a class="reference internal" href="references.html#gr92" id="id25">[GR92]</a>.
-If True, neglect the uncertainty induced by the sampling process.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>means</strong> – Vector-like array; the sample mean of each chain.</p></li>
+<li><p><strong>variances</strong> – Vector-like array; the sample variance of each chain.</p></li>
+<li><p><strong>n</strong> – Integer; the number of samples used to determine the estimates
+passed via <code class="docutils literal notranslate"><span class="pre">means</span></code> and <code class="docutils literal notranslate"><span class="pre">variances</span></code>.</p></li>
+<li><p><strong>approx</strong> – Bool; If False (default), calculate the R value as in <a class="reference internal" href="references.html#gr92" id="id25"><span>[GR92]</span></a>.
+If True, neglect the uncertainty induced by the sampling process.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -1118,12 +1031,12 @@ If True, neglect the uncertainty induced by the sampling process.</li>
         <li class="right" >
           <a href="sampler.html" title="2. Sampler"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.3 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+        &#169; Copyright 2019, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
     </div>
   </body>
 </html>

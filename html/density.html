@@ -1,33 +1,23 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>1. Probability density &#8212; pypmc 1.1.1 documentation</title>
+    <meta charset="utf-8" />
+    <title>1. Probability density &#8212; pypmc 1.1.3 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.1.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="2. Sampler" href="sampler.html" />
-    <link rel="prev" title="5. References" href="references.html" /> 
-  </head>
-  <body>
+    <link rel="prev" title="6. References" href="references.html" /> 
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -41,14 +31,14 @@
           <a href="sampler.html" title="2. Sampler"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="references.html" title="5. References"
+          <a href="references.html" title="6. References"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.3 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">1. Probability density</a><ul>
 <li><a class="reference internal" href="#module-pypmc.density.gauss">1.1. Gauss</a></li>
@@ -60,7 +50,7 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="references.html"
-                        title="previous chapter">5. References</a></p>
+                        title="previous chapter">6. References</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="sampler.html"
                         title="next chapter">2. Sampler</a></p>
@@ -72,13 +62,13 @@
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -95,107 +85,88 @@
 <span class="target" id="module-pypmc.density.base"></span><p>Collect abstract base probability density classes</p>
 <dl class="class">
 <dt id="pypmc.density.base.LocalDensity">
-<em class="property">class </em><code class="descclassname">pypmc.density.base.</code><code class="descname">LocalDensity</code><a class="reference internal" href="_modules/pypmc/density/base.html#LocalDensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.LocalDensity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.density.base.</code><code class="sig-name descname">LocalDensity</code><a class="reference internal" href="_modules/pypmc/density/base.html#LocalDensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.LocalDensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstract base class for a local probability density. Can be used as
 proposal for the Markov chain sampler.</p>
 <dl class="method">
 <dt id="pypmc.density.base.LocalDensity.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#LocalDensity.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.LocalDensity.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code> given <code class="docutils literal"><span class="pre">y</span></code>,
+<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#LocalDensity.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.LocalDensity.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code> given <code class="docutils literal notranslate"><span class="pre">y</span></code>,
 namely log(q(x|y)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> – Vector-like array; the proposed point</li>
-<li><strong>y</strong> – Vector-like array; the current point</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – Vector-like array; the proposed point</p></li>
+<li><p><strong>y</strong> – Vector-like array; the current point</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pypmc.density.base.LocalDensity.propose">
-<code class="descname">propose</code><span class="sig-paren">(</span><em>self</em>, <em>y</em>, <em>rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#LocalDensity.propose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.LocalDensity.propose" title="Permalink to this definition">¶</a></dt>
-<dd><p>Propose a new point given <code class="docutils literal"><span class="pre">y</span></code> using the random number
-generator <code class="docutils literal"><span class="pre">rng</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>y</strong> – Vector-like array; the current position</li>
-<li><strong>rng</strong> – State of a random number generator like numpy.random.mtrand</li>
+<code class="sig-name descname">propose</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">y</em>, <em class="sig-param">rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#LocalDensity.propose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.LocalDensity.propose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propose a new point given <code class="docutils literal notranslate"><span class="pre">y</span></code> using the random number
+generator <code class="docutils literal notranslate"><span class="pre">rng</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> – Vector-like array; the current position</p></li>
+<li><p><strong>rng</strong> – State of a random number generator like numpy.random.mtrand</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pypmc.density.base.ProbabilityDensity">
-<em class="property">class </em><code class="descclassname">pypmc.density.base.</code><code class="descname">ProbabilityDensity</code><a class="reference internal" href="_modules/pypmc/density/base.html#ProbabilityDensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.ProbabilityDensity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.density.base.</code><code class="sig-name descname">ProbabilityDensity</code><a class="reference internal" href="_modules/pypmc/density/base.html#ProbabilityDensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.ProbabilityDensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstract Base class of a probability density. Can be used as proposal
 for the importance sampler.</p>
 <dl class="method">
 <dt id="pypmc.density.base.ProbabilityDensity.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#ProbabilityDensity.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.ProbabilityDensity.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code>, namely log(q(x)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – Vector-like array; the proposed point.</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#ProbabilityDensity.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.ProbabilityDensity.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code>, namely log(q(x)).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – Vector-like array; the proposed point.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pypmc.density.base.ProbabilityDensity.multi_evaluate">
-<code class="descname">multi_evaluate</code><span class="sig-paren">(</span><em>x</em>, <em>out=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#ProbabilityDensity.multi_evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.ProbabilityDensity.multi_evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code>, namely log(q(x))
+<code class="sig-name descname">multi_evaluate</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">out=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#ProbabilityDensity.multi_evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.ProbabilityDensity.multi_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code>, namely log(q(x))
 for each row in x.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> – Matrix-like array; the proposed points. Expect i-th accessible
-as <code class="docutils literal"><span class="pre">x[i]</span></code>.</li>
-<li><strong>out</strong> – Vector-like array, length==``len(x)``, optional; If provided,
-the output is written into this array.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – Matrix-like array; the proposed points. Expect i-th accessible
+as <code class="docutils literal notranslate"><span class="pre">x[i]</span></code>.</p></li>
+<li><p><strong>out</strong> – Vector-like array, length==``len(x)``, optional; If provided,
+the output is written into this array.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pypmc.density.base.ProbabilityDensity.propose">
-<code class="descname">propose</code><span class="sig-paren">(</span><em>self</em>, <em>N=1</em>, <em>rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#ProbabilityDensity.propose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.ProbabilityDensity.propose" title="Permalink to this definition">¶</a></dt>
-<dd><p>Propose N points using the random number generator <code class="docutils literal"><span class="pre">rng</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>N</strong> – Integer; the number of random points to be proposed</li>
-<li><strong>rng</strong> – State of a random number generator like <code class="docutils literal"><span class="pre">numpy.random.mtrand</span></code></li>
+<code class="sig-name descname">propose</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">N=1</em>, <em class="sig-param">rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/density/base.html#ProbabilityDensity.propose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.density.base.ProbabilityDensity.propose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propose N points using the random number generator <code class="docutils literal notranslate"><span class="pre">rng</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – Integer; the number of random points to be proposed</p></li>
+<li><p><strong>rng</strong> – State of a random number generator like <code class="docutils literal notranslate"><span class="pre">numpy.random.mtrand</span></code></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -205,101 +176,81 @@ the output is written into this array.</li>
 <p>Collect Gaussian probability densities</p>
 <dl class="class">
 <dt id="pypmc.density.gauss.Gauss">
-<em class="property">class </em><code class="descclassname">pypmc.density.gauss.</code><code class="descname">Gauss</code><a class="headerlink" href="#pypmc.density.gauss.Gauss" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.density.gauss.</code><code class="sig-name descname">Gauss</code><a class="headerlink" href="#pypmc.density.gauss.Gauss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a></p>
 <p>A Gaussian probability density. Can be used as component for
 MixtureDensities.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> – Vector-like array; the gaussian’s mean <span class="math">\(\mu\)</span></li>
-<li><strong>sigma</strong> – Matrix-like array; the gaussian’s covariance matrix <span class="math">\(\Sigma\)</span></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> – Vector-like array; the gaussian’s mean <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p><strong>sigma</strong> – Matrix-like array; the gaussian’s covariance matrix <span class="math notranslate nohighlight">\(\Sigma\)</span></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+</dd>
+</dl>
+<dl class="attribute">
 <dt id="pypmc.density.gauss.Gauss.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray x</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.gauss.Gauss.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code>, namely log(q(x)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – Vector-like array; the proposed point.</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">evaluate</code><a class="headerlink" href="#pypmc.density.gauss.Gauss.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code>, namely log(q(x)).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – Vector-like array; the proposed point.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.gauss.Gauss.multi_evaluate">
-<code class="descname">multi_evaluate</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray x</em>, <em>ndarray out=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.gauss.Gauss.multi_evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code>, namely log(q(x))
+<code class="sig-name descname">multi_evaluate</code><a class="headerlink" href="#pypmc.density.gauss.Gauss.multi_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code>, namely log(q(x))
 for each row in x.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> – Matrix-like array; the proposed points. Expect i-th accessible
-as <code class="docutils literal"><span class="pre">x[i]</span></code>.</li>
-<li><strong>out</strong> – Vector-like array, length==``len(x)``, optional; If provided,
-the output is written into this array.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – Matrix-like array; the proposed points. Expect i-th accessible
+as <code class="docutils literal notranslate"><span class="pre">x[i]</span></code>.</p></li>
+<li><p><strong>out</strong> – Vector-like array, length==``len(x)``, optional; If provided,
+the output is written into this array.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.gauss.Gauss.propose">
-<code class="descname">propose</code><span class="sig-paren">(</span><em>self</em>, <em>int N=1</em>, <em>rng=_np.random.mtrand</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.gauss.Gauss.propose" title="Permalink to this definition">¶</a></dt>
-<dd><p>propose(self, N=1, rng=numpy.random.mtrand)</p>
-<p>Propose N points using the random number generator <code class="docutils literal"><span class="pre">rng</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>N</strong> – Integer; the number of random points to be proposed</li>
-<li><strong>rng</strong> – State of a random number generator like <code class="docutils literal"><span class="pre">numpy.random.mtrand</span></code></li>
+<code class="sig-name descname">propose</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">N=1</em>, <em class="sig-param">rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.gauss.Gauss.propose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propose N points using the random number generator <code class="docutils literal notranslate"><span class="pre">rng</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – Integer; the number of random points to be proposed</p></li>
+<li><p><strong>rng</strong> – State of a random number generator like <code class="docutils literal notranslate"><span class="pre">numpy.random.mtrand</span></code></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last"><code class="docutils literal"><span class="pre">rng</span></code> must meet the requirements of
-<a class="reference internal" href="#pypmc.density.gauss.LocalGauss.propose" title="pypmc.density.gauss.LocalGauss.propose"><code class="xref py py-meth docutils literal"><span class="pre">LocalGauss.propose</span></code></a>.</p>
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">rng</span></code> must meet the requirements of
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">LocalGauss.propose</span></code>.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.gauss.Gauss.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>self</em>, <em>mu</em>, <em>sigma</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.gauss.Gauss.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><a class="headerlink" href="#pypmc.density.gauss.Gauss.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Re-initialize the density with new mean and covariance matrix.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> – Vector-like array; the gaussian’s mean <span class="math">\(\mu\)</span></li>
-<li><strong>sigma</strong> – Matrix-like array; the gaussian’s covariance matrix
-<span class="math">\(\Sigma\)</span></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> – Vector-like array; the gaussian’s mean <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p><strong>sigma</strong> – Matrix-like array; the gaussian’s covariance matrix
+<span class="math notranslate nohighlight">\(\Sigma\)</span></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">On <code class="docutils literal"><span class="pre">LinAlgError</span></code>, the old <code class="docutils literal"><span class="pre">mu</span></code> and <code class="docutils literal"><span class="pre">sigma</span></code> are plugged
+<p class="admonition-title">Note</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">LinAlgError</span></code>, the old <code class="docutils literal notranslate"><span class="pre">mu</span></code> and <code class="docutils literal notranslate"><span class="pre">sigma</span></code> are plugged
 in and the proposal remains in a valid state.</p>
 </div>
 </dd></dl>
@@ -308,79 +259,64 @@ in and the proposal remains in a valid state.</p>
 
 <dl class="class">
 <dt id="pypmc.density.gauss.LocalGauss">
-<em class="property">class </em><code class="descclassname">pypmc.density.gauss.</code><code class="descname">LocalGauss</code><a class="headerlink" href="#pypmc.density.gauss.LocalGauss" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypmc.density.base.LocalDensity" title="pypmc.density.base.LocalDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.base.LocalDensity</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.density.gauss.</code><code class="sig-name descname">LocalGauss</code><a class="headerlink" href="#pypmc.density.gauss.LocalGauss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypmc.density.base.LocalDensity" title="pypmc.density.base.LocalDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.base.LocalDensity</span></code></a></p>
 <p>A multivariate local Gaussian density with redefinable covariance.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sigma</strong> – Matrix-like array; covariance-matrix.</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sigma</strong> – Matrix-like array; covariance-matrix.</p>
+</dd>
+</dl>
+<dl class="attribute">
 <dt id="pypmc.density.gauss.LocalGauss.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray x</em>, <em>ndarray y</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.gauss.LocalGauss.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code> given <code class="docutils literal"><span class="pre">y</span></code>,
+<code class="sig-name descname">evaluate</code><a class="headerlink" href="#pypmc.density.gauss.LocalGauss.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code> given <code class="docutils literal notranslate"><span class="pre">y</span></code>,
 namely log(q(x|y)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> – Vector-like array; the proposed point</li>
-<li><strong>y</strong> – Vector-like array; the current point</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – Vector-like array; the proposed point</p></li>
+<li><p><strong>y</strong> – Vector-like array; the current point</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.gauss.LocalGauss.propose">
-<code class="descname">propose</code><span class="sig-paren">(</span><em>self</em>, <em>y</em>, <em>rng=_np.random.mtrand</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.gauss.LocalGauss.propose" title="Permalink to this definition">¶</a></dt>
-<dd><p>propose(self, y, rng=numpy.random.mtrand)
-Propose a new point given <code class="docutils literal"><span class="pre">y</span></code> using the random number
-generator <code class="docutils literal"><span class="pre">rng</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>y</strong> – Vector-like array; the current position</li>
-<li><strong>rng</strong> – <p>State of a random number generator like numpy.random.mtrand</p>
+<code class="sig-name descname">propose</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">y</em>, <em class="sig-param">rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.gauss.LocalGauss.propose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propose a new point given <code class="docutils literal notranslate"><span class="pre">y</span></code> using the random number
+generator <code class="docutils literal notranslate"><span class="pre">rng</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> – Vector-like array; the current position</p></li>
+<li><p><strong>rng</strong> – <p>State of a random number generator like numpy.random.mtrand</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p><code class="docutils literal"><span class="pre">rng</span></code> must return a numpy array of N samples from:</p>
-<ul class="last">
-<li><strong>rng.normal(0,1,N)</strong>: standard gaussian distribution</li>
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">rng</span></code> must return a numpy array of N samples from:</p>
+<ul>
+<li><p><strong>rng.normal(0,1,N)</strong>: standard gaussian distribution</p></li>
 </ul>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.gauss.LocalGauss.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>self</em>, <em>sigma</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.gauss.LocalGauss.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><a class="headerlink" href="#pypmc.density.gauss.LocalGauss.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Re-initialize the proposal with a new covariance matrix.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sigma</strong> – Matrix-like array; the new covariance-matrix.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sigma</strong> – Matrix-like array; the new covariance-matrix.</p>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">On <code class="docutils literal"><span class="pre">LinAlgError</span></code>, the old covariance matrix is plugged in
+<p class="admonition-title">Note</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">LinAlgError</span></code>, the old covariance matrix is plugged in
 and the proposal remains in a valid state.</p>
 </div>
 </dd></dl>
@@ -393,81 +329,66 @@ and the proposal remains in a valid state.</p>
 <p>Collect Student’s t probability densities</p>
 <dl class="class">
 <dt id="pypmc.density.student_t.LocalStudentT">
-<em class="property">class </em><code class="descclassname">pypmc.density.student_t.</code><code class="descname">LocalStudentT</code><a class="headerlink" href="#pypmc.density.student_t.LocalStudentT" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypmc.density.gauss.LocalGauss" title="pypmc.density.gauss.LocalGauss"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.gauss.LocalGauss</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.density.student_t.</code><code class="sig-name descname">LocalStudentT</code><a class="headerlink" href="#pypmc.density.student_t.LocalStudentT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypmc.density.gauss.LocalGauss" title="pypmc.density.gauss.LocalGauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.gauss.LocalGauss</span></code></a></p>
 <p>A multivariate local Student’s t density with redefinable covariance.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>sigma</strong> – Matrix-like array; the covariance-matrix</li>
-<li><strong>dof</strong> – Float; the degrees of freedom</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sigma</strong> – Matrix-like array; the covariance-matrix</p></li>
+<li><p><strong>dof</strong> – Float; the degrees of freedom</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+</dd>
+</dl>
+<dl class="attribute">
 <dt id="pypmc.density.student_t.LocalStudentT.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>self</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.student_t.LocalStudentT.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code>, namely log(q(x)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – Vector-like array; the proposed point.</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">evaluate</code><a class="headerlink" href="#pypmc.density.student_t.LocalStudentT.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code>, namely log(q(x)).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – Vector-like array; the proposed point.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.student_t.LocalStudentT.propose">
-<code class="descname">propose</code><span class="sig-paren">(</span><em>self</em>, <em>y</em>, <em>rng=_np.random.mtrand</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.student_t.LocalStudentT.propose" title="Permalink to this definition">¶</a></dt>
-<dd><p>propose(self, N=1, rng=numpy.random.mtrand)</p>
-<p>Propose N points using the random number generator <code class="docutils literal"><span class="pre">rng</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>N</strong> – Integer; the number of random points to be proposed</li>
-<li><strong>rng</strong> – <p>State of a random number generator like <code class="docutils literal"><span class="pre">numpy.random.mtrand</span></code></p>
+<code class="sig-name descname">propose</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">N=1</em>, <em class="sig-param">rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.student_t.LocalStudentT.propose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propose N points using the random number generator <code class="docutils literal notranslate"><span class="pre">rng</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – Integer; the number of random points to be proposed</p></li>
+<li><p><strong>rng</strong> – <p>State of a random number generator like <code class="docutils literal notranslate"><span class="pre">numpy.random.mtrand</span></code></p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p><code class="docutils literal"><span class="pre">rng</span></code> must return</p>
-<ul class="last">
-<li>a numpy array of N samples from
-<strong>rng.normal(0,1,N)</strong>: standard gaussian distribution</li>
-<li>sample as float from
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">rng</span></code> must return</p>
+<ul>
+<li><p>a numpy array of N samples from
+<strong>rng.normal(0,1,N)</strong>: standard gaussian distribution</p></li>
+<li><p>sample as float from
 <strong>rng.chisquare(degree_of_freedom)</strong>: any chi-squared
-distribution</li>
+distribution</p></li>
 </ul>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.student_t.LocalStudentT.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>self</em>, <em>sigma</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.student_t.LocalStudentT.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><a class="headerlink" href="#pypmc.density.student_t.LocalStudentT.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Re-initialize the proposal with a new covariance matrix.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sigma</strong> – Matrix-like array; the new covariance-matrix.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sigma</strong> – Matrix-like array; the new covariance-matrix.</p>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">On <code class="docutils literal"><span class="pre">LinAlgError</span></code>, the old covariance matrix is plugged in
+<p class="admonition-title">Note</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">LinAlgError</span></code>, the old covariance matrix is plugged in
 and the proposal remains in a valid state.</p>
 </div>
 </dd></dl>
@@ -476,105 +397,85 @@ and the proposal remains in a valid state.</p>
 
 <dl class="class">
 <dt id="pypmc.density.student_t.StudentT">
-<em class="property">class </em><code class="descclassname">pypmc.density.student_t.</code><code class="descname">StudentT</code><a class="headerlink" href="#pypmc.density.student_t.StudentT" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.density.student_t.</code><code class="sig-name descname">StudentT</code><a class="headerlink" href="#pypmc.density.student_t.StudentT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a></p>
 <p>A Student’s t probability density. Can be used as a component in
 MixtureDensities.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> – Vector-like array; the gaussian’s mean <span class="math">\(\mu\)</span></li>
-<li><strong>sigma</strong> – Matrix-like array; the gaussian’s covariance matrix <span class="math">\(\Sigma\)</span></li>
-<li><strong>dof</strong> – Float; the degrees of freedom <span class="math">\(\nu\)</span></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> – Vector-like array; the gaussian’s mean <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p><strong>sigma</strong> – Matrix-like array; the gaussian’s covariance matrix <span class="math notranslate nohighlight">\(\Sigma\)</span></p></li>
+<li><p><strong>dof</strong> – Float; the degrees of freedom <span class="math notranslate nohighlight">\(\nu\)</span></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+</dd>
+</dl>
+<dl class="attribute">
 <dt id="pypmc.density.student_t.StudentT.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray x</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.student_t.StudentT.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code>, namely log(q(x)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – Vector-like array; the proposed point.</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">evaluate</code><a class="headerlink" href="#pypmc.density.student_t.StudentT.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code>, namely log(q(x)).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> – Vector-like array; the proposed point.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.student_t.StudentT.multi_evaluate">
-<code class="descname">multi_evaluate</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray x</em>, <em>ndarray out=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.student_t.StudentT.multi_evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code>, namely log(q(x))
+<code class="sig-name descname">multi_evaluate</code><a class="headerlink" href="#pypmc.density.student_t.StudentT.multi_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code>, namely log(q(x))
 for each row in x.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> – Matrix-like array; the proposed points. Expect i-th accessible
-as <code class="docutils literal"><span class="pre">x[i]</span></code>.</li>
-<li><strong>out</strong> – Vector-like array, length==``len(x)``, optional; If provided,
-the output is written into this array.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – Matrix-like array; the proposed points. Expect i-th accessible
+as <code class="docutils literal notranslate"><span class="pre">x[i]</span></code>.</p></li>
+<li><p><strong>out</strong> – Vector-like array, length==``len(x)``, optional; If provided,
+the output is written into this array.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.student_t.StudentT.propose">
-<code class="descname">propose</code><span class="sig-paren">(</span><em>self</em>, <em>int N=1</em>, <em>rng=_np.random.mtrand</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.student_t.StudentT.propose" title="Permalink to this definition">¶</a></dt>
-<dd><p>propose(self, N=1, rng=numpy.random.mtrand)</p>
-<p>Propose N points using the random number generator <code class="docutils literal"><span class="pre">rng</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>N</strong> – Integer; the number of random points to be proposed</li>
-<li><strong>rng</strong> – <p>State of a random number generator like <code class="docutils literal"><span class="pre">numpy.random.mtrand</span></code></p>
+<code class="sig-name descname">propose</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">N=1</em>, <em class="sig-param">rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.student_t.StudentT.propose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propose N points using the random number generator <code class="docutils literal notranslate"><span class="pre">rng</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – Integer; the number of random points to be proposed</p></li>
+<li><p><strong>rng</strong> – <p>State of a random number generator like <code class="docutils literal notranslate"><span class="pre">numpy.random.mtrand</span></code></p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last"><code class="docutils literal"><span class="pre">rng</span></code> must meet the requirements of
-<a class="reference internal" href="#pypmc.density.student_t.LocalStudentT.propose" title="pypmc.density.student_t.LocalStudentT.propose"><code class="xref py py-meth docutils literal"><span class="pre">LocalStudentT.propose</span></code></a>.</p>
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">rng</span></code> must meet the requirements of
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">LocalStudentT.propose</span></code>.</p>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.student_t.StudentT.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>self</em>, <em>mu</em>, <em>sigma</em>, <em>double dof</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.student_t.StudentT.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><a class="headerlink" href="#pypmc.density.student_t.StudentT.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Re-initialize the density with new mean, covariance matrix and
 degrees of freedom.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mu</strong> – Vector-like array; the gaussian’s mean <span class="math">\(\mu\)</span></li>
-<li><strong>sigma</strong> – Matrix-like array; the gaussian’s covariance matrix
-<span class="math">\(\Sigma\)</span></li>
-<li><strong>dof</strong> – Float; the degrees of freedom <span class="math">\(\nu\)</span></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> – Vector-like array; the gaussian’s mean <span class="math notranslate nohighlight">\(\mu\)</span></p></li>
+<li><p><strong>sigma</strong> – Matrix-like array; the gaussian’s covariance matrix
+<span class="math notranslate nohighlight">\(\Sigma\)</span></p></li>
+<li><p><strong>dof</strong> – Float; the degrees of freedom <span class="math notranslate nohighlight">\(\nu\)</span></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">On <code class="docutils literal"><span class="pre">LinAlgError</span></code>, the old <code class="docutils literal"><span class="pre">mu</span></code>, <code class="docutils literal"><span class="pre">sigma</span></code>, and <code class="docutils literal"><span class="pre">dof</span></code>
+<p class="admonition-title">Note</p>
+<p>On <code class="docutils literal notranslate"><span class="pre">LinAlgError</span></code>, the old <code class="docutils literal notranslate"><span class="pre">mu</span></code>, <code class="docutils literal notranslate"><span class="pre">sigma</span></code>, and <code class="docutils literal notranslate"><span class="pre">dof</span></code>
 are plugged in and the proposal remains in a valid state.</p>
 </div>
 </dd></dl>
@@ -587,249 +488,215 @@ are plugged in and the proposal remains in a valid state.</p>
 <p>Collect mixture probability densities</p>
 <dl class="class">
 <dt id="pypmc.density.mixture.MixtureDensity">
-<em class="property">class </em><code class="descclassname">pypmc.density.mixture.</code><code class="descname">MixtureDensity</code><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.density.mixture.</code><code class="sig-name descname">MixtureDensity</code><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a></p>
 <p>Base class for mixture probability densities.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>components</strong> – Iterable of ProbabilityDensities; the mixture’s components</li>
-<li><strong>weights</strong> – Iterable of floats; the weights of the components
-(will be normalized automatically during initialization)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>components</strong> – Iterable of ProbabilityDensities; the mixture’s components</p></li>
+<li><p><strong>weights</strong> – Iterable of floats; the weights of the components
+(will be normalized automatically during initialization)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+</dd>
+</dl>
+<dl class="attribute">
 <dt id="pypmc.density.mixture.MixtureDensity.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>self</em>, <em>x</em>, <em>individual=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate log of the density to propose <code class="docutils literal"><span class="pre">x</span></code>, namely log(q(x)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> – Vector-like array; the proposed point.</li>
-<li><strong>individual</strong> – bool; If true, return the evaluation of each component at <code class="docutils literal"><span class="pre">x</span></code> as
-an array.</li>
+<code class="sig-name descname">evaluate</code><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log of the density to propose <code class="docutils literal notranslate"><span class="pre">x</span></code>, namely log(q(x)).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – Vector-like array; the proposed point.</p></li>
+<li><p><strong>individual</strong> – bool; If true, return the evaluation of each component at <code class="docutils literal notranslate"><span class="pre">x</span></code> as
+an array.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">This function assumes that the weights are normalized, i.e.
-that <code class="docutils literal"><span class="pre">self.normalized()</span></code> returns <code class="docutils literal"><span class="pre">True</span></code>.</p>
+<p class="admonition-title">Important</p>
+<p>This function assumes that the weights are normalized, i.e.
+that <code class="docutils literal notranslate"><span class="pre">self.normalized()</span></code> returns <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.mixture.MixtureDensity.multi_evaluate">
-<code class="descname">multi_evaluate</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray x</em>, <em>ndarray out=None</em>, <em>ndarray individual=None</em>, <em>components=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.multi_evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate density at all points in <code class="docutils literal"><span class="pre">x</span></code> for all components
-specified in <code class="docutils literal"><span class="pre">components</span></code> and return in <code class="docutils literal"><span class="pre">individual</span></code>.
-Return log(q(x)) for each point (if <code class="docutils literal"><span class="pre">components</span></code> is <code class="docutils literal"><span class="pre">None</span></code>).</p>
-<p>Use <code class="docutils literal"><span class="pre">individual</span></code> if you need the density at <code class="docutils literal"><span class="pre">x</span></code> for each component
+<code class="sig-name descname">multi_evaluate</code><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.multi_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate density at all points in <code class="docutils literal notranslate"><span class="pre">x</span></code> for all components
+specified in <code class="docutils literal notranslate"><span class="pre">components</span></code> and return in <code class="docutils literal notranslate"><span class="pre">individual</span></code>.
+Return log(q(x)) for each point (if <code class="docutils literal notranslate"><span class="pre">components</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">individual</span></code> if you need the density at <code class="docutils literal notranslate"><span class="pre">x</span></code> for each component
 and you want to compute it only once to increase efficiency.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> – (N x D) array; one D-dim. sample per row.</li>
-<li><strong>out</strong> – (N) array, optional; write output into this array (if
-<code class="docutils literal"><span class="pre">components</span></code> is <code class="docutils literal"><span class="pre">None</span></code>).</li>
-<li><strong>individual</strong> – (N x K) array; density of k-th component at the n-th sample.</li>
-<li><strong>components</strong> – Iterable of integers; calculate <code class="docutils literal"><span class="pre">individual</span></code> for these
-components only.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – (N x D) array; one D-dim. sample per row.</p></li>
+<li><p><strong>out</strong> – (N) array, optional; write output into this array (if
+<code class="docutils literal notranslate"><span class="pre">components</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
+<li><p><strong>individual</strong> – (N x K) array; density of k-th component at the n-th sample.</p></li>
+<li><p><strong>components</strong> – Iterable of integers; calculate <code class="docutils literal notranslate"><span class="pre">individual</span></code> for these
+components only.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.mixture.MixtureDensity.normalize">
-<code class="descname">normalize</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.normalize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">normalize</code><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.normalize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize the component weights to sum up to 1.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.mixture.MixtureDensity.normalized">
-<code class="descname">normalized</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.normalized" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">normalized</code><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.normalized" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the component weights are normalized.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.mixture.MixtureDensity.propose">
-<code class="descname">propose</code><span class="sig-paren">(</span><em>self</em>, <em>N=1</em>, <em>rng=_np.random.mtrand</em>, <em>trace=False</em>, <em>shuffle=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.propose" title="Permalink to this definition">¶</a></dt>
-<dd><p>Propose N points using the random number generator <code class="docutils literal"><span class="pre">rng</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>N</strong> – Integer; the number of random points to be proposed</li>
-<li><strong>rng</strong> – State of a random number generator like numpy.random.mtrand</li>
-<li><strong>shuffle</strong> – bool; if True (default), the samples are disordered. Otherwise,
-the samples are ordered by the components.</li>
-<li><strong>trace</strong> – bool; if True, return the proposed samples and an array containing
+<code class="sig-name descname">propose</code><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.propose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propose N points using the random number generator <code class="docutils literal notranslate"><span class="pre">rng</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – Integer; the number of random points to be proposed</p></li>
+<li><p><strong>rng</strong> – State of a random number generator like numpy.random.mtrand</p></li>
+<li><p><strong>shuffle</strong> – bool; if True (default), the samples are disordered. Otherwise,
+the samples are ordered by the components.</p></li>
+<li><p><strong>trace</strong> – bool; if True, return the proposed samples and an array containing
 the number of the component responsible for each sample, otherwise
-just return the samples.</li>
+just return the samples.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<dl class="last docutils">
-<dt><code class="docutils literal"><span class="pre">rng</span></code> must:</dt>
-<dd><ul class="first last simple">
-<li>return a numpy array of N samples from the multinomial
-distribution with probabilities <code class="docutils literal"><span class="pre">pvals</span></code> when calling
-<strong>rng.multinomial(N, pvals)</strong></li>
-<li>shuffle an <code class="docutils literal"><span class="pre">array</span></code> in place when calling <strong>rng.shuffle(array)</strong></li>
+<p class="admonition-title">Important</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">rng</span></code> must:</dt><dd><ul class="simple">
+<li><p>return a numpy array of N samples from the multinomial
+distribution with probabilities <code class="docutils literal notranslate"><span class="pre">pvals</span></code> when calling
+<strong>rng.multinomial(N, pvals)</strong></p></li>
+<li><p>shuffle an <code class="docutils literal notranslate"><span class="pre">array</span></code> in place when calling <strong>rng.shuffle(array)</strong></p></li>
 </ul>
 </dd>
 </dl>
 </div>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">This function assumes that the weights are normalized, i.e.
-that <code class="docutils literal"><span class="pre">self.normalized()</span></code> returns <code class="docutils literal"><span class="pre">True</span></code>.</p>
+<p class="admonition-title">Important</p>
+<p>This function assumes that the weights are normalized, i.e.
+that <code class="docutils literal notranslate"><span class="pre">self.normalized()</span></code> returns <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="pypmc.density.mixture.MixtureDensity.prune">
-<code class="descname">prune</code><span class="sig-paren">(</span><em>self</em>, <em>threshold=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.prune" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove components with weight less or equal <code class="docutils literal"><span class="pre">threshold</span></code>.
+<code class="sig-name descname">prune</code><a class="headerlink" href="#pypmc.density.mixture.MixtureDensity.prune" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove components with weight less or equal <code class="docutils literal notranslate"><span class="pre">threshold</span></code>.
 Return list of removed components and weights in the form:
 [(index, component, weight), …].</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>threshold</strong> – Float; components with lower weight are deleted</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>threshold</strong> – Float; components with lower weight are deleted</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.density.mixture.create_gaussian_mixture">
-<code class="descclassname">pypmc.density.mixture.</code><code class="descname">create_gaussian_mixture</code><span class="sig-paren">(</span><em>means</em>, <em>covs</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.create_gaussian_mixture" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a> with Gaussian (<a class="reference internal" href="#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">Gauss</span></code></a>)
+<code class="sig-prename descclassname">pypmc.density.mixture.</code><code class="sig-name descname">create_gaussian_mixture</code><span class="sig-paren">(</span><em class="sig-param">means</em>, <em class="sig-param">covs</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.create_gaussian_mixture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixtureDensity</span></code></a> with Gaussian (<a class="reference internal" href="#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gauss</span></code></a>)
 components. The output can be used for the clustering algorithms.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#pypmc.density.mixture.recover_gaussian_mixture" title="pypmc.density.mixture.recover_gaussian_mixture"><code class="xref py py-func docutils literal"><span class="pre">recover_gaussian_mixture</span></code></a>, <a class="reference internal" href="#pypmc.density.mixture.create_t_mixture" title="pypmc.density.mixture.create_t_mixture"><code class="xref py py-func docutils literal"><span class="pre">create_t_mixture</span></code></a>,
-<a class="reference internal" href="#pypmc.density.mixture.recover_t_mixture" title="pypmc.density.mixture.recover_t_mixture"><code class="xref py py-func docutils literal"><span class="pre">recover_t_mixture</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#pypmc.density.mixture.recover_gaussian_mixture" title="pypmc.density.mixture.recover_gaussian_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">recover_gaussian_mixture</span></code></a>, <a class="reference internal" href="#pypmc.density.mixture.create_t_mixture" title="pypmc.density.mixture.create_t_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_t_mixture</span></code></a>,
+<a class="reference internal" href="#pypmc.density.mixture.recover_t_mixture" title="pypmc.density.mixture.recover_t_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">recover_t_mixture</span></code></a></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>means</strong> – Vector-like array; the means of the Gaussian mixture</li>
-<li><strong>covs</strong> – 3d-matrix-like array; the covariances of the Gaussian mixture.
-<code class="docutils literal"><span class="pre">cov[i]</span></code> will be interpreted as the i’th covariance matrix.</li>
-<li><strong>weights</strong> – <p>Vector-like array, optional; the component weights. If not
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>means</strong> – Vector-like array; the means of the Gaussian mixture</p></li>
+<li><p><strong>covs</strong> – 3d-matrix-like array; the covariances of the Gaussian mixture.
+<code class="docutils literal notranslate"><span class="pre">cov[i]</span></code> will be interpreted as the i’th covariance matrix.</p></li>
+<li><p><strong>weights</strong> – <p>Vector-like array, optional; the component weights. If not
 provided all components will get equal weight.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The weights will automatically be normalized.</p>
+<p class="admonition-title">Note</p>
+<p>The weights will automatically be normalized.</p>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.density.mixture.create_t_mixture">
-<code class="descclassname">pypmc.density.mixture.</code><code class="descname">create_t_mixture</code><span class="sig-paren">(</span><em>means</em>, <em>covs</em>, <em>dofs</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.create_t_mixture" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a> with Student t
-(<a class="reference internal" href="#pypmc.density.student_t.StudentT" title="pypmc.density.student_t.StudentT"><code class="xref py py-class docutils literal"><span class="pre">StudentT</span></code></a>) components. The output can be used for the
+<code class="sig-prename descclassname">pypmc.density.mixture.</code><code class="sig-name descname">create_t_mixture</code><span class="sig-paren">(</span><em class="sig-param">means</em>, <em class="sig-param">covs</em>, <em class="sig-param">dofs</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.create_t_mixture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixtureDensity</span></code></a> with Student t
+(<a class="reference internal" href="#pypmc.density.student_t.StudentT" title="pypmc.density.student_t.StudentT"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentT</span></code></a>) components. The output can be used for the
 clustering algorithms.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#pypmc.density.mixture.recover_t_mixture" title="pypmc.density.mixture.recover_t_mixture"><code class="xref py py-func docutils literal"><span class="pre">recover_t_mixture</span></code></a>, <a class="reference internal" href="#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal"><span class="pre">create_gaussian_mixture</span></code></a>,
-<a class="reference internal" href="#pypmc.density.mixture.recover_gaussian_mixture" title="pypmc.density.mixture.recover_gaussian_mixture"><code class="xref py py-func docutils literal"><span class="pre">recover_gaussian_mixture</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#pypmc.density.mixture.recover_t_mixture" title="pypmc.density.mixture.recover_t_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">recover_t_mixture</span></code></a>, <a class="reference internal" href="#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_gaussian_mixture</span></code></a>,
+<a class="reference internal" href="#pypmc.density.mixture.recover_gaussian_mixture" title="pypmc.density.mixture.recover_gaussian_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">recover_gaussian_mixture</span></code></a></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>means</strong> – Vector-like array; the means of the mixture</li>
-<li><strong>covs</strong> – 3d-matrix-like array; the covariances of the mixture. <code class="docutils literal"><span class="pre">cov[i]</span></code>
-will be interpreted as the i’th covariance matrix.</li>
-<li><strong>dofs</strong> – Vector-like array; the degrees of freedom</li>
-<li><strong>weights</strong> – <p>Vector-like array, optional; the component weights. If not
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>means</strong> – Vector-like array; the means of the mixture</p></li>
+<li><p><strong>covs</strong> – 3d-matrix-like array; the covariances of the mixture. <code class="docutils literal notranslate"><span class="pre">cov[i]</span></code>
+will be interpreted as the i’th covariance matrix.</p></li>
+<li><p><strong>dofs</strong> – Vector-like array; the degrees of freedom</p></li>
+<li><p><strong>weights</strong> – <p>Vector-like array, optional; the component weights. If not
 provided all components will get equal weight.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The weights will automatically be normalized.</p>
+<p class="admonition-title">Note</p>
+<p>The weights will automatically be normalized.</p>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.density.mixture.recover_gaussian_mixture">
-<code class="descclassname">pypmc.density.mixture.</code><code class="descname">recover_gaussian_mixture</code><span class="sig-paren">(</span><em>mixture</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.recover_gaussian_mixture" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pypmc.density.mixture.</code><code class="sig-name descname">recover_gaussian_mixture</code><span class="sig-paren">(</span><em class="sig-param">mixture</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.recover_gaussian_mixture" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the means, covariances and component weights from a
-<a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a>.</p>
+<a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixtureDensity</span></code></a>.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal"><span class="pre">create_gaussian_mixture</span></code></a>, <a class="reference internal" href="#pypmc.density.mixture.create_t_mixture" title="pypmc.density.mixture.create_t_mixture"><code class="xref py py-func docutils literal"><span class="pre">create_t_mixture</span></code></a>,
-<a class="reference internal" href="#pypmc.density.mixture.recover_t_mixture" title="pypmc.density.mixture.recover_t_mixture"><code class="xref py py-func docutils literal"><span class="pre">recover_t_mixture</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_gaussian_mixture</span></code></a>, <a class="reference internal" href="#pypmc.density.mixture.create_t_mixture" title="pypmc.density.mixture.create_t_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_t_mixture</span></code></a>,
+<a class="reference internal" href="#pypmc.density.mixture.recover_t_mixture" title="pypmc.density.mixture.recover_t_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">recover_t_mixture</span></code></a></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mixture</strong> – <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a> with Gaussian (<a class="reference internal" href="#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal"><span class="pre">Gauss</span></code></a>)
-components; the mixture to be decomposed.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mixture</strong> – <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixtureDensity</span></code></a> with Gaussian (<a class="reference internal" href="#pypmc.density.gauss.Gauss" title="pypmc.density.gauss.Gauss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gauss</span></code></a>)
+components; the mixture to be decomposed.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.density.mixture.recover_t_mixture">
-<code class="descclassname">pypmc.density.mixture.</code><code class="descname">recover_t_mixture</code><span class="sig-paren">(</span><em>mixture</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.recover_t_mixture" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pypmc.density.mixture.</code><code class="sig-name descname">recover_t_mixture</code><span class="sig-paren">(</span><em class="sig-param">mixture</em><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.density.mixture.recover_t_mixture" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the means, covariances, degrees of freedom and component
-weights from a <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a>.</p>
+weights from a <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixtureDensity</span></code></a>.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#pypmc.density.mixture.create_t_mixture" title="pypmc.density.mixture.create_t_mixture"><code class="xref py py-func docutils literal"><span class="pre">create_t_mixture</span></code></a>, <a class="reference internal" href="#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal"><span class="pre">create_gaussian_mixture</span></code></a>,
-<a class="reference internal" href="#pypmc.density.mixture.recover_gaussian_mixture" title="pypmc.density.mixture.recover_gaussian_mixture"><code class="xref py py-func docutils literal"><span class="pre">recover_gaussian_mixture</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#pypmc.density.mixture.create_t_mixture" title="pypmc.density.mixture.create_t_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_t_mixture</span></code></a>, <a class="reference internal" href="#pypmc.density.mixture.create_gaussian_mixture" title="pypmc.density.mixture.create_gaussian_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_gaussian_mixture</span></code></a>,
+<a class="reference internal" href="#pypmc.density.mixture.recover_gaussian_mixture" title="pypmc.density.mixture.recover_gaussian_mixture"><code class="xref py py-func docutils literal notranslate"><span class="pre">recover_gaussian_mixture</span></code></a></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mixture</strong> – <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">MixtureDensity</span></code></a> with Student t (<a class="reference internal" href="#pypmc.density.student_t.StudentT" title="pypmc.density.student_t.StudentT"><code class="xref py py-class docutils literal"><span class="pre">StudentT</span></code></a>)
-components; the mixture to be decomposed.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mixture</strong> – <a class="reference internal" href="#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">MixtureDensity</span></code></a> with Student t (<a class="reference internal" href="#pypmc.density.student_t.StudentT" title="pypmc.density.student_t.StudentT"><code class="xref py py-class docutils literal notranslate"><span class="pre">StudentT</span></code></a>)
+components; the mixture to be decomposed.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -854,14 +721,14 @@ components; the mixture to be decomposed.</td>
           <a href="sampler.html" title="2. Sampler"
              >next</a> |</li>
         <li class="right" >
-          <a href="references.html" title="5. References"
+          <a href="references.html" title="6. References"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.3 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+        &#169; Copyright 2019, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
     </div>
   </body>
 </html>

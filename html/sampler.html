@@ -1,33 +1,23 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>2. Sampler &#8212; pypmc 1.1.1 documentation</title>
+    <meta charset="utf-8" />
+    <title>2. Sampler &#8212; pypmc 1.1.3 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.1.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="3. Mixture adaptation" href="mix_adapt.html" />
     <link rel="prev" title="1. Probability density" href="density.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -43,12 +33,12 @@
         <li class="right" >
           <a href="density.html" title="1. Probability density"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.3 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">2. Sampler</a><ul>
 <li><a class="reference internal" href="#module-pypmc.sampler.markov_chain">2.1. Markov Chain</a></li>
@@ -71,13 +61,13 @@
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -96,257 +86,236 @@
 <p>Collect Markov Chain</p>
 <dl class="class">
 <dt id="pypmc.sampler.markov_chain.MarkovChain">
-<em class="property">class </em><code class="descclassname">pypmc.sampler.markov_chain.</code><code class="descname">MarkovChain</code><span class="sig-paren">(</span><em>target</em>, <em>proposal</em>, <em>start</em>, <em>indicator=None</em>, <em>rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#MarkovChain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.MarkovChain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.sampler.markov_chain.</code><code class="sig-name descname">MarkovChain</code><span class="sig-paren">(</span><em class="sig-param">target</em>, <em class="sig-param">proposal</em>, <em class="sig-param">start</em>, <em class="sig-param">indicator=None</em>, <em class="sig-param">rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#MarkovChain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.MarkovChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A Markov chain to generate samples from the target density.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>target</strong> – The target density. Must be a function accepting a 1d numpy
-array and returning a float, namely <span class="math">\(\log(P(x))\)</span>,
-the log of the target <cite>P</cite>.</li>
-<li><strong>proposal</strong> – <p>The proposal density <cite>q</cite>.
-Should be of type <a class="reference internal" href="density.html#pypmc.density.base.LocalDensity" title="pypmc.density.base.LocalDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.base.LocalDensity</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> – The target density. Must be a function accepting a 1d numpy
+array and returning a float, namely <span class="math notranslate nohighlight">\(\log(P(x))\)</span>,
+the log of the target <cite>P</cite>.</p></li>
+<li><p><strong>proposal</strong> – <p>The proposal density <cite>q</cite>.
+Should be of type <a class="reference internal" href="density.html#pypmc.density.base.LocalDensity" title="pypmc.density.base.LocalDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.base.LocalDensity</span></code></a>.</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
-<p class="last">If your proposal density is symmetric, define the member
-variable <code class="docutils literal"><span class="pre">proposal.symmetric</span> <span class="pre">=</span> <span class="pre">True</span></code>. This will omit calls
+<p class="admonition-title">Hint</p>
+<p>If your proposal density is symmetric, define the member
+variable <code class="docutils literal notranslate"><span class="pre">proposal.symmetric</span> <span class="pre">=</span> <span class="pre">True</span></code>. This will omit calls
 to proposal.evaluate in the Metropolis-Hastings steps.</p>
 </div>
-</li>
-<li><strong>start</strong> – The starting point of the Markov chain. (numpy array)</li>
-<li><strong>indicator</strong> – <p>The indicator function receives a numpy array and returns bool.
+</p></li>
+<li><p><strong>start</strong> – The starting point of the Markov chain. (numpy array)</p></li>
+<li><p><strong>indicator</strong> – <p>The indicator function receives a numpy array and returns bool.
 The target is only called if indicator(proposed_point)
 returns True, otherwise the proposed point is rejected
 without call to target.
 Use this function to specify the support of the target.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="tools.html#module-pypmc.tools.indicator" title="pypmc.tools.indicator"><code class="xref py py-mod docutils literal"><span class="pre">pypmc.tools.indicator</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tools.html#module-pypmc.tools.indicator" title="pypmc.tools.indicator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pypmc.tools.indicator</span></code></a></p>
 </div>
-</li>
-<li><strong>prealloc</strong> – <p>Integer; the number of Markov chain samples for which memory in
-<code class="docutils literal"><span class="pre">self.samples</span></code> is allocated. If more memory is needed, it will
+</p></li>
+<li><p><strong>prealloc</strong> – <p>Integer; the number of Markov chain samples for which memory in
+<code class="docutils literal notranslate"><span class="pre">self.samples</span></code> is allocated. If more memory is needed, it will
 be allocated on demand.</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
-<p class="last">Preallocating memory can speed up the calculation, in
+<p class="admonition-title">Hint</p>
+<p>Preallocating memory can speed up the calculation, in
 particular if it is known in advance how long the chains
 are run.</p>
 </div>
-</li>
-<li><strong>save_target_values</strong> – Bool; if <code class="docutils literal"><span class="pre">True</span></code>, store the evaluated <code class="docutils literal"><span class="pre">target</span></code> at every visited
-point in <code class="docutils literal"><span class="pre">self.target_values</span></code></li>
-<li><strong>rng</strong> – <p>The rng passed to the proposal when calling proposal.propose</p>
+</p></li>
+<li><p><strong>save_target_values</strong> – Bool; if <code class="docutils literal notranslate"><span class="pre">True</span></code>, store the evaluated <code class="docutils literal notranslate"><span class="pre">target</span></code> at every visited
+point in <code class="docutils literal notranslate"><span class="pre">self.target_values</span></code></p></li>
+<li><p><strong>rng</strong> – <p>The rng passed to the proposal when calling proposal.propose</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last"><code class="docutils literal"><span class="pre">rng</span></code> must return a sample from the uniform distribution
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">rng</span></code> must return a sample from the uniform distribution
 in [0,1) when calling <strong>rng.rand()</strong></p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><code class="docutils literal"><span class="pre">rng</span></code> must also fulfill the requirements of your proposal
-<a class="reference internal" href="density.html#pypmc.density.base.LocalDensity.propose" title="pypmc.density.base.LocalDensity.propose"><code class="xref py py-meth docutils literal"><span class="pre">pypmc.density.base.LocalDensity.propose</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><code class="docutils literal notranslate"><span class="pre">rng</span></code> must also fulfill the requirements of your proposal
+<a class="reference internal" href="density.html#pypmc.density.base.LocalDensity.propose" title="pypmc.density.base.LocalDensity.propose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pypmc.density.base.LocalDensity.propose</span></code></a></p>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pypmc.sampler.markov_chain.MarkovChain.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#MarkovChain.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.MarkovChain.clear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clear history of visited points (stored in <code class="docutils literal"><span class="pre">self.samples</span></code>) and
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#MarkovChain.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.MarkovChain.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear history of visited points (stored in <code class="docutils literal notranslate"><span class="pre">self.samples</span></code>) and
 other internal variables to free memory.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The current state that defines the Markov chain is untouched.</p>
+<p class="admonition-title">Note</p>
+<p>The current state that defines the Markov chain is untouched.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="pypmc.sampler.markov_chain.MarkovChain.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>N=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#MarkovChain.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.MarkovChain.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">N=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#MarkovChain.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.MarkovChain.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the chain and store the history of visited points into
-the member variable <code class="docutils literal"><span class="pre">self.samples</span></code>. Returns the number of
+the member variable <code class="docutils literal notranslate"><span class="pre">self.samples</span></code>. Returns the number of
 accepted points during the run.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal"><span class="pre">pypmc.tools.History</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.tools.History</span></code></a></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>N</strong> – An int which defines the number of steps to run the chain.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>N</strong> – An int which defines the number of steps to run the chain.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pypmc.sampler.markov_chain.AdaptiveMarkovChain">
-<em class="property">class </em><code class="descclassname">pypmc.sampler.markov_chain.</code><code class="descname">AdaptiveMarkovChain</code><span class="sig-paren">(</span><em>target</em>, <em>proposal</em>, <em>start</em>, <em>indicator=None</em>, <em>rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#AdaptiveMarkovChain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypmc.sampler.markov_chain.MarkovChain" title="pypmc.sampler.markov_chain.MarkovChain"><code class="xref py py-class docutils literal"><span class="pre">pypmc.sampler.markov_chain.MarkovChain</span></code></a></p>
-<p>A Markov chain with proposal covariance adaptation as in <a class="reference internal" href="references.html#hst01" id="id1">[HST01]</a> to generate samples from the target density.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>target</strong> – The target density. Must be a function accepting a 1d numpy
-array and returning a float, namely <span class="math">\(\log(P(x))\)</span>,
-the log of the target <cite>P</cite>.</li>
-<li><strong>proposal</strong> – <p>The proposal density <cite>q</cite>.
-Should be of type <a class="reference internal" href="density.html#pypmc.density.base.LocalDensity" title="pypmc.density.base.LocalDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.base.LocalDensity</span></code></a>.</p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.sampler.markov_chain.</code><code class="sig-name descname">AdaptiveMarkovChain</code><span class="sig-paren">(</span><em class="sig-param">target</em>, <em class="sig-param">proposal</em>, <em class="sig-param">start</em>, <em class="sig-param">indicator=None</em>, <em class="sig-param">rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#AdaptiveMarkovChain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypmc.sampler.markov_chain.MarkovChain" title="pypmc.sampler.markov_chain.MarkovChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.sampler.markov_chain.MarkovChain</span></code></a></p>
+<p>A Markov chain with proposal covariance adaptation as in <a class="reference internal" href="references.html#hst01" id="id1"><span>[HST01]</span></a> to generate samples from the target density.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> – The target density. Must be a function accepting a 1d numpy
+array and returning a float, namely <span class="math notranslate nohighlight">\(\log(P(x))\)</span>,
+the log of the target <cite>P</cite>.</p></li>
+<li><p><strong>proposal</strong> – <p>The proposal density <cite>q</cite>.
+Should be of type <a class="reference internal" href="density.html#pypmc.density.base.LocalDensity" title="pypmc.density.base.LocalDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.base.LocalDensity</span></code></a>.</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
-<p class="last">If your proposal density is symmetric, define the member
-variable <code class="docutils literal"><span class="pre">proposal.symmetric</span> <span class="pre">=</span> <span class="pre">True</span></code>. This will omit calls
+<p class="admonition-title">Hint</p>
+<p>If your proposal density is symmetric, define the member
+variable <code class="docutils literal notranslate"><span class="pre">proposal.symmetric</span> <span class="pre">=</span> <span class="pre">True</span></code>. This will omit calls
 to proposal.evaluate in the Metropolis-Hastings steps.</p>
 </div>
-</li>
-<li><strong>start</strong> – The starting point of the Markov chain. (numpy array)</li>
-<li><strong>indicator</strong> – <p>The indicator function receives a numpy array and returns bool.
+</p></li>
+<li><p><strong>start</strong> – The starting point of the Markov chain. (numpy array)</p></li>
+<li><p><strong>indicator</strong> – <p>The indicator function receives a numpy array and returns bool.
 The target is only called if indicator(proposed_point)
 returns True, otherwise the proposed point is rejected
 without call to target.
 Use this function to specify the support of the target.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="tools.html#module-pypmc.tools.indicator" title="pypmc.tools.indicator"><code class="xref py py-mod docutils literal"><span class="pre">pypmc.tools.indicator</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tools.html#module-pypmc.tools.indicator" title="pypmc.tools.indicator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pypmc.tools.indicator</span></code></a></p>
 </div>
-</li>
-<li><strong>prealloc</strong> – <p>Integer; the number of Markov chain samples for which memory in
-<code class="docutils literal"><span class="pre">self.samples</span></code> is allocated. If more memory is needed, it will
+</p></li>
+<li><p><strong>prealloc</strong> – <p>Integer; the number of Markov chain samples for which memory in
+<code class="docutils literal notranslate"><span class="pre">self.samples</span></code> is allocated. If more memory is needed, it will
 be allocated on demand.</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
-<p class="last">Preallocating memory can speed up the calculation, in
+<p class="admonition-title">Hint</p>
+<p>Preallocating memory can speed up the calculation, in
 particular if it is known in advance how long the chains
 are run.</p>
 </div>
-</li>
-<li><strong>save_target_values</strong> – Bool; if <code class="docutils literal"><span class="pre">True</span></code>, store the evaluated <code class="docutils literal"><span class="pre">target</span></code> at every visited
-point in <code class="docutils literal"><span class="pre">self.target_values</span></code></li>
-<li><strong>rng</strong> – <p>The rng passed to the proposal when calling proposal.propose</p>
+</p></li>
+<li><p><strong>save_target_values</strong> – Bool; if <code class="docutils literal notranslate"><span class="pre">True</span></code>, store the evaluated <code class="docutils literal notranslate"><span class="pre">target</span></code> at every visited
+point in <code class="docutils literal notranslate"><span class="pre">self.target_values</span></code></p></li>
+<li><p><strong>rng</strong> – <p>The rng passed to the proposal when calling proposal.propose</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last"><code class="docutils literal"><span class="pre">rng</span></code> must return a sample from the uniform distribution
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">rng</span></code> must return a sample from the uniform distribution
 in [0,1) when calling <strong>rng.rand()</strong></p>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><code class="docutils literal"><span class="pre">rng</span></code> must also fulfill the requirements of your proposal
-<a class="reference internal" href="density.html#pypmc.density.base.LocalDensity.propose" title="pypmc.density.base.LocalDensity.propose"><code class="xref py py-meth docutils literal"><span class="pre">pypmc.density.base.LocalDensity.propose</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><code class="docutils literal notranslate"><span class="pre">rng</span></code> must also fulfill the requirements of your proposal
+<a class="reference internal" href="density.html#pypmc.density.base.LocalDensity.propose" title="pypmc.density.base.LocalDensity.propose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pypmc.density.base.LocalDensity.propose</span></code></a></p>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pypmc.sampler.markov_chain.AdaptiveMarkovChain.adapt">
-<code class="descname">adapt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#AdaptiveMarkovChain.adapt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.adapt" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">adapt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#AdaptiveMarkovChain.adapt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.adapt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the proposal using the points
-stored in <code class="docutils literal"><span class="pre">self.samples[-1]</span></code> and the parameters which can be set via
-<a class="reference internal" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params" title="pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params"><code class="xref py py-meth docutils literal"><span class="pre">set_adapt_params</span></code></a>.
+stored in <code class="docutils literal notranslate"><span class="pre">self.samples[-1]</span></code> and the parameters which can be set via
+<a class="reference internal" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params" title="pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_adapt_params</span></code></a>.
 In the above referenced function’s docstring, the algorithm is
 described in detail. If the resulting matrix is not a valid covariance,
 its offdiagonal elements are set to zero and a warning is printed. If
 that also fails, the proposal’s covariance matrix is divided by the
-<code class="docutils literal"><span class="pre">covar_scale_multiplier</span></code> <span class="math">\(\beta\)</span>.</p>
+<code class="docutils literal notranslate"><span class="pre">covar_scale_multiplier</span></code> <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This function only uses the points obtained during the last run.</p>
+<p class="admonition-title">Note</p>
+<p>This function only uses the points obtained during the last run.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="pypmc.sampler.markov_chain.AdaptiveMarkovChain.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.clear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clear history of visited points (stored in <code class="docutils literal"><span class="pre">self.samples</span></code>) and
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear history of visited points (stored in <code class="docutils literal notranslate"><span class="pre">self.samples</span></code>) and
 other internal variables to free memory.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The current state that defines the Markov chain is untouched.</p>
+<p class="admonition-title">Note</p>
+<p>The current state that defines the Markov chain is untouched.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="pypmc.sampler.markov_chain.AdaptiveMarkovChain.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>N=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#AdaptiveMarkovChain.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">N=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#AdaptiveMarkovChain.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the chain and store the history of visited points into
-the member variable <code class="docutils literal"><span class="pre">self.samples</span></code>. Returns the number of
+the member variable <code class="docutils literal notranslate"><span class="pre">self.samples</span></code>. Returns the number of
 accepted points during the run.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal"><span class="pre">pypmc.tools.History</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.tools.History</span></code></a></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>N</strong> – An int which defines the number of steps to run the chain.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>N</strong> – An int which defines the number of steps to run the chain.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params">
-<code class="descname">set_adapt_params</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#AdaptiveMarkovChain.set_adapt_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_adapt_params</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/markov_chain.html#AdaptiveMarkovChain.set_adapt_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.set_adapt_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets variables for covariance adaptation.</p>
-<p>When <a class="reference internal" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.adapt" title="pypmc.sampler.markov_chain.AdaptiveMarkovChain.adapt"><code class="xref py py-meth docutils literal"><span class="pre">adapt</span></code></a> is called, the proposal’s covariance matrix is
+<p>When <a class="reference internal" href="#pypmc.sampler.markov_chain.AdaptiveMarkovChain.adapt" title="pypmc.sampler.markov_chain.AdaptiveMarkovChain.adapt"><code class="xref py py-meth docutils literal notranslate"><span class="pre">adapt</span></code></a> is called, the proposal’s covariance matrix is
 adapted in order to improve the chain’s performance. The aim
 is to improve the efficiency of the chain by making better
-proposals and forcing the acceptance rate <span class="math">\(\alpha\)</span> of
+proposals and forcing the acceptance rate <span class="math notranslate nohighlight">\(\alpha\)</span> of
 the chain to lie in an interval ensuring good exploration:</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>force_acceptance_max</strong> – <p>Float, the upper limit (in (0,1])</p>
-<p>Default: <span class="math">\(\alpha_{max}=.35\)</span></p>
-</li>
-<li><strong>force_acceptance_min</strong> – <p>Float, the lower limit (in [0,1))</p>
-<p>Default: <span class="math">\(\alpha_{min}=.15\)</span></p>
-</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>force_acceptance_max</strong> – <p>Float, the upper limit (in (0,1])</p>
+<p>Default: <span class="math notranslate nohighlight">\(\alpha_{max}=.35\)</span></p>
+</p></li>
+<li><p><strong>force_acceptance_min</strong> – <p>Float, the lower limit (in [0,1))</p>
+<p>Default: <span class="math notranslate nohighlight">\(\alpha_{min}=.15\)</span></p>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p>This is achieved in two steps:</p>
 <p>1. <strong>Estimate the target covariance</strong>: compute the sample
-covariance from the last (the t-th) run as <span class="math">\(S^t\)</span>
-then combine with previous estimate <span class="math">\(\Sigma^{t-1}\)</span>
+covariance from the last (the t-th) run as <span class="math notranslate nohighlight">\(S^t\)</span>
+then combine with previous estimate <span class="math notranslate nohighlight">\(\Sigma^{t-1}\)</span>
 with a weight damping out over time as</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\Sigma^t = (1-a^t) \Sigma^{t-1} + a^t S^t\]</div>
 <p>where the weight is given by</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[a^t = 1/t^{\lambda}.\]</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>damping</strong> – <p>Float, see formula above</p>
-<p>Default: <span class="math">\(\lambda=.5\)</span></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>The <code class="docutils literal"><span class="pre">damping</span></code> <span class="math">\(\lambda\)</span> is neccessary to assure
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>damping</strong> – <p>Float, see formula above</p>
+<p>Default: <span class="math notranslate nohighlight">\(\lambda=.5\)</span></p>
+</p>
+</dd>
+</dl>
+<p>The <code class="docutils literal notranslate"><span class="pre">damping</span></code> <span class="math notranslate nohighlight">\(\lambda\)</span> is neccessary to assure
 convergence and should be in [0,1]. A default value of 0.5 was
-found to work well in practice. For details, see <a class="reference internal" href="references.html#hst01" id="id2">[HST01]</a>.</p>
+found to work well in practice. For details, see <a class="reference internal" href="references.html#hst01" id="id2"><span>[HST01]</span></a>.</p>
 <p>2. <strong>Rescale the covariance matrix</strong>: Remember that the goal
 is to force the acceptance rate into a specific interval.
 Suppose that the chain already is in a region of significant
@@ -359,57 +328,47 @@ chain.  In the opposite case, when the acceptance rate is
 close to one, the chain most probably only explores a small
 volume of the target.  Then enlarging the covariance matrix
 decreases “locality”.  In this implementation, the proposal
-covariance matrix is <span class="math">\(c \Sigma^t\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>covar_scale_factor</strong> – <p>Float, this number <code class="docutils literal"><span class="pre">c</span></code> is multiplied to <span class="math">\(\Sigma^t\)</span>
+covariance matrix is <span class="math notranslate nohighlight">\(c \Sigma^t\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>covar_scale_factor</strong> – <p>Float, this number <code class="docutils literal notranslate"><span class="pre">c</span></code> is multiplied to <span class="math notranslate nohighlight">\(\Sigma^t\)</span>
 after it has been recalculated. The higher the dimension
-<span class="math">\(d\)</span>, the smaller it should be. For a Gaussian
+<span class="math notranslate nohighlight">\(d\)</span>, the smaller it should be. For a Gaussian
 proposal and target, the optimal factor is
-<span class="math">\(2.38^2/d\)</span>. Use this argument to increase
+<span class="math notranslate nohighlight">\(2.38^2/d\)</span>. Use this argument to increase
 performance from the start before any adaptation.</p>
-<p>Default: <span class="math">\(c=2.38^2/d\)</span></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p><code class="docutils literal"><span class="pre">covar_scale_factor</span></code> is updated using <span class="math">\(\beta\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>covar_scale_multiplier</strong> – <p>Float;
-if the acceptance rate is larger than <code class="docutils literal"><span class="pre">force_acceptance_max</span></code>,
-<span class="math">\(c \to \beta c\)</span>.
-If the acceptance rate is smaller than <code class="docutils literal"><span class="pre">force_acceptance_min</span></code>,
-<span class="math">\(c \to c / \beta\)</span>.</p>
-<p>Default <span class="math">\(\beta=1.5\)</span></p>
-</td>
-</tr>
-</tbody>
-</table>
+<p>Default: <span class="math notranslate nohighlight">\(c=2.38^2/d\)</span></p>
+</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">covar_scale_factor</span></code> is updated using <span class="math notranslate nohighlight">\(\beta\)</span></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>covar_scale_multiplier</strong> – <p>Float;
+if the acceptance rate is larger than <code class="docutils literal notranslate"><span class="pre">force_acceptance_max</span></code>,
+<span class="math notranslate nohighlight">\(c \to \beta c\)</span>.
+If the acceptance rate is smaller than <code class="docutils literal notranslate"><span class="pre">force_acceptance_min</span></code>,
+<span class="math notranslate nohighlight">\(c \to c / \beta\)</span>.</p>
+<p>Default <span class="math notranslate nohighlight">\(\beta=1.5\)</span></p>
+</p>
+</dd>
+</dl>
 <p>Additionally, an upper and a lower limit on
-<code class="docutils literal"><span class="pre">covar_scale_factor</span></code> can be provided. This is useful to hint
+<code class="docutils literal notranslate"><span class="pre">covar_scale_factor</span></code> can be provided. This is useful to hint
 at bugs in the target or MC implementation that cause the
 efficiency to run away.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>covar_scale_factor_max</strong> – <p>Float, <code class="docutils literal"><span class="pre">covar_scale_factor</span></code> is kept below this value.</p>
-<p>Default: <span class="math">\(c_{max}=100\)</span></p>
-</li>
-<li><strong>covar_scale_factor_min</strong> – <p>Float, <code class="docutils literal"><span class="pre">covar_scale_factor</span></code> is kept above this value.</p>
-<p>Default: <span class="math">\(c_{max}=10^{-4}\)</span></p>
-</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>covar_scale_factor_max</strong> – <p>Float, <code class="docutils literal notranslate"><span class="pre">covar_scale_factor</span></code> is kept below this value.</p>
+<p>Default: <span class="math notranslate nohighlight">\(c_{max}=100\)</span></p>
+</p></li>
+<li><p><strong>covar_scale_factor_min</strong> – <p>Float, <code class="docutils literal notranslate"><span class="pre">covar_scale_factor</span></code> is kept above this value.</p>
+<p>Default: <span class="math notranslate nohighlight">\(c_{max}=10^{-4}\)</span></p>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -418,194 +377,170 @@ efficiency to run away.</p>
 <div class="section" id="module-pypmc.sampler.importance_sampling">
 <span id="importance-sampling"></span><h2>2.2. Importance Sampling<a class="headerlink" href="#module-pypmc.sampler.importance_sampling" title="Permalink to this headline">¶</a></h2>
 <p>Some useful tools for importance sampling. The main class is
-<a class="reference internal" href="#pypmc.sampler.importance_sampling.ImportanceSampler" title="pypmc.sampler.importance_sampling.ImportanceSampler"><code class="xref py py-class docutils literal"><span class="pre">ImportanceSampler</span></code></a> and there are some utility functions.</p>
+<a class="reference internal" href="#pypmc.sampler.importance_sampling.ImportanceSampler" title="pypmc.sampler.importance_sampling.ImportanceSampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportanceSampler</span></code></a> and there are some utility functions.</p>
 <dl class="function">
 <dt id="pypmc.sampler.importance_sampling.calculate_covariance">
-<code class="descclassname">pypmc.sampler.importance_sampling.</code><code class="descname">calculate_covariance</code><span class="sig-paren">(</span><em>samples</em>, <em>weights</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#calculate_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.calculate_covariance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pypmc.sampler.importance_sampling.</code><code class="sig-name descname">calculate_covariance</code><span class="sig-paren">(</span><em class="sig-param">samples</em>, <em class="sig-param">weights</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#calculate_covariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.calculate_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the covariance matrix of weighted samples (like the output of an
 importance-sampling run).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>samples</strong> – Matrix-like numpy array; the samples to be used.</li>
-<li><strong>weights</strong> – Vector-like numpy array; the (unnormalized) importance weights.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> – Matrix-like numpy array; the samples to be used.</p></li>
+<li><p><strong>weights</strong> – Vector-like numpy array; the (unnormalized) importance weights.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.sampler.importance_sampling.calculate_expectation">
-<code class="descclassname">pypmc.sampler.importance_sampling.</code><code class="descname">calculate_expectation</code><span class="sig-paren">(</span><em>samples</em>, <em>weights</em>, <em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#calculate_expectation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.calculate_expectation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the expectation value of function <code class="docutils literal"><span class="pre">f</span></code> using weighted
+<code class="sig-prename descclassname">pypmc.sampler.importance_sampling.</code><code class="sig-name descname">calculate_expectation</code><span class="sig-paren">(</span><em class="sig-param">samples</em>, <em class="sig-param">weights</em>, <em class="sig-param">f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#calculate_expectation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.calculate_expectation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the expectation value of function <code class="docutils literal notranslate"><span class="pre">f</span></code> using weighted
 samples (like the output of an importance-sampling run).</p>
-<p>Denoting <span class="math">\(x_n\)</span> as the sample n and <span class="math">\(w_n\)</span> as its (normalized)
+<p>Denoting <span class="math notranslate nohighlight">\(x_n\)</span> as the sample n and <span class="math notranslate nohighlight">\(w_n\)</span> as its (normalized)
 weight, the following is returned:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\sum_{n=1}^{N} w_n f(x_n)
 \mathrm{\ \ where\ \ } \sum_{n=1}^{N}w_n \overset{!}{=} 1\]</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>samples</strong> – Matrix-like numpy array; the samples to be used.</li>
-<li><strong>weights</strong> – Vector-like numpy array; the (unnormalized) importance weights.</li>
-<li><strong>f</strong> – Callable, the function to be evaluated.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> – Matrix-like numpy array; the samples to be used.</p></li>
+<li><p><strong>weights</strong> – Vector-like numpy array; the (unnormalized) importance weights.</p></li>
+<li><p><strong>f</strong> – Callable, the function to be evaluated.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.sampler.importance_sampling.calculate_mean">
-<code class="descclassname">pypmc.sampler.importance_sampling.</code><code class="descname">calculate_mean</code><span class="sig-paren">(</span><em>samples</em>, <em>weights</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#calculate_mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.calculate_mean" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pypmc.sampler.importance_sampling.</code><code class="sig-name descname">calculate_mean</code><span class="sig-paren">(</span><em class="sig-param">samples</em>, <em class="sig-param">weights</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#calculate_mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.calculate_mean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the mean of weighted samples (like the output of an
 importance-sampling run).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>samples</strong> – Matrix-like numpy array; the samples to be used.</li>
-<li><strong>weights</strong> – Vector-like numpy array; the (unnormalized) importance weights.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> – Matrix-like numpy array; the samples to be used.</p></li>
+<li><p><strong>weights</strong> – Vector-like numpy array; the (unnormalized) importance weights.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="pypmc.sampler.importance_sampling.combine_weights">
-<code class="descclassname">pypmc.sampler.importance_sampling.</code><code class="descname">combine_weights</code><span class="sig-paren">(</span><em>samples</em>, <em>weights</em>, <em>proposals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#combine_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.combine_weights" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pypmc.sampler.importance_sampling.</code><code class="sig-name descname">combine_weights</code><span class="sig-paren">(</span><em class="sig-param">samples</em>, <em class="sig-param">weights</em>, <em class="sig-param">proposals</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#combine_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.combine_weights" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the <cite>deterministic mixture weights</cite> according to
-<a class="reference internal" href="references.html#cor-12" id="id3">[Cor+12]</a> given <code class="docutils literal"><span class="pre">samples</span></code>, standard <code class="docutils literal"><span class="pre">weights</span></code> and their <code class="docutils literal"><span class="pre">proposals</span></code> for a
+<a class="reference internal" href="references.html#cor-12" id="id3"><span>[Cor+12]</span></a> given <code class="docutils literal notranslate"><span class="pre">samples</span></code>, standard <code class="docutils literal notranslate"><span class="pre">weights</span></code> and their <code class="docutils literal notranslate"><span class="pre">proposals</span></code> for a
 number of steps in which importance samples are computed for the same target
 density but different proposals.</p>
-<p>Return the weights as a <a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal"><span class="pre">pypmc.tools.History</span></code></a> such that the
+<p>Return the weights as a <a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.tools.History</span></code></a> such that the
 weights for each proposal are easily accessible.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>samples</strong> – Iterable of matrix-like arrays; the weighted samples whose importance
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> – Iterable of matrix-like arrays; the weighted samples whose importance
 weights shall be combined. One sample per row in each array, one array
-for each step, or different proposal.</li>
-<li><strong>weights</strong> – Iterable of 1D arrays; the standard importance weights
-<span class="math">\(P(x_i^t)/q_t(x_i^t)\)</span>. Each array in the iterable contains all
-weights of the samples of step <code class="docutils literal"><span class="pre">t</span></code>, they array’s size has to match the
-<code class="docutils literal"><span class="pre">t</span></code>-th entry in samples.</li>
-<li><strong>proposals</strong> – Iterable of <a class="reference internal" href="density.html#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a> instances;
-the proposal densities from which the <code class="docutils literal"><span class="pre">samples</span></code> have been
-drawn.</li>
+for each step, or different proposal.</p></li>
+<li><p><strong>weights</strong> – Iterable of 1D arrays; the standard importance weights
+<span class="math notranslate nohighlight">\(P(x_i^t)/q_t(x_i^t)\)</span>. Each array in the iterable contains all
+weights of the samples of step <code class="docutils literal notranslate"><span class="pre">t</span></code>, they array’s size has to match the
+<code class="docutils literal notranslate"><span class="pre">t</span></code>-th entry in samples.</p></li>
+<li><p><strong>proposals</strong> – Iterable of <a class="reference internal" href="density.html#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a> instances;
+the proposal densities from which the <code class="docutils literal notranslate"><span class="pre">samples</span></code> have been
+drawn.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="pypmc.sampler.importance_sampling.ImportanceSampler">
-<em class="property">class </em><code class="descclassname">pypmc.sampler.importance_sampling.</code><code class="descname">ImportanceSampler</code><span class="sig-paren">(</span><em>target</em>, <em>proposal</em>, <em>indicator=None</em>, <em>prealloc=0</em>, <em>rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#ImportanceSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.ImportanceSampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">pypmc.sampler.importance_sampling.</code><code class="sig-name descname">ImportanceSampler</code><span class="sig-paren">(</span><em class="sig-param">target</em>, <em class="sig-param">proposal</em>, <em class="sig-param">indicator=None</em>, <em class="sig-param">prealloc=0</em>, <em class="sig-param">rng=numpy.random.mtrand</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#ImportanceSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.ImportanceSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>An importance sampler, generates weighted samples from
-<code class="docutils literal"><span class="pre">target</span></code> using <code class="docutils literal"><span class="pre">proposal</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>target</strong> – The target density. Must be a function accepting a 1d numpy
-array and returning a float, namely <span class="math">\(\log(P(x))\)</span>,
-the log of the target <cite>P</cite>.</li>
-<li><strong>proposal</strong> – The proposal density <cite>q</cite>. Should be of type
-<a class="reference internal" href="density.html#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a>.</li>
-<li><strong>indicator</strong> – <p>The indicator function receives a numpy array and returns bool.
+<code class="docutils literal notranslate"><span class="pre">target</span></code> using <code class="docutils literal notranslate"><span class="pre">proposal</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> – The target density. Must be a function accepting a 1d numpy
+array and returning a float, namely <span class="math notranslate nohighlight">\(\log(P(x))\)</span>,
+the log of the target <cite>P</cite>.</p></li>
+<li><p><strong>proposal</strong> – The proposal density <cite>q</cite>. Should be of type
+<a class="reference internal" href="density.html#pypmc.density.base.ProbabilityDensity" title="pypmc.density.base.ProbabilityDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.base.ProbabilityDensity</span></code></a>.</p></li>
+<li><p><strong>indicator</strong> – <p>The indicator function receives a numpy array and returns bool.
 The target is only called if indicator(proposed_point) returns
 True. Otherwise, the proposed point will get zero-weight without
 call to target.
 Use this function to specify the support of the target.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="tools.html#module-pypmc.tools.indicator" title="pypmc.tools.indicator"><code class="xref py py-mod docutils literal"><span class="pre">pypmc.tools.indicator</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tools.html#module-pypmc.tools.indicator" title="pypmc.tools.indicator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pypmc.tools.indicator</span></code></a></p>
 </div>
-</li>
-<li><strong>prealloc</strong> – <p>Integer; the number of samples for which memory is preallocated.
+</p></li>
+<li><p><strong>prealloc</strong> – <p>Integer; the number of samples for which memory is preallocated.
 If more memory is needed, it will be allocated on demand.</p>
 <div class="admonition hint">
-<p class="first admonition-title">Hint</p>
-<p class="last">Preallocating memory can speed up the calculation, in
+<p class="admonition-title">Hint</p>
+<p>Preallocating memory can speed up the calculation, in
 particular if it is known in advance how long the chains
 are run.</p>
 </div>
-</li>
-<li><strong>save_target_values</strong> – Bool; if <code class="docutils literal"><span class="pre">True</span></code>, store the evaluated <code class="docutils literal"><span class="pre">target</span></code> at every visited
-point in <code class="docutils literal"><span class="pre">self.target_values</span></code></li>
-<li><strong>rng</strong> – <p>The rng passed to the proposal when calling proposal.propose</p>
+</p></li>
+<li><p><strong>save_target_values</strong> – Bool; if <code class="docutils literal notranslate"><span class="pre">True</span></code>, store the evaluated <code class="docutils literal notranslate"><span class="pre">target</span></code> at every visited
+point in <code class="docutils literal notranslate"><span class="pre">self.target_values</span></code></p></li>
+<li><p><strong>rng</strong> – <p>The rng passed to the proposal when calling proposal.propose</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last"><code class="docutils literal"><span class="pre">rng</span></code> must fulfill the requirements of your proposal
-<a class="reference internal" href="density.html#pypmc.density.base.ProbabilityDensity.propose" title="pypmc.density.base.ProbabilityDensity.propose"><code class="xref py py-meth docutils literal"><span class="pre">pypmc.density.base.ProbabilityDensity.propose</span></code></a></p>
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">rng</span></code> must fulfill the requirements of your proposal
+<a class="reference internal" href="density.html#pypmc.density.base.ProbabilityDensity.propose" title="pypmc.density.base.ProbabilityDensity.propose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pypmc.density.base.ProbabilityDensity.propose</span></code></a></p>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <dl class="method">
 <dt id="pypmc.sampler.importance_sampling.ImportanceSampler.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#ImportanceSampler.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.ImportanceSampler.clear" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#ImportanceSampler.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.ImportanceSampler.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear history of samples and other internal variables to free memory.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The proposal is untouched.</p>
+<p class="admonition-title">Note</p>
+<p>The proposal is untouched.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="pypmc.sampler.importance_sampling.ImportanceSampler.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>N=1</em>, <em>trace_sort=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#ImportanceSampler.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.ImportanceSampler.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">N=1</em>, <em class="sig-param">trace_sort=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypmc/sampler/importance_sampling.html#ImportanceSampler.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypmc.sampler.importance_sampling.ImportanceSampler.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the sampler, store the history of visited points into
-the member variable <code class="docutils literal"><span class="pre">self.samples</span></code> and the importance weights
-into <code class="docutils literal"><span class="pre">self.weights</span></code>.</p>
+the member variable <code class="docutils literal notranslate"><span class="pre">self.samples</span></code> and the importance weights
+into <code class="docutils literal notranslate"><span class="pre">self.weights</span></code>.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal"><span class="pre">pypmc.tools.History</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="tools.html#pypmc.tools.History" title="pypmc.tools.History"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.tools.History</span></code></a></p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>N</strong> – Integer; the number of samples to be drawn.</li>
-<li><strong>trace_sort</strong> – <p>Bool; if True, return an array containing the responsible
-component of <code class="docutils literal"><span class="pre">self.proposal</span></code> for each sample generated
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – Integer; the number of samples to be drawn.</p></li>
+<li><p><strong>trace_sort</strong> – <p>Bool; if True, return an array containing the responsible
+component of <code class="docutils literal notranslate"><span class="pre">self.proposal</span></code> for each sample generated
 during this run.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This option only works for proposals of type
-<a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a></p>
+<p class="admonition-title">Note</p>
+<p>This option only works for proposals of type
+<a class="reference internal" href="density.html#pypmc.density.mixture.MixtureDensity" title="pypmc.density.mixture.MixtureDensity"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypmc.density.mixture.MixtureDensity</span></code></a></p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If True, the samples will be ordered by the components.</p>
+<p class="admonition-title">Note</p>
+<p>If True, the samples will be ordered by the components.</p>
 </div>
-</li>
+</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -634,12 +569,12 @@ during this run.</p>
         <li class="right" >
           <a href="density.html" title="1. Probability density"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pypmc 1.1.3 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, Frederik Beaujean and Stephan Jahn.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+        &#169; Copyright 2019, Frederik Beaujean and Stephan Jahn.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
     </div>
   </body>
 </html>
